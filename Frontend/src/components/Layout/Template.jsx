@@ -1,5 +1,6 @@
 import "../../assets/scss/template.scss"
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 const Template = ({children}) => {
     //variable
     const [showsidebar, setShowsidebar] = useState(false)
@@ -22,7 +23,15 @@ const Template = ({children}) => {
                     </button>
                     <div className="navbar-brand text-uppercase fs-4 fw-bold mx-4">MULTIMAG</div>                    
                 </div>
-                <div className=" mx-3">UTILISATEUR</div>
+
+                <div class="dropdown mx-3">
+                <div class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Utilisateur
+                </div>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Déconnexion</a></li>
+                </ul>
+                </div>
             </div>
         </nav>
 
@@ -32,17 +41,17 @@ const Template = ({children}) => {
                     <a class="nav-link" href="#">
                         Produits
                         <ul>
-                            <li><a href="#" className="nav-link">liste des produits</a></li>
-                            <li><a href="#" className="nav-link">Nouveau produit</a></li>
+                            <li><Link to="/" className="nav-link">liste des produits</Link></li>
+                            <li><Link to="/nouveau-produit" className="nav-link">Nouveau produit</Link></li>
                         </ul>
                     </a>
-                    <a class="nav-link" href="#">Référencement</a>
-                    <a class="nav-link" href="#">Modification en attente</a>
+                    <Link class="nav-link" to="/referencement">Référencement</Link>
+                    <Link class="nav-link" to="/modification">Modification en attente</Link>
                     <a class="nav-link" href="#">
                         Compte
                         <ul>
-                            <li><a href="#" className="nav-link">Configuration</a></li>
-                            <li><a href="#" className="nav-link">Déconnexion</a></li>
+                            <li><Link to="/" className="nav-link">Configuration</Link></li>
+                            <li><Link href="/" className="nav-link">Déconnexion</Link></li>
                         </ul>
                     </a>
                 </nav>
