@@ -1,0 +1,26 @@
+@import 'variable.scss';
+
+body{
+    background-color: #f5f5f5;
+    color: #222;
+}
+.navbar{
+    height: $hauteur_header;
+    background-color: $blanc;
+}
+.sidebar{
+    background-color: $blanc;
+    height: calc( 100vh - $hauteur_header - 10px);
+
+}
+
+.container_sidebar{
+    position: fixed;
+    top: $hauteur_header;
+    left: 0;
+    right: 0;    
+}
+
+.ContentProduit{
+    overflow: auto;
+}

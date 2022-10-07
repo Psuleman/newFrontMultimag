@@ -1,0 +1,10 @@
+.contentInfoProduit{
+    border: solid #ddd 0.1rem;
+    background: white;
+    >div{
+        border-bottom: solid #ddd 0.1rem;
+    }
+    >div:last-child{
+        border-bottom: 0;
+    }
+}

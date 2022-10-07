@@ -1,0 +1,37 @@
+.navTable{
+    background: #f0f0f0;
+
+    >div{
+        border-right: solid 0.1rem #ddd ;
+        border-bottom: solid 0.1rem #ddd ;
+        cursor: pointer;
+    }
+}
+
+.action{
+    background: white;
+    border: solid 0.1rem #ddd ;
+}
+
+table{
+    min-width: 100%;
+    border-collapse: collapse;
+    border: solid 1px black;
+
+    td, tr, th{
+        border: solid 0.1rem #ddd;
+    }
+    td, th{
+        min-width: 100px;
+        width: 100px;
+        max-width: 100px;
+        height: auto;
+    }
+    td{
+        background: white;
+    }
+    th {
+        background: #eee;
+    }
+}
+
