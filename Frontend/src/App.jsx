@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Connexion from './pages/Connexion'
 import Exportation from './pages/Exportation'
 import FormulaireProduit from './pages/FormulaireProduit'
 import ListeProduit from './pages/ListeProduit'
@@ -15,7 +16,8 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<ListeProduit />} />
+          <Route path="/" element={<Connexion />} />
+          <Route path="/liste-produit" element={<ListeProduit />} />
           <Route path="/referencement" element={<Referencement />} />
           <Route path="/modification" element={<Modification />} />
           <Route path="/exportation" element={<Exportation />} />
