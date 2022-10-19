@@ -44,22 +44,22 @@ const Template = ({children}) => {
         <section className="container_sidebar d-flex flex-row">
             <div className="collapse sidebar col-xl-2 col-lg-2 col-md-3 col-sm-3 px-4 mt-1" id="navbarToggleExternalContent">
                 <nav className="nav flex-column">
-                    <a className="nav-link" href="#">
+                    <div className="nav-link">
                         Produits
                         <ul>
                             <li><Link to="/" className="nav-link">liste des produits</Link></li>
                             <li><Link to="/nouveau-produit" className="nav-link">Nouveau produit</Link></li>
                         </ul>
-                    </a>
+                    </div>
                     <Link className="nav-link" to="/referencement">Référencement</Link>
                     <Link className="nav-link" to="/modification">Modification en attente</Link>
-                    <a className="nav-link" href="#">
+                    <div className="nav-link">
                         Compte
                         <ul>
                             <li><Link to="/" className="nav-link">Configuration</Link></li>
                             <li><Link href="/" className="nav-link">Déconnexion</Link></li>
                         </ul>
-                    </a>
+                    </div>
                 </nav>
             </div>            
             {

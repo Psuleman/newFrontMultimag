@@ -10,39 +10,45 @@ import Select from "./TemplateFormulaire/Select";
 
 const Matiere = () => {
     //variable
-    const [matiereDefault, setMatiereDefault] = useState([])
     const [nbMatiere, setNbMatiere] = useState()
-    const {infoSku,
-        matiere1Update, setMatiere1Update, pourcentMatiere1Update, setPourcentMatiere1Update, 
-        matiere2Update, setMatiere2Update, pourcentMatiere2Update, setPourcentMatiere2Update, 
-        matiere3Update, setMatiere3Update, pourcentMatiere3Update, setPourcentMatiere3Update, 
-        matiere4Update, setMatiere4Update, pourcentMatiere4Update, setPourcentMatiere4Update, 
-        matiere5Update, setMatiere5Update, pourcentMatiere5Update, setPourcentMatiere5Update, 
-        matiere6Update, setMatiere6Update, pourcentMatiere6Update, setPourcentMatiere6Update, 
-        matiere7Update, setMatiere7Update, pourcentMatiere7Update, setPourcentMatiere7Update, 
-        matiere8Update, setMatiere8Update, pourcentMatiere8Update, setPourcentMatiere8Update, 
-        matiere9Update, setMatiere9Update, pourcentMatiere9Update, setPourcentMatiere9Update, 
-        matiere10Update, setMatiere10Update, pourcentMatiere10Update, setPourcentMatiere10Update,  
+    const {infoSku, matiereUpdate, setMatiereUpdate, 
         sectionUpdate, setSectionUpdate, handleClickSave} = useContext(FormulaireContext)
     //fonction
     useEffect(()=>{
-        let tab = [1,2]
-        setMatiereDefault(tab)
+        if(matiereUpdate.length>0){
+
+        }
+        else{
+            let tab = [1,2]
+           
+            let arrayMatiere = []
+            for(let i=0; i<tab.length; i++){
+                arrayMatiere[i]={
+                    matiere: "",
+                    pourcentageMatiere: 0
+                }
+            }
+
+            setMatiereUpdate(arrayMatiere)
+            
+        }
     }, [])
     const handleClickAddMatiere = () => {
-        let total = matiereDefault.length;
+        let total = matiereUpdate.length;
         if(total <=10){
-            let tab = [...matiereDefault]
+            let tab = [...matiereUpdate]
             let nbMatiereRestant = 10 - total
-            for(let i=0; i<nbMatiereRestant; i++){
-                tab.push(parseInt(total) + 1 + i)
+            for(let i=0; i<nbMatiere && i<10; i++){
+                tab.push({
+                    matiere: "",
+                    pourcentageMatiere:0
+                })
             }
-            setMatiereDefault(tab)
+            setMatiereUpdate(tab)
             setNbMatiere(0)            
         }
-
-
     }
+
     //render
     return (
         <div className="card mb-3">
@@ -53,17 +59,38 @@ const Matiere = () => {
             <form onSubmit={(e)=>{handleClickSave(e, "matière")}}>        
             <div className="card-body">
                 {
-                    matiereDefault &&
-                    matiereDefault.map((i, index)=>(
+                    matiereUpdate &&
+                    matiereUpdate.map((i, index)=>(
                         <section className="row g-3 mt-1">
-                            <Select id={"selectMatiere" + i} label={"Matière " + i} value={eval('matiere' + i + 'Update')} setValue={eval('setMatiere' + i + 'Update')} list={Matieres}/>
-                            <Input type="number" id={"inputPourcentMatiere" + i} label={"Pourcentage matière " + i} value={eval('pourcentMatiere' + i + 'Update')}
-                            setValue={eval('setPourcentMatiere' + i + 'Update')} min="0" max="100"  />               
+                            <div className="col-md-3">
+                                <label htmlFor={"selectMatiere" + (index+1)} className="form-label">{"Matière " + (index + 1)}</label>
+                                <select className="form-select" aria-label="Default select example" id={"selectMatiere" + (index + 1)} value={matiereUpdate[index].matiere} onChange={(e)=>{ setMatiereUpdate(oldState=>{
+                                    let newState = [...oldState]
+                                    newState[index].matiere = e.target.value
+                                    return newState
+                                })}} >
+                                {
+                                    Matieres && Matieres.map((item, index)=>(
+                                        <option key={index} value={item.matiere}>{item.matiere}</option>
+                                    ))
+                                }
+                                </select>                                
+                            </div>
+
+
+                            <div className="col-md-3">
+                                <label htmlFor={"inputPourcentMatiere" + (index + 1)} className="form-label">{"Pourcentage matière " + (index + 1)}</label>
+                                <input type="number" className="form-control" id={"inputPourcentMatiere" + (index + 1)} value={matiereUpdate[index].pourcentageMatiere} onChange={(e)=>{ setMatiereUpdate(oldState=>{
+                                let newState = [...oldState]
+                                newState[index].pourcentageMatiere = e.target.value
+                                return newState
+                            })}} min="0" max="100" />
+                            </div>           
                         </section>
                     ))
                 }
                 {
-                    matiereDefault.length <10 &&
+                    matiereUpdate.length <10 &&
                     <section className="row g-3 mt-1">
                     <div className="col-md-3">
                         <label htmlFor="inputAddMatiere" className="form-label">Nombre de matière supplementaire</label>

@@ -22,9 +22,9 @@ const HeaderForm = ({title, section}) => {
         <div>{title}</div>
         {
             (sectionUpdate == section) ?
-            <div><i class="fas fa-chevron-up"></i></div>
+            <div><i className="fas fa-chevron-up"></i></div>
             :
-            <div><i class="fas fa-chevron-down"></i></div>
+            <div><i className="fas fa-chevron-down"></i></div>
         }
     </div>
     )

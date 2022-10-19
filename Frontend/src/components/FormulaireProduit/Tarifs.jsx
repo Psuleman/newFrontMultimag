@@ -4,17 +4,18 @@ import { useState } from "react";
 import { FormulaireContext } from "./Context/FormulaireContext";
 import FooterForm from "./TemplateFormulaire/FooterForm";
 import HeaderForm from "./TemplateFormulaire/HeaderForm";
+import Select from "./TemplateFormulaire/Select";
 
 const Tarifs = () => {
     //variable
     const [nbTarif, setNbTarif] = useState()
     const [tarifDefault, setTarifDefault] = useState([])
-    const {infoSku,
+    const {infoSku, tarifUpdate, setTarifUpdate, 
     sectionUpdate, setSectionUpdate, handleClickSave} = useContext(FormulaireContext)
 
     //Fonction
     useEffect(()=>{
-        console.log(infoSku)
+        setTarifUpdate(infoSku.tarifs)
     }, [infoSku])
 
     const handleClickAddTarifs = () => {

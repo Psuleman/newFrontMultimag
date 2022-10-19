@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import Taille from "../components/FormulaireProduit/Taille";
 import Tarifs from "../components/FormulaireProduit/Tarifs";
 import {FormulaireContext} from "../components/FormulaireProduit/Context/FormulaireContext"
+import Moment from 'moment';
 
 const FormulaireProduit = () => {
     //variable
@@ -39,13 +40,18 @@ const FormulaireProduit = () => {
 	const [dimensionFrUpdate, setDimensionFrUpdate] = useState()
 	const [dimensionEnUpdate, setDimensionEnUpdate] = useState()
 
-	const [nomProduitFrUpdate, setNomProduitFrUpdate] = useState()
-	const [nomProduitEnUpdate, setNomProduitEnUpdate] = useState()
-	const [descriptionFrUpdate, setDescriptionFrUpdate] = useState()
-	const [descriptionEnUpdate, setDescriptionEnUpdate] = useState()
+	const [nomProduitFrUpdate, setNomProduitFrUpdate] = useState("")
+	const [nomProduitEnUpdate, setNomProduitEnUpdate] = useState("")
+	const [descriptionFrUpdate, setDescriptionFrUpdate] = useState("")
+	const [descriptionEnUpdate, setDescriptionEnUpdate] = useState("")
 
     const [grilleTailleUpdate, setGrilleTailleUpdate] = useState()
 	const [attributUpdate, setAttributUpdate] = useState([])
+	const [tarifUpdate, setTarifUpdate] = useState([])
+
+
+    const [matiereUpdate, setMatiereUpdate] = useState([])
+	const [tagsReferencementUpdate, setTagsReferencementUpdate] = useState() 
 
     const [sectionUpdate, setSectionUpdate] = useState("")
     //Fonction
@@ -99,18 +105,20 @@ const FormulaireProduit = () => {
                     //Information
                     value[0].univers!= null ? setUniversUpdate(value[0].univers) : setUniversUpdate("")
                     value[0].univers_en!= null ? setUniversEnUpdate(value[0].univers_en) : setUniversEnUpdate("")
-                    value[0].nom_fournisseur != null ? setMarqueUpdate(value[0].nom_fournisseur) : setMarqueUpdate("")
+
+                    value[0].marqueProduit != null ? setMarqueUpdate(value[0].marqueProduit) : setMarqueUpdate("")
+
                     value[0].pays_origine == null ? setPaysOrigineUpdate("") : setPaysOrigineUpdate(value[0].paysOrigine) 
                     
                     //Caractéristique
-                    value[0].categorie != null ? setCategorieUpdate(value[0].filtre.sousCategorieRef.categorie_ref.categorie_ref) : setCategorieUpdate("")
-                    value[0].categorie_en != null ? setCategorieEnUpdate(value[0].filtre.sousCategorieRef.categorie_ref.categorie_ref_en) : setCategorieEnUpdate("")
+                    value[0].categorie != null ? setCategorieUpdate(value[0].categorie) : setCategorieUpdate("")
+                    value[0].categorie_en != null ? setCategorieEnUpdate(value[0].categorie_en) : setCategorieEnUpdate("")
 
-                    value[0].sousCategorie != null ? setSousCategorieUpdate(value[0].filtre.sousCategorieRef.sous_categorie_ref) : setSousCategorieUpdate("")
-                    value[0].sousCategorie != null ? setSousCategorieEnUpdate(value[0].filtre.sousCategorieRef.sous_categorie_ref_en) : setSousCategorieEnUpdate("")
+                    value[0].sous_categorie != null ? setSousCategorieUpdate(value[0].sous_categorie) : setSousCategorieUpdate("")
+                    value[0].sous_categorie_en != null ? setSousCategorieEnUpdate(value[0].sous_categorie_en) : setSousCategorieEnUpdate("")
 
-                    value[0].filtre != null? setFiltreUpdate(value[0].filtre): setFiltreUpdate("")
-                    value[0].filtre_en != null? setFiltreEnUpdate(value[0].filtre_en): setFiltreEnUpdate("")
+                    value[0].filtre_produit != null? setFiltreUpdate(value[0].filtre_produit): setFiltreUpdate("")
+                    value[0].filtre_produit_en != null? setFiltreEnUpdate(value[0].filtre_produit_en): setFiltreEnUpdate("")
 
                     value[0].couleur != null ? setCouleurUpdate(value[0].couleur) : setCouleurUpdate()
                     value[0].couleur_en != null? setCouleurEnUpdate(value[0].couleur_en) : setCouleurEnUpdate()
@@ -126,10 +134,16 @@ const FormulaireProduit = () => {
                     value[0].nom_produit_fr != null? setNomProduitFrUpdate(value[0].nom_produit_fr) :  setNomProduitFrUpdate("")
                     value[0].nom_produit_en != null? setNomProduitEnUpdate(value[0].nom_produit_en) : setNomProduitEnUpdate("")
 
-                    value[0].variants.taille_ref.grille_taille_ref != null? setGrilleTailleUpdate(value[0].variants.taille_ref.grille_taille_ref) : setGrilleTailleUpdate()
-
+                    value[0].variants.taille_ref.grille_taille_ref != null? setGrilleTailleUpdate(value[0].variants.taille_ref.grille_taille_ref) : setGrilleTailleUpdate("")
                     //tailles
                     setAttributUpdate(value[0].variants)
+
+                    //tarifs
+                    setTarifUpdate(value[0].variants)
+
+                    value[0].matiereProduit!=null ? setMatiereUpdate(value[0].matiereProduit) : setMatiereUpdate([])
+                    //tags
+                    value[0].tags_ref !=null? setTagsReferencementUpdate(value[0].tags_ref) : setTagsReferencementUpdate("")
                 })
                
                 .catch(function(err){
@@ -145,37 +159,63 @@ const FormulaireProduit = () => {
             navigate('/')
         }
         else{
-            //Information
+            //tags ref
+            let tags_text = universUpdate + ',' + universEnUpdate+',Couleur_'+couleurUpdate+',Color_'+ couleurEnUpdate+','+filtreUpdate+','+filtreEnUpdate+','+sousCategorieUpdate+','+sousCategorieEnUpdate+',Catégorie_'+sousCategorieUpdate+',Category_'+sousCategorieEnUpdate+',Créateur_'+marqueUpdate+',Designer_'+marqueUpdate+','+produit.referenceFournisseur+','+categorieUpdate+','+categorieEnUpdate+','+produit.saison
+            setTagsReferencementUpdate(tags_text)
+
+            let referencer = false
+            if((produit.sousCategorie!="")
+                && (filtreUpdate!="")
+                //&& (paysOrigineUpdate!="")
+                && (grilleTailleUpdate!="")
+                && (attributUpdate!="")
+                //&& (value[i].coupe!="")
+                //&& (value[i].entretien!="") A REDEMANDER
+                && (descriptionFrUpdate!="")
+                && (descriptionEnUpdate!="")
+                && (nomProduitFrUpdate!="")
+                && (nomProduitEnUpdate!="")
+                && (matiereUpdate!=null)
+            ){
+                referencer = true
+            }
             let data = {
                 sku: infoSku.sku,
-                marque: marqueUpdate ? marqueUpdate : infoSku.marque,
-                pays_origine: paysOrigineUpdate?paysOrigineUpdate : "",
+                marqueProduit:  marqueUpdate ? marqueUpdate : infoSku.marque,
+                paysOrigine: paysOrigineUpdate?paysOrigineUpdate : "",
                 univers: universUpdate? universUpdate : infoSku.univers,
-                univers_en: universEnUpdate? universEnUpdate : infoSku.universEn,
-                categorie: categorieUpdate?categorieUpdate:produit.categorie,
-				categorieEn: categorieEnUpdate?categorieEnUpdate:produit.categorieEn,
-                sousCategorie: sousCategorieUpdate?sousCategorieUpdate:produit.sousCategorie,
-				sousCategorieEn: sousCategorieEnUpdate?sousCategorieEnUpdate:produit.sousCategorieEn,
-				filtre: filtreUpdate? filtreUpdate:"",
-				filtreEn: filtreEnUpdate? filtreEnUpdate:"",
+                universEn: universEnUpdate? universEnUpdate : infoSku.universEn,
+              
+                categorie: categorieUpdate?categorieUpdate:infoSku.categorie,
+                categorieEn: categorieEnUpdate?categorieEnUpdate:infoSku.categorieEn,
+                sousCategorie: sousCategorieUpdate?sousCategorieUpdate:infoSku.sousCategorie,
+                sousCategorieEn: sousCategorieEnUpdate?sousCategorieEnUpdate:infoSku.sousCategorieEn,
+                filtreProduit: filtreUpdate? filtreUpdate:"",
+                filtreProduitEn: filtreEnUpdate? filtreEnUpdate:"",
                 couleur: couleurUpdate?couleurUpdate:"",
-				couleurEn: couleurEnUpdate?couleurEnUpdate:"",
+                couleurEn: couleurEnUpdate?couleurEnUpdate:"",
                 entretien: entretienUpdate?entretienUpdate:"",
-				entretienEn: entretienEnUpdate?entretienEnUpdate:"",
-				coupe: coupeUpdate?coupeUpdate:"",
-				coupeEn: coupeEnUpdate?coupeEnUpdate:"",
-                dimensionFrUpdate: dimensionFrUpdate? dimensionFrUpdate : "",
-				dimensionEnUpdate: dimensionEnUpdate? dimensionEnUpdate : "",
-                
+                entretienEn: entretienEnUpdate?entretienEnUpdate:"",
+                coupe: coupeUpdate?coupeUpdate:"",
+                coupeEn: coupeEnUpdate?coupeEnUpdate:"",
+                dimensionFr: dimensionFrUpdate? dimensionFrUpdate : "",
+                dimensionEn: dimensionEnUpdate? dimensionEnUpdate : "",
+              
+                descriptionFr: descriptionFrUpdate? descriptionFrUpdate : "",
+                descriptioEn: descriptionEnUpdate? descriptionEnUpdate : "",
                 nomProduitFr: nomProduitFrUpdate? nomProduitFrUpdate : "",
-				nomProduitEn: nomProduitEnUpdate? nomProduitEnUpdate : "",
-				descriptionFr: descriptionFrUpdate? descriptionFrUpdate : "",
-				descriptionEn: descriptionEnUpdate? descriptionEnUpdate : "",
-
-				grilleTaille: grilleTailleUpdate?grilleTailleUpdate : "",
-				attribut: attributUpdate?attributUpdate:"",
-            }
-            console.log(data)
+                nomProduitEn: nomProduitEnUpdate? nomProduitEnUpdate : "", 
+              
+                variants: attributUpdate ? attributUpdate : [],
+              
+                tarifs: tarifUpdate ? tarifUpdate : [],
+                matiereProduits: matiereUpdate ? matiereUpdate : [],
+                tagsRef: tagsReferencementUpdate? tagsReferencementUpdate:"",
+                dateRef: Moment().format("YYYY-MM-DD"),
+                referencer: referencer,
+              }
+              
+            console.log(JSON.stringify(data))
         }
     }
     //render
@@ -215,6 +255,9 @@ const FormulaireProduit = () => {
 
             attributUpdate: attributUpdate, setAttributUpdate: setAttributUpdate,
 
+            tarifUpdate: tarifUpdate, setTarifUpdate: setTarifUpdate,
+
+            matiereUpdate: matiereUpdate, setMatiereUpdate: setMatiereUpdate,
             handleClickSave: handleClickSave,
 
         }}>

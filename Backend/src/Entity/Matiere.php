@@ -34,9 +34,9 @@ class Matiere
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $matiere_en;
 
-    #[ORM\ManyToMany(targetEntity: Produits::class, mappedBy: 'matieres')]
-    private Collection $produits;
-
+    #[ORM\OneToMany(mappedBy: 'matiere', targetEntity: MatiereProduit::class)]
+    private Collection $matiereProduits;
+    
     public function __construct($tab=[])
     {
         if($tab){
@@ -46,7 +46,8 @@ class Matiere
             if($tab["matiere_en"])
                 $this->setMatiereEn($tab["matiere_en"]);
         }
-        $this->produits = new ArrayCollection();
+        $this->matiereProduits = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -77,29 +78,31 @@ class Matiere
 
         return $this;
     }
-
     /**
-     * @return Collection<int, Produits>
+     * @return Collection<int, MatiereProduit>
      */
-    public function getProduits(): Collection
+    public function getMatiereProduits(): Collection
     {
-        return $this->produits;
+        return $this->matiereProduits;
     }
 
-    public function addProduit(Produits $produit): self
+    public function addMatiereProduit(MatiereProduit $matiereProduit): self
     {
-        if (!$this->produits->contains($produit)) {
-            $this->produits->add($produit);
-            $produit->addMatiere($this);
+        if (!$this->matiereProduits->contains($matiereProduit)) {
+            $this->matiereProduits->add($matiereProduit);
+            $matiereProduit->setMatiere($this);
         }
 
         return $this;
     }
 
-    public function removeProduit(Produits $produit): self
+    public function removeMatiereProduit(MatiereProduit $matiereProduit): self
     {
-        if ($this->produits->removeElement($produit)) {
-            $produit->removeMatiere($this);
+        if ($this->matiereProduits->removeElement($matiereProduit)) {
+            // set the owning side to null (unless already changed)
+            if ($matiereProduit->getMatiere() === $this) {
+                $matiereProduit->setMatiere(null);
+            }
         }
 
         return $this;

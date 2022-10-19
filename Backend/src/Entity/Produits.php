@@ -20,6 +20,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
     ],
     itemOperations: [
         'get' => ['method' => 'get', 'normalization_context' => ['groups' => 'produit:read']],
+        "patch" => ['method' => 'patch'],
     ],
     attributes: ["pagination_enabled" => false],
     
@@ -210,10 +211,8 @@ class Produits
     private Collection $tarifs;
 
     #[Groups(['produit:read', 'produit:write'])]
-    #[ORM\ManyToMany(targetEntity: Matiere::class, inversedBy: 'produits')]
-    private Collection $matieres;
+    private ?string $marqueProduit;
 
-    #[Groups(['produit:read', 'produit:write'])]
     #[ORM\ManyToOne(inversedBy: 'produits')]
     private ?MarqueRef $marque = null;
 
@@ -232,6 +231,9 @@ class Produits
     #[Groups(['produit:read', 'produit:write'])]
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $newListAttente;
+
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: MatiereProduit::class)]
+    private Collection $matiereProduits;
 
     //variable sans ajouter dans la base de données
     #[Groups(['produit:read', 'produit:write'])]
@@ -277,13 +279,34 @@ class Produits
     #[Groups(['produit:read', 'produit:write'])]
     private ?int $stock_mag_60;
 
+    #[Groups(['produit:read', 'produit:write'])]
+    private array $matieres = [];
+
+    #[Groups(['produit:read', 'produit:write'])]
+    private ?string $categorie = null;
+
+    #[Groups(['produit:read', 'produit:write'])]
+    private ?string $sous_categorie = null;
+
+    #[Groups(['produit:read', 'produit:write'])]
+    private ?string $filtre_produit = null;
+
+    #[Groups(['produit:read', 'produit:write'])]
+    private ?string $categorie_en = null;
+
+    #[Groups(['produit:read', 'produit:write'])]
+    private ?string $sous_categorie_en = null;
+
+    #[Groups(['produit:read', 'produit:write'])]
+    private ?string $filtre_produit_en = null;
+
 
     //end
     public function __construct()
     {
         $this->variants = new ArrayCollection();
         $this->tarifs = new ArrayCollection();
-        $this->matieres = new ArrayCollection();
+        $this->matiereProduits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -852,31 +875,22 @@ class Produits
 
         return $this;
     }
-
-    /**
-     * @return Collection<int, Matiere>
-     */
-    public function getMatieres(): Collection
+    public function getMarqueProduit(): ?string
     {
-        return $this->matieres;
+        if($this->marque != null)
+            $this->marqueProduit = $this->marque->getMarque();
+        else
+            $this->marqueProduit = $this->nom_fournisseur;
+
+        return $this->marqueProduit;
     }
 
-    public function addMatiere(Matiere $matiere): self
+    public function setMarqueProduit(string $marqueProduit): self
     {
-        if (!$this->matieres->contains($matiere)) {
-            $this->matieres->add($matiere);
-        }
+        $this->marqueProduit = $marqueProduit;
 
         return $this;
     }
-
-    public function removeMatiere(Matiere $matiere): self
-    {
-        $this->matieres->removeElement($matiere);
-
-        return $this;
-    }
-
     public function getMarque(): ?MarqueRef
     {
         return $this->marque;
@@ -1101,6 +1115,140 @@ class Produits
     public function setNewListAttente(?bool $newListAttente): self
     {
         $this->newListAttente = $newListAttente;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MatiereProduit>
+     */
+    public function getMatiereProduits(): Collection
+    {
+        return $this->matiereProduits;
+    }
+
+    public function addMatiereProduit(MatiereProduit $matiereProduit): self
+    {
+        if (!$this->matiereProduits->contains($matiereProduit)) {
+            $this->matiereProduits->add($matiereProduit);
+            $matiereProduit->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMatiereProduit(MatiereProduit $matiereProduit): self
+    {
+        if ($this->matiereProduits->removeElement($matiereProduit)) {
+            // set the owning side to null (unless already changed)
+            if ($matiereProduit->getProduit() === $this) {
+                $matiereProduit->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getMatieres(): array
+    {
+        return $this->matieres;
+    }
+
+    public function setMatieres(?array $matieres): self
+    {
+        $this->matieres = $matieres;
+
+        return $this;
+    }
+
+    public function getCategorie(): ?string
+    {
+        if($this->filtre)
+        {
+            $this->categorie = $this->filtre->getSousCategorieRef()->getCategorieRef()->getCategorieRef();
+        }
+        return $this->categorie;
+    }
+
+    public function setCategorie(?string $categorie): self
+    {
+        $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    public function getCategorieEn(): ?string
+    {
+        if($this->filtre)
+        {
+            $this->categorie_en = $this->filtre->getSousCategorieRef()->getCategorieRef()->getCategorieRefEn();
+        }
+        return $this->categorie_en;
+    }
+
+    public function setCategorieEn(?string $categorie_en): self
+    {
+        $this->categorie_en = $categorie_en;
+
+        return $this;
+    }
+
+    public function getSousCategorie(): ?string
+    {
+        if($this->filtre)
+        {
+            $this->sous_categorie = $this->filtre->getSousCategorieRef()->getSousCategorieRef();
+        }
+        return $this->sous_categorie;
+    }
+
+    public function setSousCategorie(?string $sous_categorie): self
+    {
+        $this->sous_categorie = $sous_categorie;
+
+        return $this;
+    }
+
+    public function getSousCategorieEn(): ?string
+    {
+        if($this->filtre)
+        {
+            $this->sous_categorie_en = $this->filtre->getSousCategorieRef()->getSousCategorieRefEn();
+        }
+        return $this->sous_categorie_en;
+    }
+
+    public function setSousCategorieEn(?string $sous_categorie_en): self
+    {
+        $this->sous_categorie_en = $sous_categorie_en;
+
+        return $this;
+    }
+    public function getFiltreProduit(): ?string
+    {
+        if($this->filtre){
+            $this->filtre_produit = $this->filtre->getFiltre();
+        }
+        return $this->filtre_produit;
+    }
+
+    public function setFiltreProduit(?string $filtre_produit): self
+    {
+        $this->filtre_produit = $filtre_produit;
+
+        return $this;
+    }
+    public function getFiltreProduitEn(): ?string
+    {
+        if($this->filtre){
+            $this->filtre_produit_en = $this->filtre->getFiltreRefEn();
+        }
+        return $this->filtre_produit_en;
+    }
+
+    public function setFiltreProduitEn(?string $filtre_produit_en): self
+    {
+        $this->filtre_produit_en = $filtre_produit_en;
 
         return $this;
     }

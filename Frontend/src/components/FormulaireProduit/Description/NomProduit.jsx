@@ -8,8 +8,8 @@ const NomProduit = () => {
     //render
     return (
         <section className="row g-3">
-            <Input type="text" id="inputNomProduit" label="Nom du produit" value={nomProduitFrUpdate} setValue={setNomProduitFrUpdate} />
-            <Input type="text" id="inputNomProduitEn" label="Nom du produit" value={nomProduitEnUpdate} setValue={setNomProduitEnUpdate} />            
+            <Input id="inputNomProduit" label="Nom du produit" value={nomProduitFrUpdate} setvalue={setNomProduitFrUpdate} />
+            <Input id="inputNomProduitEn" label="Nom du produit En" value={nomProduitEnUpdate} setvalue={setNomProduitEnUpdate} />            
         </section>
 
     )

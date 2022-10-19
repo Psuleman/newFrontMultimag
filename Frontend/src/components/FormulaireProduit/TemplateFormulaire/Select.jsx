@@ -10,27 +10,37 @@ const Select = ({id, label, value, setValue, list }) => {
             }
             {
                 list && label=="Couleur" && list.map((item, index)=>(
-                    <option value={item.couleur_ref}>{item.couleur_ref}</option>
+                    <option key={"couleur"+index} value={item.couleur_ref}>{item.couleur_ref}</option>
                 ))
             }
             {
                 list && label=="Entretien" && list.map((item, index)=>(
-                    <option value={item.entretien}>{item.entretien}</option>
+                    <option key={"entretien"+index} value={item.entretien}>{item.entretien}</option>
                 ))
             }
             {
                 list && label=="Coupe" && list.map((item, index)=>(
-                    <option value={item.coupe_ref}>{item.coupe_ref}</option>
+                    <option key={"coupe"+index} value={item.coupe_ref}>{item.coupe_ref}</option>
                 ))
             }
             {
                 list && label=="Grille taille" && list.map((item, index)=>(
-                    <option key={index} value={item.grilleTaille}>{item.grilleTaille}</option>
+                    <option key={"grilleTaille"+index} value={item.grilleTaille}>{item.grilleTaille}</option>
                 ))
             }
             {
-                list && label.substr(0, 7)=="Matière" && list.map((item, index)=>(
-                    <option key={index} value={item.matiere}>{item.matiere}</option>
+                list && label=="Univers" && list.map((item, index)=>(
+                    <option key={"univers"+index} value={item.univers_ref}>{item.univers_ref}</option>
+                ))
+            }
+            {
+                list && label=="Marque" && list.map((item, index)=>(
+                    <option key={"marque"+index} value={item}>{item}</option>
+                ))
+            }
+            {
+                list && label=="Pays origine" && list.map((item, index)=>(
+                    <option key={"pays_origine"+index} value={item.pays}>{item.pays}</option>
                 ))
             }
         </select>
