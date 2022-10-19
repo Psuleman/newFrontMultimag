@@ -1,15 +1,70 @@
-import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Connexion = () => {
     //variable
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
+    const [echecConnexion, setEchecConnexion] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [user, setUser] = useState(false)
+    const navigate = useNavigate();
 
     //fonction
+    useEffect(()=>{
+        localStorage.removeItem("user_multimag")
+    }, [])
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        setEchecConnexion(false)
 
-        console.log("email", email)
+        //login
+            let donnesJson = {
+                email: email,
+                password: password
+            }
+
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json',
+                accept: 'application/json'
+                },
+                body: JSON.stringify(donnesJson)
+            };
+            let url = "http://212.129.3.31:8080/api/login"
+            fetch(url, requestOptions)
+            .then(response => {
+                if(response.ok)
+                {
+                    const promise = Promise.resolve(response.json());
+                    
+                    promise.then((value) => {
+                        let donneesUser = {
+                            email : email,
+                            token : value.token
+                        }
+                        localStorage.setItem("user_multimag", JSON.stringify(donneesUser)) 
+                    })
+
+                    //Redirection
+                    console.log("redirection")
+                    navigate('/liste-produit')
+                }
+                else{
+                    setEchecConnexion(true)
+                }
+
+                setLoading(false)
+
+                
+            })
+            .catch(err=>{
+                //console.log(err)
+            });	            
+        
     }
     //render
     return (
@@ -24,6 +79,14 @@ const Connexion = () => {
                         <h2 className="fw-bold mb-2 text-uppercase">MULTIMAG</h2>
                         <p className="text-blue-50 mb-5">Saisissez votre email et votre mot de passe!</p>
 
+                        {
+                            echecConnexion && 
+                            <div class="alert alert-danger" role="alert">                            
+                             <FontAwesomeIcon icon={faTriangleExclamation} /> Echec de connexion
+                            </div>
+
+                        }
+
                         <div className="form-outline form-blue mb-4">
                             <label className="form-label" htmlFor="typeEmailX">Email</label>
                             <input type="email" id="typeEmailX" className="form-control form-control-lg" value={email} onChange={(e)=>{setEmail(e.target.value)}} />
@@ -35,9 +98,18 @@ const Connexion = () => {
                         </div>
 
                         <p className="small mb-5 pb-lg-2"><a className="text-blue-50" href="#!">Forgot password?</a></p>
+                        
+                        <button className="btn btn-outline-dark btn-lg px-5" type="submit" onClick={()=>{setLoading(true)}}>Login</button>
 
-                        <button className="btn btn-outline-dark btn-lg px-5" type="submit">Login</button>
-
+                        {
+                            loading &&
+                            <div class="text-center mt-3">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            </div>                       
+                        }
+                        
                         </div>
 
                        {/* 

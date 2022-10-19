@@ -22,16 +22,24 @@ table{
         border: solid 0.1rem #ddd;
     }
     td, th{
-        min-width: 100px;
-        width: 100px;
-        max-width: 100px;
+        max-width: 100%;
         height: auto;
     }
     td{
         background: white;
+        min-width: 25px;
+        width: 70px;
+       
     }
     th {
         background: #eee;
     }
 }
 
+.subsku, .modifier{
+    cursor: pointer;
+}
+
+.modifier{
+    border: solid 1px green;
+}

@@ -1,9 +1,15 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Template from "../components/Layout/Template"
 import Filtre from "../components/ListeProduit/Filtre";
 import Table from "../components/ListeProduit/ListeProduit/Table";
 
 const ListeProduit = () => {
+    //fonction
+    useEffect(()=>{
+        localStorage.setItem('page', 'liste produit')
+    }, [])
+    //render
     return (
         <Template>
             <header className="d-flex justify-content-between">

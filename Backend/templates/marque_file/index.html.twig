@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello FichierController!{% endblock %}
+
+{% block body %}
+
+<div>
+    <table border="1" colspan="0" rowspan="0">
+        {% for ligne in data %}
+        <tr>
+            {% for colonne in ligne %}
+
+                <td>
+                    {{ colonne }}
+                </td>
+            {% endfor %}
+
+        </tr>
+        {% endfor %}        
+
+    </table>
+
+
+</div>
+{% endblock %}

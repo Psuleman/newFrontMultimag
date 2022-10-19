@@ -7,10 +7,12 @@ body{
 .navbar{
     height: $hauteur_header;
     background-color: $blanc;
+    z-index: 2;
 }
 .sidebar{
     background-color: $blanc;
     height: calc( 100vh - $hauteur_header - 10px);
+    position: static;
 
 }
 
@@ -18,9 +20,13 @@ body{
     position: fixed;
     top: $hauteur_header;
     left: 0;
-    right: 0;    
+    right: 0;  
+    //margin-top: $hauteur_header;
 }
 
 .ContentProduit{
+    height: calc( 100vh - 75px);
     overflow: auto;
+    z-index: 1;
+    
 }

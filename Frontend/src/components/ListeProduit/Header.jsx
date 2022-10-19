@@ -10,9 +10,9 @@ const Header = ({page}) => {
         <div className="d-flex justify-content-start mt-3 navTable">
             {
                 page=="liste" ?
-                <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold bg-white border-bottom-0"><Link className="linkNav" to="/">Tous les produits</Link></div>
+                <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold bg-white border-bottom-0"><Link className="linkNav" to="/liste-produit">Tous les produits</Link></div>
                 :
-                <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold"><Link className="linkNav" to="/">Tous les produits</Link></div>
+                <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold"><Link className="linkNav" to="/liste-produit">Tous les produits</Link></div>
             }
             {
                 page=="referencement" ?

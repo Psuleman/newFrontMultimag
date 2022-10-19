@@ -16,7 +16,6 @@ console.log(tab)
                 <table>
                     <thead>
                     <tr>
-                        <th className="px-2">VARIANT SKU</th>
                         <th className="px-2">SKU</th>
                         <th className="px-2">SAISON</th>
                         <th className="px-2">REÇU LE</th>
@@ -35,7 +34,6 @@ console.log(tab)
                         {
                             tab && tab.map((item, index)=>(
                                 <tr key={index}>
-                                    <td className="px-2">VARIANT SKU</td>
                                     <td className="px-2">SKU</td>
                                     <td className="px-2">SAISON</td>
                                     <td className="px-2">REÇU LE</td>

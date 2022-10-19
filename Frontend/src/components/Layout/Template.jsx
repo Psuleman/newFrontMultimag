@@ -1,14 +1,19 @@
 import "../../assets/scss/template.scss"
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const Template = ({children}) => {
     //variable
     const [showsidebar, setShowsidebar] = useState(false)
+    const navigate = useNavigate();
     //fonction
     useEffect(()=>{
         setShowsidebar(false)
     }, [])
 
+    const handleClickLogout = () => {
+        localStorage.removeItem("user_multimag")
+        navigate("/")
+    }
     //render
     return (
         <section>
@@ -24,12 +29,13 @@ const Template = ({children}) => {
                     <div className="navbar-brand text-uppercase fs-4 fw-bold mx-4">MULTIMAG</div>                    
                 </div>
 
-                <div class="dropdown mx-3">
-                <div class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <div className="dropdown mx-3">
+                <div className="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Utilisateur
                 </div>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Déconnexion</a></li>
+
+                <ul style={{cursor:"pointer"}} className="dropdown-menu">
+                    <li style={{cursor:"pointer"}}><a className="dropdown-item" href="#" onClick={handleClickLogout}>Déconnexion</a></li>
                 </ul>
                 </div>
             </div>
@@ -37,17 +43,17 @@ const Template = ({children}) => {
 
         <section className="container_sidebar d-flex flex-row">
             <div className="collapse sidebar col-xl-2 col-lg-2 col-md-3 col-sm-3 px-4 mt-1" id="navbarToggleExternalContent">
-                <nav class="nav flex-column">
-                    <a class="nav-link" href="#">
+                <nav className="nav flex-column">
+                    <a className="nav-link" href="#">
                         Produits
                         <ul>
                             <li><Link to="/" className="nav-link">liste des produits</Link></li>
                             <li><Link to="/nouveau-produit" className="nav-link">Nouveau produit</Link></li>
                         </ul>
                     </a>
-                    <Link class="nav-link" to="/referencement">Référencement</Link>
-                    <Link class="nav-link" to="/modification">Modification en attente</Link>
-                    <a class="nav-link" href="#">
+                    <Link className="nav-link" to="/referencement">Référencement</Link>
+                    <Link className="nav-link" to="/modification">Modification en attente</Link>
+                    <a className="nav-link" href="#">
                         Compte
                         <ul>
                             <li><Link to="/" className="nav-link">Configuration</Link></li>
