@@ -24,7 +24,6 @@ function App() {
           <Route path="/exportation" element={<Exportation />} />
           <Route path="/nouveau-produit" element={<NouveauProduit />} />
           <Route path="/produit/:skuProduit" element={<FormulaireProduit />} />
-          <Route path="/test" element={<TestTableau />} />
         </Routes>
       </BrowserRouter>
     </div>

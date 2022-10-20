@@ -19,6 +19,7 @@ const Information = () => {
     const [marques, setMarques] = useState(Marques)
 
     //console.log(infoSku)
+
     //fonction
 
     //render

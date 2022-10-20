@@ -1,6 +1,9 @@
 import React from 'react'
+import { useContext } from 'react'
+import { useEffect } from 'react'
 import { useState } from 'react'
-
+import { Categories } from '../../../../data/Categories'
+import { FormulaireContext } from '../../Context/FormulaireContext'
 export const CategorieContext = React.createContext({})
 
 const CategorieContextProvider = ({children}) => {
@@ -8,6 +11,21 @@ const CategorieContextProvider = ({children}) => {
     const [categories, setCategories] = useState([])
     const [sousCategories, setSousCategories] = useState([])
     const [filtres, setFiltres] = useState([])
+    const {categorieUpdate, sousCategorieUpdate, infoSku} = useContext(FormulaireContext)
+    useEffect(()=>{
+        Categories.forEach(element => {
+            setCategories(categories)
+            if(element.categorie == categorieUpdate)
+            {
+                setSousCategories(element.sous_categorie)
+                element.sous_categorie.forEach(item => {
+                    if(item.sous_categorie == sousCategorieUpdate){
+                        setFiltres(item.filtres)
+                    }
+                })
+            }
+        })
+    }, [infoSku])
 
     //Render
     return (

@@ -63,8 +63,8 @@ security:
         #- { path: ^/api/produits,                         roles: IS_AUTHENTICATED_FULLY }
         #- { path: ^/api/sous_categorie_refs,              roles: IS_AUTHENTICATED_FULLY }
         #- { path: ^/api/taille_refs,                      roles: IS_AUTHENTICATED_FULLY }
-        #- { path: ^/api/login,                            roles: PUBLIC_ACCESS }
-        #- { path: ^/api/user,                             roles: PUBLIC_ACCESS }
+        - { path: ^/api/login,                            roles: PUBLIC_ACCESS }
+        - { path: ^/api/user,                             roles: PUBLIC_ACCESS }
 
 when@test:
     security:

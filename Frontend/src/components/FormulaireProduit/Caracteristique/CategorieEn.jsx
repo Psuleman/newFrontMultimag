@@ -8,10 +8,9 @@ const CategorieEn = () => {
     //render
     return (
         <section className="row g-3 mt-1">
-            <Input id="inputEnCategorie" label="Catégorie En" value={categorieEnUpdate} setvalue={setCategorieEnUpdate} />
-            <Input id="inputEnSousCategorie" label="Sous catégorie En" value={sousCategorieEnUpdate} setvalue={setCategorieEnUpdate} />
-            <Input id="inputEnFiltre" label="Filtre En" value={filtreEnUpdate} setvalue={setFiltreEnUpdate} />
-            <Input id="input" label="test" value={nomProduitFrUpdate} setvalue={setNomProduitFrUpdate} />
+            <Input id="inputEnCategorie" label="Catégorie En" value={categorieEnUpdate} setValue={setCategorieEnUpdate} />
+            <Input id="inputEnSousCategorie" label="Sous catégorie En" value={sousCategorieEnUpdate} setValue={setCategorieEnUpdate} />
+            <Input id="inputEnFiltre" label="Filtre En" value={filtreEnUpdate} setValue={setFiltreEnUpdate} />
         </section>
     )
 }

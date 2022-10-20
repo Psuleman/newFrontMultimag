@@ -69,6 +69,7 @@ const Matiere = () => {
                                     newState[index].matiere = e.target.value
                                     return newState
                                 })}} >
+                                    <option>Choisissez</option>
                                 {
                                     Matieres && Matieres.map((item, index)=>(
                                         <option key={index} value={item.matiere}>{item.matiere}</option>

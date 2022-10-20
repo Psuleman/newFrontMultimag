@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import { FormulaireContext } from "../Context/FormulaireContext"
+import Select from "../TemplateFormulaire/Select"
 import { CategorieContext } from "./Context/CategorieContext"
 
 const Filtre = () => {
@@ -9,7 +10,7 @@ const Filtre = () => {
 
     //fonction
     useEffect(()=>{
-        if(filtreUpdate){
+        if(filtreUpdate && filtres){
             //liste des sous catégorie
             filtres.forEach(element => {
                 if(element.filtre == filtreUpdate)
@@ -22,21 +23,7 @@ const Filtre = () => {
 
     //render
     return (
-        <div className="col-md-3">
-            <label htmlFor="selectFiltre" className="form-label">Filtre</label>
-            <select className="form-select" aria-label="Default select example" id="selectFiltre" value={filtreUpdate} onChange={(e)=>{
-                setFiltreUpdate(e.target.value)}}  >
-            <option>Choisissez</option>
-                {
-                    filtres &&
-                    filtres.map((item, index)=>(
-                        <option value={item.filtre}>{item.filtre}</option>
-                    )) 
-                }
-            </select>
-        </div>        
+        <Select id="selectFiltre" label="Filtre" value={filtreUpdate} setValue={setFiltreUpdate} list={filtres} />
     )
-
-
 }
 export default Filtre;

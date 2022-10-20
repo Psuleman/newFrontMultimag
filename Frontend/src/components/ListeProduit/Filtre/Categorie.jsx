@@ -1,4 +1,7 @@
+import Select from "../TemplateForm/Select";
+
 const Categorie = () => {
+    //render
     return (
     <div className="form-group">
         <label className="mb-1">Catégorie</label>

@@ -1,13 +1,32 @@
-import { useState } from "react"
+import { useContext } from "react"
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import "../../../assets/scss/table.scss"
+import { ListeContext } from "../Context/ListeContext"
 import Header from "../Header"
+import Value from "./Value"
 
 const Table = () => {
     //variable
-    const [tab, setTab] = useState([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25])
-    //fonction
+    const navigate = useNavigate()
+    const {setCategorieFiltreTab, setUniversFiltreTab, setMarqueFiltreTab, setTagFiltreTab, request, skus, setSkus} = useContext(ListeContext)
 
-console.log(tab)
+    //fonction
+    useEffect(() => {
+        if(localStorage.getItem('user_multimag')){
+            let token =  JSON.parse(localStorage.getItem('user_multimag')).token
+            if(!token){
+                navigate('/')
+            }
+            else{
+                //const url = "http://212.129.3.31:8080/api/produits" 
+                const url = "http://localhost:8001/api/produits"
+                request(url)
+            }            
+        }
+
+    }, [])
+
     //render
     return (
         <section>
@@ -25,31 +44,18 @@ console.log(tab)
                         <th className="px-2">CATEGORIE</th>
                         <th className="px-2">COULEUR</th>
                         <th className="px-2">PRIX</th>
-                        <th className="px-2">PRIX + REMISE</th>
+                        <th className="px-2">REMISE</th>
                         <th className="px-2">PICTURES</th>
                         <th className="px-2">ACTION</th>
                     </tr>
                     </thead>
-                    <tbody>
-                        {
-                            tab && tab.map((item, index)=>(
-                                <tr key={index}>
-                                    <td className="px-2">SKU</td>
-                                    <td className="px-2">SAISON</td>
-                                    <td className="px-2">REÇU LE</td>
-                                    <td className="px-2">DATE REF</td>
-                                    <td className="px-2">MARQUE</td>
-                                    <td className="px-2">UNIVERS</td>
-                                    <td className="px-2">CATEGORIE</td>
-                                    <td className="px-2">COULEUR</td>
-                                    <td className="px-2">PRIX</td>
-                                    <td className="px-2">PRIX + REMISE</td>
-                                    <td className="px-2">PICTURES</td>
-                                    <td className="px-2">ACTION</td>
-                                </tr>
-                            ))
-                        }
-                    </tbody>
+                    {
+                        skus && skus.map((item, index)=>(
+                            <Value key={index} item={item} />
+                        ))
+                    }                   
+
+                    
                 </table>
             </div>
         </section>

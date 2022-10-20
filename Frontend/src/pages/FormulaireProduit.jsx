@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Template from "../components/Layout/Template"
 import Recapitulatif from "../components/FormulaireProduit/Recapitulatif";
 import Caracteristique from "../components/FormulaireProduit/Caracteristique";
@@ -14,6 +14,7 @@ import Moment from 'moment';
 
 const FormulaireProduit = () => {
     //variable
+    let navigate = useNavigate()
     let { skuProduit } = useParams()
     const [page, setPage] = useState()
     const [sku, setSku] = useState(skuProduit)
@@ -71,6 +72,9 @@ const FormulaireProduit = () => {
                     setPage('liste produit')
                 }                  
             }            
+        }
+        else{
+            navigate('/')
         }
 
         //SKU dans le lien

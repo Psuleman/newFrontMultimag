@@ -8,8 +8,8 @@ const Dimension = () => {
     //render
     return (
     <section className="row g-3 mt-1">
-        <Input id="inputDimensionFr" label="Dimension Fr" value={dimensionFrUpdate} setvalue={setDimensionFrUpdate} />
-        <Input id="inputDimensionEn" label="Dimension En" value={dimensionEnUpdate} setvalue={setDimensionEnUpdate} />
+        <Input id="inputDimensionFr" label="Dimension Fr" value={dimensionFrUpdate} setValue={setDimensionFrUpdate} />
+        <Input id="inputDimensionEn" label="Dimension En" value={dimensionEnUpdate} setValue={setDimensionEnUpdate} />
     </section>
     )
 }

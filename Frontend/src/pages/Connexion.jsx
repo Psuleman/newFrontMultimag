@@ -10,7 +10,7 @@ const Connexion = () => {
     const [echecConnexion, setEchecConnexion] = useState(false)
     const [loading, setLoading] = useState(false)
     const [user, setUser] = useState(false)
-    const navigate = useNavigate();
+    let navigate = useNavigate();
 
     //fonction
     useEffect(()=>{
@@ -24,8 +24,11 @@ const Connexion = () => {
         //login
             let donnesJson = {
                 email: email,
-                password: password
+                password: password,
+                //token: "test" //à enlever
             }
+            console.log(JSON.stringify(donnesJson))
+            localStorage.setItem("user_multimag", JSON.stringify(donnesJson)) 
 
             const requestOptions = {
                 method: 'POST',
@@ -35,6 +38,7 @@ const Connexion = () => {
                 body: JSON.stringify(donnesJson)
             };
             let url = "http://212.129.3.31:8080/api/login"
+            //let url = "http://localhost:8001/api/login"
             fetch(url, requestOptions)
             .then(response => {
                 if(response.ok)
@@ -47,8 +51,8 @@ const Connexion = () => {
                             token : value.token
                         }
                         localStorage.setItem("user_multimag", JSON.stringify(donneesUser)) 
+                        navigate('/liste-produit')
                     })
-
                     //Redirection
                     console.log("redirection")
                     navigate('/liste-produit')
@@ -56,15 +60,11 @@ const Connexion = () => {
                 else{
                     setEchecConnexion(true)
                 }
-
-                setLoading(false)
-
-                
+                setLoading(false) 
             })
             .catch(err=>{
                 //console.log(err)
-            });	            
-        
+            });	     
     }
     //render
     return (
@@ -81,7 +81,7 @@ const Connexion = () => {
 
                         {
                             echecConnexion && 
-                            <div class="alert alert-danger" role="alert">                            
+                            <div className="alert alert-danger" role="alert">                            
                              <FontAwesomeIcon icon={faTriangleExclamation} /> Echec de connexion
                             </div>
 
@@ -103,9 +103,9 @@ const Connexion = () => {
 
                         {
                             loading &&
-                            <div class="text-center mt-3">
-                            <div class="spinner-border" role="status">
-                                <span class="visually-hidden">Loading...</span>
+                            <div className="text-center mt-3">
+                            <div className="spinner-border" role="status">
+                                <span className="visually-hidden">Loading...</span>
                             </div>
                             </div>                       
                         }

@@ -96,6 +96,9 @@
             $sous_categorie = $this->minuscule($data->getSousCategorieFnr());
             $data->setSousCategorieFnr($sous_categorie);
             
+            //tag
+            $data->setTag($this->minuscule($data->getTag()));
+
             //marque
             $marque = $this->minuscule($data->getNomFournisseur());
             $marque = strtolower($marque);

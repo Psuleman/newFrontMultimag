@@ -1,9 +1,31 @@
 import Template from "../components/Layout/Template"
 import Filtre from "../components/ListeProduit/Filtre";
 import Table from "../components/ListeProduit/Exportation/Table";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Exportation = () => {
+    //Variable
+    let navigate = useNavigate()
+
+    //fonction
+    useEffect(()=>{
+        if(localStorage.getItem('user_multimag')){
+            let token =  JSON.parse(localStorage.getItem('user_multimag')).token
+            if(!token){
+                navigate('/')
+            }
+            else{
+                localStorage.setItem('page', 'referencement')
+            }            
+        }
+        else{
+            navigate('/')
+        }
+
+    }, [])
+
+    //render
     return (
         <Template>
             <header className="d-flex justify-content-between">

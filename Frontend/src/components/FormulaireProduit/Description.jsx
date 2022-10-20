@@ -11,7 +11,6 @@ const Description = () => {
     sectionUpdate, setSectionUpdate, handleClickSave} = useContext(FormulaireContext)
 
     //fonction 
-    console.log(" nom produit en ",nomProduitEnUpdate)
     //return
     return (
         <div className="card mb-3">

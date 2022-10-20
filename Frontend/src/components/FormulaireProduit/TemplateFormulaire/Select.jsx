@@ -4,7 +4,10 @@ const Select = ({id, label, value, setValue, list }) => {
     return (
     <div className="col-md-3">
         <label htmlFor={id} className="form-label">{label}</label>
-        <select className="form-select" aria-label="Default select example" id={id} value={value} onChange={(e)=>{ setValue(e.target.value)}} >
+        <select className="form-select" aria-label="Default select example" id={id} value={value} 
+        onChange={(e)=>{
+            setValue(e.target.value)
+        }} >
             {
                 !value && <option selected>Choisissez</option>
             }
@@ -41,6 +44,11 @@ const Select = ({id, label, value, setValue, list }) => {
             {
                 list && label=="Pays origine" && list.map((item, index)=>(
                     <option key={"pays_origine"+index} value={item.pays}>{item.pays}</option>
+                ))
+            }
+            {
+                list && label=="Filtre" && list.map((item, index)=>(
+                    <option key={"filtre"+index} value={item.filtre}>{item.filtre}</option>
                 ))
             }
         </select>

@@ -16,6 +16,7 @@ const SousCategorie = () => {
                 {
                     setSousCategorieEnUpdate(element.sous_categorie_en)
                     setFiltres(element.filtres)
+                    console.log("filtre sous ", filtres)
                 }
             });
         }

@@ -22,10 +22,14 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
         'get' => ['method' => 'get', 'normalization_context' => ['groups' => 'produit:read']],
         "patch" => ['method' => 'patch'],
     ],
-    attributes: ["pagination_enabled" => false],
-    
+    order: ['date_arrivee' => 'DESC', 'sku' => 'ASC'],
+    attributes: 
+        [
+            "pagination_enabled" => true,
+            "pagination_items_per_page" => 15
+        ],   
 )]
-#[ApiFilter(SearchFilter::class, properties: ['categorie' => 'exact', 'univers' => 'exact', 'sku' => 'exact', 'marque' => 'exact', 'newProduit' => 'exact',  'referencer' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['categorie' => 'exact', 'univers' => 'exact', 'sku' => 'exact', 'marque' => 'exact', 'newProduit' => 'exact',  'referencer' => 'exact', 'code_tag'=>'exact'])]
 #[ORM\Entity(repositoryClass: ProduitsRepository::class)]
 class Produits
 {

@@ -26,7 +26,7 @@ const UniversForm = () => {
 
         <Select id="selectUnivers" label="Univers" value={universUpdate} setValue={setUniversUpdate} list={Univers} />
 
-        <Input id="inputUniversEn" label="Univers En" value={universEnUpdate} setvalue={setUniversEnUpdate} />
+        <Input id="inputUniversEn" label="Univers En" value={universEnUpdate} setValue={setUniversEnUpdate} />
     </section>
     )
 }

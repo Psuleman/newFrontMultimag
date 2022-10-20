@@ -65,12 +65,6 @@ const Value = ({item}) => {
     return (
         <tbody>
             <tr>
-                <td className="px-2">
-                    <center>
-                    <div className="subsku" onClick={()=>{setShowVariant(!showVariant)}}>
-                        {showVariant ? <i class="fas fa-minus"></i> : <i class="fas fa-plus"></i>}
-                    </div>
-                </center></td>
                 <td className="px-2"><a href={item.lien} target="black">{item.sku}</a></td>
                 <td className="px-2">{item.saison}</td>
                 <td className="px-2">{Moment(item.date_arrivee).format("DD-MM-YYYY")}</td>
@@ -89,13 +83,6 @@ const Value = ({item}) => {
                     <img src={Ceintre} alt="non disponible" className="imgListTab" />
                 }
                 </td>
-                <td className="px-2">{stock.taille}</td>
-                <td className="px-2">{stock.boissy}</td>
-                <td className="px-2">{stock.sevigne}</td>
-                <td className="px-2">{stock.herold}</td>
-                <td className="px-2">{stock.depot}</td>
-                <td className="px-2">{stock.referencement}</td>
-                <td className="px-2">{stock.total}</td>
                 {
                     item.code_tag == 0 ? 
                     <td className="px-2 text-bg-warning">Non tagué</td>
@@ -110,25 +97,6 @@ const Value = ({item}) => {
                     </center>
                 </td>                
             </tr>
-            {
-                showVariant &&
-                item.variants.map((i, index)=>(
-                <tr key={index}>
-                    <td className="px-2" ></td>
-                    <td className="px-2" >{i.variant_sku}</td>
-                    <td className="px-2" colSpan="10"></td>
-                    <td className="px-2">{i.taille_fnr}</td>
-                    <td className="px-2">{i.stockages[0].stock_18}</td> 
-                    <td className="px-2">{i.stockages[0].stock_7}</td>
-                    <td className="px-2">{i.stockages[0].stock_14}</td>
-                    <td className="px-2">{i.stockages[0].stock_0}</td>
-                    <td className="px-2">{i.stockages[0].stock_9}</td>
-                    <td className="px-2">{i.stockages[0].stock_3}</td>
-                    <td className="px-2" colSpan="2" ></td>                
-                </tr>
-                ))
-            }  
-
         </tbody>
     )
 }
