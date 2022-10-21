@@ -1,7 +1,6 @@
 const Select = ({id, label, value, setValue, list }) => {
     //variable
     //Render
-    console.log("liste ", list)
     return (
     <div className="form-group">
         <label htmlFor={id} className="form-label mb-1">{label}</label>
@@ -9,16 +8,19 @@ const Select = ({id, label, value, setValue, list }) => {
         onChange={(e)=>{
             setValue(e.target.value)
         }} >
+            <option value="">Choisissez</option>
             {
-                !value && <option selected>Choisissez</option>
-            }
-            {
-                list && 
+                list && label!="Tag" &&
                 label.length > 0 && list.map((item, index)=>(
                     <option key={label+"_"+index} value={item}>{item}</option>
                 ))
             }
-
+            {
+                list && label=="Tag" &&
+                label.length > 0 && list.map((item, index)=>(
+                    <option key={label+"_"+index} value={item.code_tag}>{item.tag}</option>
+                ))
+            }
         </select>
     </div>
     )

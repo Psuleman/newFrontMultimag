@@ -1,8 +1,10 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { ListeContext } from "./Context/ListeContext";
 
 const Header = ({page}) => {
     //variable
-
+    const {skus} = useContext(ListeContext)
     //fonction
     //render
     return (
@@ -36,6 +38,12 @@ const Header = ({page}) => {
         </div>
         <div className="d-flex justify-content-between pt-2 pb-2 action">
             <div className="p-2">Action</div>
+            {
+                !skus &&
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+              </div>
+            }
             <div className="p-2">Configuration des actions</div>
         </div>
     </header>

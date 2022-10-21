@@ -11,10 +11,6 @@ const Filtre = () => {
         tagFiltre, setTagFiltre, tagFiltreTab, setTagFiltreTab
     } = useContext(ListeContext)
 
-    console.log(categorieFiltreTab)
-    console.log(universFiltreTab)
-    console.log(marqueFiltreTab)
-    console.log(tagFiltreTab)
     return (
         <section className="d-flex flex-column flex-xxl-row flex-xl-row flex-lg-row flex-md-row flex-sm-column mt-3">
             <div className="mb-xxl-0 mb-xl-0 mb-lg-0 mb-md-0 mb-sm-2 mb-2">

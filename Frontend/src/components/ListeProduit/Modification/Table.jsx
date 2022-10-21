@@ -3,14 +3,13 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import "../../../assets/scss/table.scss"
 import { ListeContext } from "../Context/ListeContext"
-import Footer from "../Footer"
 import Header from "../Header"
 import Value from "./Value"
 
 const Table = () => {
     //variable
     const navigate = useNavigate()
-    const {setCategorieFiltreTab, setUniversFiltreTab, setMarqueFiltreTab, setTagFiltreTab, request, skus, setSkus} = useContext(ListeContext)
+    const {setCategorieFiltreTab, setUniversFiltreTab, setMarqueFiltreTab, setTagFiltreTab, request, skus, setSkus, setUrlListTotal, urlListTotal} = useContext(ListeContext)
 
     //fonction
     useEffect(() => {
@@ -22,7 +21,7 @@ const Table = () => {
             else{
                 //const url = "http://212.129.3.31:8080/api/produits" 
                 const url = "http://localhost:8001/api/produits"
-                request(url)
+                setUrlListTotal(url)
             }            
         }
 
@@ -57,7 +56,6 @@ const Table = () => {
                     }    
                 </table>
             </div>
-            <Footer />
         </section>
     )
 }

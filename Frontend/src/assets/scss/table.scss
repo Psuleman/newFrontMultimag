@@ -61,11 +61,14 @@ table{
     overflow-x: auto;
     margin-bottom: 0;
 
+    thead{
+        position: sticky;
+    }
     .detailSku{ 
         min-width: 30px; 
-        width: 25px;        
+        width: 25px;
         position: sticky;
-        left: 0;
+        left: 0px;
         z-index: 2;
     }
     .sku{ 
@@ -84,8 +87,4 @@ table{
         position: sticky;
         right: 0;
     }    
-}
-
-.footerTable{
-    position: relative;
 }

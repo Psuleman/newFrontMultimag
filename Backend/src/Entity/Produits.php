@@ -2,14 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\ProduitsRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Core\Annotation\ApiResource;
-use Symfony\Component\Serializer\Annotation\Groups;
+use App\Repository\ProduitsRepository;
+use ApiPlatform\Core\OpenApi\Model\Link;
 use ApiPlatform\Core\Annotation\ApiFilter;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 #[ApiResource(
@@ -25,12 +26,14 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
     order: ['date_arrivee' => 'DESC', 'sku' => 'ASC'],
     attributes: 
         [
-            //"pagination_enabled" => false,
-            //"pagination_partial" => true,
-            "pagination_items_per_page" => 5
+            /*"pagination_enabled" => false,
+            "pagination_partial" => true,*/
+            "pagination_items_per_page" => 10,
+            "pagination_client_enabled" => true
         ],   
+
 )]
-#[ApiFilter(SearchFilter::class, properties: ['categorie' => 'exact', 'univers' => 'exact', 'sku' => 'exact', 'marque' => 'exact', 'newProduit' => 'exact',  'referencer' => 'exact', 'code_tag'=>'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['filtre.sousCategorieRef.categorie_ref.categorie_ref' => 'exact', 'univers' => 'exact', 'sku' => 'exact', 'marque.marque' => 'exact', 'newProduit' => 'exact',  'referencer' => 'exact', 'code_tag'=>'exact'])]
 #[ORM\Entity(repositoryClass: ProduitsRepository::class)]
 class Produits
 {
@@ -216,8 +219,10 @@ class Produits
     private Collection $tarifs;
 
     #[Groups(['produit:read', 'produit:write'])]
+    #[Link(toProperty: 'marque')]
     private ?string $marqueProduit;
 
+    #[Groups(['produit:read', 'produit:write'])]
     #[ORM\ManyToOne(inversedBy: 'produits')]
     private ?MarqueRef $marque = null;
 

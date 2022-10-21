@@ -1,5 +1,7 @@
 <?php
 
+
+
 	namespace App\DataPersister;
 
 	use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
@@ -13,6 +15,7 @@
     use App\Entity\Variants;
     use App\Entity\CategorieRef;
     use App\Entity\FiltreRef;
+    use App\Entity\MarqueRef;
     use App\Entity\SousCategorieRef;
 
 	final class ProduitsDataPersister implements ContextAwareDataPersisterInterface
@@ -114,7 +117,15 @@
             $marque = str_replace("Maison", "", $marque);
             $marque = trim($marque);
             $data->setNomFournisseur(ucwords($marque));
-                
+            
+            $marquefind = $this->_entityManager->getRepository(MarqueRef::class)->findOneBy(["marque" => $data->getMarque()]);
+
+            if($marquefind)
+                $data->setMarque($marquefind);
+            else{
+                $marqueRef = new MarqueRef($marque);
+            }
+
             //pays
             $pays = new Pays(["pays"=>"France", "continent"=>""]);
             $find = $this->_entityManager->getRepository(Pays::class)->findOneBy([
