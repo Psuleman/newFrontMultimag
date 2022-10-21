@@ -1,10 +1,6 @@
 import { useContext } from "react";
 import { ListeContext } from "./Context/ListeContext";
-import Categorie from "./Filtre/Categorie";
-import Marque from "./Filtre/Marque";
 import Recherche from "./Filtre/Recherche";
-import Tag from "./Filtre/Tag";
-import Univers from "./Filtre/Univers";
 import Select from "./TemplateForm/Select";
 
 const Filtre = () => {

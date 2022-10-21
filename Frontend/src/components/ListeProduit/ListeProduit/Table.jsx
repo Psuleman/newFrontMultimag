@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import "../../../assets/scss/table.scss"
 import { ListeContext } from "../Context/ListeContext"
+import Footer from "../Footer"
 import Header from "../Header"
 import Value from "./Value"
 
@@ -31,11 +32,12 @@ const Table = () => {
     return (
         <section>
             <Header page="liste" />
-            <div>
+            <div className="table">
                 <table>
                     <thead>
                     <tr>
-                        <th className="px-2" colSpan="2">SKU</th>
+                        <th className="px-2 detailSku"></th>
+                        <th className="px-2 sku">SKU</th>
                         <th className="px-2">SAISON</th>
                         <th className="px-2">REÇU LE</th>
                         <th className="px-2">DATE REF</th>
@@ -54,8 +56,8 @@ const Table = () => {
                         <th className="px-2">STOCK REFERENCE</th>
                         <th className="px-2">STOCK TOTAL</th>
                         
-                        <th className="px-2">Statut</th>
-                        <th className="px-2">ACTION</th>
+                        <th className="px-2 status">Statut</th>
+                        <th className="px-2 action" colSpan="2">ACTION</th>
                     </tr>
                     </thead>
                     
@@ -67,6 +69,7 @@ const Table = () => {
                     
                 </table>
             </div>
+            <Footer />
         </section>
     )
 }

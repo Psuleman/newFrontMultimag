@@ -25,7 +25,7 @@ const Connexion = () => {
             let donnesJson = {
                 email: email,
                 password: password,
-                //token: "test" //à enlever
+                token: "test" //à enlever
             }
             console.log(JSON.stringify(donnesJson))
             localStorage.setItem("user_multimag", JSON.stringify(donnesJson)) 
@@ -37,14 +37,14 @@ const Connexion = () => {
                 },
                 body: JSON.stringify(donnesJson)
             };
-            let url = "http://212.129.3.31:8080/api/login"
-            //let url = "http://localhost:8001/api/login"
+            //let url = "http://212.129.3.31:8080/api/login"
+            let url = "http://localhost:8001/api/login"
             fetch(url, requestOptions)
             .then(response => {
+                
                 if(response.ok)
                 {
                     const promise = Promise.resolve(response.json());
-                    
                     promise.then((value) => {
                         let donneesUser = {
                             email : email,
@@ -61,6 +61,7 @@ const Connexion = () => {
                     setEchecConnexion(true)
                 }
                 setLoading(false) 
+                return response.json()
             })
             .catch(err=>{
                 //console.log(err)

@@ -65,13 +65,16 @@ const Value = ({item}) => {
     return (
         <tbody>
             <tr>
-                <td className="px-2">
-                    <center>
+                <td className="px-2 detailSku">
+                <center>
                     <div className="subsku" onClick={()=>{setShowVariant(!showVariant)}}>
                         {showVariant ? <i class="fas fa-minus"></i> : <i class="fas fa-plus"></i>}
                     </div>
-                </center></td>
-                <td className="px-2"><a href={item.lien} target="black">{item.sku}</a></td>
+                </center>
+                </td>
+                <td className="px-2 sku"><a href={item.lien} target="black">{item.sku}</a></td>
+
+
                 <td className="px-2">{item.saison}</td>
                 <td className="px-2">{Moment(item.date_arrivee).format("DD-MM-YYYY")}</td>
                 <td className="px-2">{item.dateRef ? Moment(item.dateRef).format("DD-MM-YYYY") : ""}</td>
@@ -98,11 +101,11 @@ const Value = ({item}) => {
                 <td className="px-2">{stock.total}</td>
                 {
                     item.code_tag == 0 ? 
-                    <td className="px-2 text-bg-warning">Non tagué</td>
+                    <td className="px-2 text-bg-warning status">Non tagué</td>
                     :
-                    <td className="px-2">{item.tag}</td>
+                    <td className="px-2 status">{item.tag}</td>
                 }
-                <td className="px-2">
+                <td className="px-2 action">
                     <center>
                         <div className="modifier text-muted" onClick={handleClick}>
                             <i class="fa fa-pen"></i>
@@ -114,8 +117,7 @@ const Value = ({item}) => {
                 showVariant &&
                 item.variants.map((i, index)=>(
                 <tr key={index}>
-                    <td className="px-2" ></td>
-                    <td className="px-2" >{i.variant_sku}</td>
+                    <td className="px-2 sku" colSpan="2" >{i.variant_sku}</td>
                     <td className="px-2" colSpan="10"></td>
                     <td className="px-2">{i.taille_fnr}</td>
                     <td className="px-2">{i.stockages[0].stock_18}</td> 
@@ -124,7 +126,8 @@ const Value = ({item}) => {
                     <td className="px-2">{i.stockages[0].stock_0}</td>
                     <td className="px-2">{i.stockages[0].stock_9}</td>
                     <td className="px-2">{i.stockages[0].stock_3}</td>
-                    <td className="px-2" colSpan="2" ></td>                
+                    <td className="px-2 status" />                
+                    <td className="px-2 action" />                
                 </tr>
                 ))
             }  

@@ -25,8 +25,9 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
     order: ['date_arrivee' => 'DESC', 'sku' => 'ASC'],
     attributes: 
         [
-            "pagination_enabled" => true,
-            "pagination_items_per_page" => 15
+            //"pagination_enabled" => false,
+            //"pagination_partial" => true,
+            "pagination_items_per_page" => 5
         ],   
 )]
 #[ApiFilter(SearchFilter::class, properties: ['categorie' => 'exact', 'univers' => 'exact', 'sku' => 'exact', 'marque' => 'exact', 'newProduit' => 'exact',  'referencer' => 'exact', 'code_tag'=>'exact'])]

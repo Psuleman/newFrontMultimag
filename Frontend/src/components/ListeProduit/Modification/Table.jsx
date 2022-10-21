@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import "../../../assets/scss/table.scss"
 import { ListeContext } from "../Context/ListeContext"
+import Footer from "../Footer"
 import Header from "../Header"
 import Value from "./Value"
 
@@ -56,6 +57,7 @@ const Table = () => {
                     }    
                 </table>
             </div>
+            <Footer />
         </section>
     )
 }

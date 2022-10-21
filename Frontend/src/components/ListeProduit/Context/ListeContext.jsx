@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export const ListeContext = React.createContext({})
 
@@ -14,9 +14,42 @@ const ListeContextProvider = ({children}) => {
     const [marqueFiltreTab, setMarqueFiltreTab] = useState()
     const [tagFiltreTab, setTagFiltreTab] = useState()
     const [skus, setSkus] = useState([])
-
-
+    const [pageCurrent, setPageCurrent] = useState()
+    const [totalSkus, setTotalSkus] = useState()
+    const [urlListTotal, setUrlListTotal] = useState()
     //fonction
+    useEffect(()=>{
+        let url = ""
+        if(!urlListTotal)
+            url = 'http://localhost:8001/api/produits';
+        else
+            url=urlListTotal
+
+        const header = {
+            method: 'GET',
+            headers: {
+                accept: 'application/json',
+                //Authorization : `Bearer ${token}` 			
+            },
+            cache: "default",
+        }
+        fetch(url, header)
+        .then(function(res) {
+            //console.log(res.json())
+            return res.json();
+        })
+        .then(function(value) {
+            if(value.length > 0)
+                setTotalSkus(value.length)
+        })
+        .catch(function(err) {
+            //(err)
+        })
+    }, [urlListTotal])
+
+    if(totalSkus)
+        console.log('totalsku', totalSkus)
+
     const request = (url) => {
         if(localStorage.getItem('user_multimag')){
             let token = JSON.parse(localStorage.getItem('user_multimag')).token
@@ -86,6 +119,9 @@ const ListeContextProvider = ({children}) => {
             tagFiltreTab: tagFiltreTab, setTagFiltreTab: setTagFiltreTab,
             request: request,
             skus: skus, setSkus: setSkus,
+            pageCurrent: pageCurrent, setPageCurrent: setPageCurrent,
+            totalSkus: totalSkus, setTotalSkus: setTotalSkus,
+            urlListTotal: urlListTotal, setUrlListTotal: setUrlListTotal,
         }}>
             {children}
         </ListeContext.Provider>

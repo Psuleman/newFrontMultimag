@@ -8,7 +8,7 @@
     }
 }
 
-.action{
+.action, .footerTable{
     background: white;
     border: solid 0.1rem #ddd ;
 }
@@ -18,8 +18,12 @@ table{
     border-collapse: collapse;
     border: solid 1px black;
 
-    td, tr, th{
+    td, tr, th
+    {
         border: solid 0.1rem #ddd;
+    }
+    tr>td, tr>td>tr{
+        border: none;
     }
     td, th{
         max-width: 100%;
@@ -31,7 +35,7 @@ table{
         width: 70px;
        
     }
-    th {
+    th, th.action {
         background: #eee;
     }
 }
@@ -48,4 +52,40 @@ table{
     width: 30%;
     display: block;
     margin: auto;
+}
+
+.table{
+
+    position: relative;
+    height: auto;
+    overflow-x: auto;
+    margin-bottom: 0;
+
+    .detailSku{ 
+        min-width: 30px; 
+        width: 25px;        
+        position: sticky;
+        left: 0;
+        z-index: 2;
+    }
+    .sku{ 
+        min-width: 75px;
+        width: 50px;        
+        position: sticky;
+        left: 30px;
+    }
+    .status{
+        position: sticky;
+        right: 77px;
+    }
+    .action{
+        min-width: 50px;
+        width: 50px;
+        position: sticky;
+        right: 0;
+    }    
+}
+
+.footerTable{
+    position: relative;
 }
