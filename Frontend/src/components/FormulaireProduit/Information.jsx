@@ -30,21 +30,19 @@ const Information = () => {
             {
             infoSku && (sectionUpdate == "information") &&
             <form onSubmit={(e)=>{handleClickSave(e, "caractéristique")}}>        
-            
+                <div className="card-body">
+                <section className="row g-3">
+                    <InputDesabled id="inputSku" label="SKU" value={infoSku.sku} type="text" />
+                    <InputDesabled id="inputRefFournisseur" label="Référence Fournisseur" value={infoSku.reference_fournisseur} type="text" />
 
-            <div className="card-body">
-            <section className="row g-3">
-                <InputDesabled id="inputSku" label="SKU" value={infoSku.sku} type="text" />
-                <InputDesabled id="inputRefFournisseur" label="Référence Fournisseur" value={infoSku.reference_fournisseur} type="text" />
+                    <Marque />
+                    <Select id="selectPaysOrigine" label="Pays origine" value={paysOrigineUpdate} setValue={setPaysOrigineUpdate} list={Pays} />
 
-                <Marque />
-                <Select id="selectPaysOrigine" label="Pays origine" value={paysOrigineUpdate} setValue={setPaysOrigineUpdate} list={Pays} />
+                </section>
+                <UniversForm />
+                </div>
 
-            </section>
-            <UniversForm />
-            </div>
-
-            <FooterForm />
+                <FooterForm />
             </form>
         }
         </div>

@@ -79,7 +79,7 @@ const NouveauProduit = () => {
 
                             }
                             //request post
-                            //console.log(JSON.stringify(donnesJson))					      
+                            console.log(JSON.stringify(donnesJson))					      
                             let token = JSON.parse(localStorage.getItem('user_multimag')).token
                             const requestOptions = {
                                 method: 'POST',

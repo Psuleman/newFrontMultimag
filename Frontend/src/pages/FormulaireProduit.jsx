@@ -11,6 +11,7 @@ import Taille from "../components/FormulaireProduit/Taille";
 import Tarifs from "../components/FormulaireProduit/Tarifs";
 import {FormulaireContext} from "../components/FormulaireProduit/Context/FormulaireContext"
 import Moment from 'moment';
+import {setProduit} from "../services/produit.service"
 
 const FormulaireProduit = () => {
     //variable
@@ -183,6 +184,29 @@ const FormulaireProduit = () => {
             ){
                 referencer = true
             }
+            let filtre = {
+                filtre: filtreUpdate? filtreUpdate:"",
+                filtre_ref_en: filtreEnUpdate? filtreEnUpdate:"",
+                sousCategorieRef: {
+                    sous_categorie_ref: sousCategorieUpdate?sousCategorieUpdate:infoSku.sousCategorie,
+                    sous_categorie_ref_en: sousCategorieEnUpdate?sousCategorieEnUpdate:infoSku.sousCategorieEn,
+                    categorie_ref: {
+                        categorie_ref: categorieUpdate?categorieUpdate:infoSku.categorie,
+                        categorie_ref_en: categorieEnUpdate?categorieEnUpdate:infoSku.categorieEn,
+                    }
+                }
+            }
+            let matiere = []
+            if(matiereUpdate && matiereUpdate.length && matiereUpdate[0].matiere!=""){
+                matiereUpdate.forEach(element => {
+                    if(element.value!=""){
+                        matiere.push({
+                            matiere : element.matiere,
+                            pourcentageMatiere: element.pourcentageMatiere
+                        })
+                    }
+                })
+            }
             let data = {
                 sku: infoSku.sku,
                 marqueProduit:  marqueUpdate ? marqueUpdate : infoSku.marque,
@@ -190,12 +214,8 @@ const FormulaireProduit = () => {
                 univers: universUpdate? universUpdate : infoSku.univers,
                 universEn: universEnUpdate? universEnUpdate : infoSku.universEn,
               
-                categorie: categorieUpdate?categorieUpdate:infoSku.categorie,
-                categorieEn: categorieEnUpdate?categorieEnUpdate:infoSku.categorieEn,
-                sousCategorie: sousCategorieUpdate?sousCategorieUpdate:infoSku.sousCategorie,
-                sousCategorieEn: sousCategorieEnUpdate?sousCategorieEnUpdate:infoSku.sousCategorieEn,
-                filtreProduit: filtreUpdate? filtreUpdate:"",
-                filtreProduitEn: filtreEnUpdate? filtreEnUpdate:"",
+                filtre: filtre,
+
                 couleur: couleurUpdate?couleurUpdate:"",
                 couleurEn: couleurEnUpdate?couleurEnUpdate:"",
                 entretien: entretienUpdate?entretienUpdate:"",
@@ -213,13 +233,14 @@ const FormulaireProduit = () => {
                 variants: attributUpdate ? attributUpdate : [],
               
                 tarifs: tarifUpdate ? tarifUpdate : [],
-                matiereProduits: matiereUpdate ? matiereUpdate : [],
+                matiereProduits: matiere,
                 tagsRef: tagsReferencementUpdate? tagsReferencementUpdate:"",
                 dateRef: Moment().format("YYYY-MM-DD"),
                 referencer: referencer,
               }
               
             console.log(JSON.stringify(data))
+            console.log('result ',setProduit(infoSku.id, data))
         }
     }
     //render

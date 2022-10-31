@@ -2,25 +2,24 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Link;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\MarqueRefRepository;
 use Doctrine\Common\Collections\Collection;
-use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource(
-    collectionOperations: [
-        'get' => ['method' => 'get'],
-    ],
-    itemOperations: [
-        'get'=>[
-        "controller"=> NotFoundAction::class,
-        "output" => false
-        ],
-    ],
-    attributes: ["pagination_enabled" => false],
-)]
+#[ApiResource(operations: [
+    new Get(controller: 'App\\Entity\\NotFoundAction', output: false), 
+    new GetCollection()],
+     paginationEnabled: false,
+     uriVariables: ['marque'=>new Link(fromClass: Produits::class, fromProperty: 'marqueProduit')]
+     )]
 #[ORM\Entity(repositoryClass: MarqueRefRepository::class)]
 class MarqueRef
 {
@@ -29,56 +28,49 @@ class MarqueRef
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    public function __construct($marque){
-        if($marque)
-            $this->setMarque($marque);
-            
-        $this->produits = new ArrayCollection();
-    }
-
     #[Groups(['produit:read', 'produit:write'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $marque;
 
     #[ORM\OneToMany(mappedBy: 'marque', targetEntity: Produits::class)]
-    private Collection $produits;
-
-    public function getId(): ?int
+    private Collection $produits;    
+    
+    public function __construct($marque)
+    {
+        if ($marque) {
+            $this->setMarque($marque);
+        }
+        $this->produits = new ArrayCollection();
+    }
+    public function getId() : ?int
     {
         return $this->id;
     }
-
-    public function getMarque(): ?string
+    public function getMarque() : ?string
     {
         return $this->marque;
     }
-
-    public function setMarque(string $marque): self
+    public function setMarque(string $marque) : self
     {
         $this->marque = $marque;
-
         return $this;
     }
-
     /**
      * @return Collection<int, Produits>
      */
-    public function getProduits(): Collection
+    public function getProduits() : Collection
     {
         return $this->produits;
     }
-
-    public function addProduit(Produits $produit): self
+    public function addProduit(Produits $produit) : self
     {
         if (!$this->produits->contains($produit)) {
             $this->produits->add($produit);
             $produit->setMarque($this);
         }
-
         return $this;
     }
-
-    public function removeProduit(Produits $produit): self
+    public function removeProduit(Produits $produit) : self
     {
         if ($this->produits->removeElement($produit)) {
             // set the owning side to null (unless already changed)
@@ -86,7 +78,6 @@ class MarqueRef
                 $produit->setMarque(null);
             }
         }
-
         return $this;
     }
 }

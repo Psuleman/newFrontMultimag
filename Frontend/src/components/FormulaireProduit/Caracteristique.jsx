@@ -29,7 +29,7 @@ const Caracteristique = () => {
         <div className="card mb-3">
             <HeaderForm title="Caractéristique" section="caractéristique" />
             
-        {
+            {
             infoSku && (sectionUpdate == "caractéristique") &&
             <form onSubmit={(e)=>{handleClickSave(e, "description")}}>        
             <div className="card-body">
@@ -60,7 +60,7 @@ const Caracteristique = () => {
 
             <FooterForm />
             </form>
-        }
+            }
         </div>
     )
 }

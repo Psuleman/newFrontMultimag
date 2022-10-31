@@ -1,0 +1,15 @@
+export const headerAllListeProduit = [
+    { value: "VARIANT SKU", className: "" },
+    { value: "SKU", className: "" },
+    { value: "SAISON", className: "" },
+    { value: "REÇU LE", className: "" },
+    { value: "DATE REF", className: "" },
+    { value: "MARQUE", className: "" },
+    { value: "UNIVERS", className: "" },
+    { value: "CATEGORIE", className: "" },
+    { value: "COULEUR", className: "" },
+    { value: "PRIX", className: "" },
+    { value: "PRIX + REMISE", className: "" },
+    { value: "PICTURE", className: "" },
+    { value: "ACTION", className: "" },
+]

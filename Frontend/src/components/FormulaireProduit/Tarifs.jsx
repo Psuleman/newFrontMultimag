@@ -61,7 +61,7 @@ const Tarifs = () => {
                                 index > 0 &&
                                 <section className="row g-3 mt-1">
                                     <div className="col-md-3">
-                                        <label htmlFor="selectSousCategorie" className="form-label">Pays</label>
+                                        <label htmlFor="selectSousCategorie" className="form-label">{"Pays " + index}</label>
                                         <select className="form-select" aria-label="Default select example" id="selectSousCategorie" value={tarifUpdate[index].pays[0]} onChange={(e)=>{
                                             setTarifUpdate(oldState=>{
                                                 let newState = [...oldState]
@@ -89,7 +89,7 @@ const Tarifs = () => {
                                     </div>
                                     <div className="col-md-3">
                                         <label htmlFor="inputCouleurFnr" className="form-label">Remise en Pourcentage</label>
-                                        <input type="number" min="0" max="100" className="form-control" id="inputRemiseTarifsFrance" value={tarifUpdate[0].remise} 
+                                        <input type="number" min="0" max="100" className="form-control" id="inputRemiseTarifsFrance" value={tarifUpdate[index].remise} 
                                         onChange={(e)=>{setTarifUpdate(oldState=>{
                                             let newState = [...oldState]
                                             newState[index].remise = e.target.value
