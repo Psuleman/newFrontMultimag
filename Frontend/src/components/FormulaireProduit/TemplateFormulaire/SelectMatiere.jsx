@@ -1,16 +1,19 @@
-import { useState } from "react"
-import { useEffect } from "react"
+import { useContext } from "react"
+import { useState, useEffect } from "react"
+import {Matieres} from "../../../data/Matieres"
+import { FormulaireContext } from "../Context/FormulaireContext"
 
-    const Select = ({id, label, value, setValue, list, itemValue }) => {
+const SelectMatiere = ({label, value, id, indexMatiere}) => {
     //variable
     const [search, setSearch] = useState("")
     const [arrayList, setArrayList] = useState([])
+    const {matiereUpdate, setMatiereUpdate} = useContext(FormulaireContext)
     //fonction
     useEffect(()=>{ 
-        if(list){
+        if(Matieres){
             //list = sortList(list)
             if(!search || search=="")
-                setArrayList(list.sort())
+                setArrayList(Matieres.sort())
             
             else{
                 setArrayList(oldList=>{
@@ -18,7 +21,7 @@ import { useEffect } from "react"
                     let regex = new RegExp(search, "i")
                     if(search && search != ""){
                         oldList.forEach(element => {
-                            let item = (itemValue != "") ? eval('element.' + itemValue) : element
+                            let item = eval('element.matiere')
                             if(item.match(regex))
                                 newList.push(element)
                         });
@@ -30,37 +33,8 @@ import { useEffect } from "react"
         }
 
 
-    }, [search, list])
-
-    const sortList = (tab) => {
-        let arraySort = new Set()
-
-        //array unique
-        tab.forEach(element => {
-            element = (itemValue != "") ? eval('element.' + itemValue) : element
-            arraySort.add(element)
-        });
-
-        //aray sort
-        let tableau = []
-        arraySort.forEach(element => {
-            tableau.push(element)
-        });
-        tableau.sort()
-
-        //object sort
-        let tabObjet = []
-        tableau.forEach(element => {
-            tab.forEach(elementObject => {
-                let i = (itemValue != "") ? eval('elementObject.' + itemValue) : element
-                if(i == element)
-                    tabObjet.push(elementObject)
-            });
-        });
-        console.log("tabObjet", tabObjet)
-        return tabObjet;
-    }
-    //Render
+    }, [search, Matieres])
+    //render
     return (
     <div className="col-md-3">
         <label htmlFor={id} className="form-label">{label}</label>
@@ -70,25 +44,28 @@ import { useEffect } from "react"
                 <div className="list-group-item dropdown-item p-0">
                 <div className="input-group">
                     <span className="input-group-text rounded-0 border border-0" id="basic-addon1"><i className="fas fa-search"></i></span>
-                    <input type="text" className="form-control rounded-0 border border-0" placeholder={label} aria-label={label} aria-describedby="basic-addon1" value={search} onChange={(e)=>setSearch(e.target.value)} />
+                    <input type="text" className="form-control rounded-0 border border-0" placeholder="Matiere" aria-label={label} aria-describedby="basic-addon1" value={search} onChange={(e)=>setSearch(e.target.value)} />
                 </div>
                 </div>
                 <div className="height-select border border-1">
                 {
-                    list && arrayList.map((item, index)=>{
-                        item = (itemValue != "") ? eval('item.' + itemValue) : item
+                    Matieres && arrayList.map((item, index)=>{
+                        item = eval('item.matiere')
                         return (
-                            <div className="dropdown-item" key={label+"_index_" + index}>
+                            <div className="dropdown-item">
                                 <div className="p-1 cursor-pointer" id={label+"_"+index} key={label+"_"+index} onClick={() => {
-                                    setValue(item)
-                                    setSearch("")
+                                    setMatiereUpdate(oldState=>{
+                                        let newState = [...oldState]
+                                        newState[indexMatiere].matiere = item
+                                        return newState
+                                    })
                                 }}>{ item }</div>
                             </div>
                         )                   
                     })   
                 }
                 {
-                    !list &&
+                    !Matieres &&
                     <div class="d-flex justify-content-center">
                     <div class="spinner-border" role="status">
                         <span class="visually-hidden">Loading...</span>
@@ -104,4 +81,4 @@ import { useEffect } from "react"
     )
 }
 
-export default Select;
+export default SelectMatiere;

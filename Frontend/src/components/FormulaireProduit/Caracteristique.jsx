@@ -49,8 +49,8 @@ const Caracteristique = () => {
                     <Couleur />
                                                     
                     <section className="row g-3 mt-1">
-                        <Select id="selectEntretien" label="Entretien" value={entretienUpdate} setValue={setEntretienUpdate} list={Entretien} />
-                        <Select id="selectCoupe" label="Coupe" value={coupeUpdate} setValue={setCoupeUpdate} list={Coupe} />
+                        <Select id="selectEntretien" label="Entretien" value={entretienUpdate} setValue={setEntretienUpdate} list={Entretien} itemValue="entretien" />
+                        <Select id="selectCoupe" label="Coupe" value={coupeUpdate} setValue={setCoupeUpdate} list={Coupe} itemValue="coupe_ref" />
                     </section>
 
                     <Dimension />

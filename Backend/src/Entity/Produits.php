@@ -226,7 +226,7 @@ class Produits
     private Collection $tarifs;
 
     #[Groups(['produit'])]
-    private ?string $marqueProduit;
+    private ?string $marqueProduit="";
 
     #[Groups(['produit'])]
     #[ORM\ManyToOne(inversedBy: 'produits')]
@@ -756,11 +756,12 @@ class Produits
     }
     public function getMarqueProduit() : ?string
     {
-        if ($this->marque != null) {
+        if ($this->marque) {
             $this->marqueProduit = $this->marque->getMarque();
-        } else if($this->marqueProduit == null) {
+        } else if($this->marqueProduit=="") {
             $this->marqueProduit = $this->nom_fournisseur;
         }
+
 
         return $this->marqueProduit;
     }

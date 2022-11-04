@@ -7,6 +7,7 @@ import FooterForm from "./TemplateFormulaire/FooterForm";
 import HeaderForm from "./TemplateFormulaire/HeaderForm";
 import Input from "./TemplateFormulaire/Input";
 import Select from "./TemplateFormulaire/Select";
+import SelectMatiere from "./TemplateFormulaire/SelectMatiere";
 
 const Matiere = () => {
     //variable
@@ -62,7 +63,9 @@ const Matiere = () => {
                     matiereUpdate &&
                     matiereUpdate.map((i, index)=>(
                         <section className="row g-3 mt-1">
-                            <div className="col-md-3">
+                            <SelectMatiere label={"Matière " + (index + 1)} value={matiereUpdate[index].matiere} id={"selectMatiere" + (index + 1)} indexMatiere={index} />
+
+                            {/* <div className="col-md-3">
                                 <label htmlFor={"selectMatiere" + (index+1)} className="form-label">{"Matière " + (index + 1)}</label>
                                 <select className="form-select" aria-label="Default select example" id={"selectMatiere" + (index + 1)} value={matiereUpdate[index].matiere} onChange={(e)=>{ setMatiereUpdate(oldState=>{
                                     let newState = [...oldState]
@@ -76,7 +79,7 @@ const Matiere = () => {
                                     ))
                                 }
                                 </select>                                
-                            </div>
+                            </div> */}
 
 
                             <div className="col-md-3">

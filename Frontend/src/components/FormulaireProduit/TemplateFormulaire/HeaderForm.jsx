@@ -11,12 +11,9 @@ const HeaderForm = ({title, section}) => {
     }
     //render
     return (
-        <div className="card-header bg-transparent d-flex justify-content-between"
+        <div className="card-header bg-transparent d-flex justify-content-between cursor-pointer"
             onClick={()=>{
                 (sectionUpdate == section) ? setSectionUpdate("") : setSectionUpdate(section)
-            }}
-            style={{
-                cursor: "pointer"
             }}
         >
         <div>{title}</div>

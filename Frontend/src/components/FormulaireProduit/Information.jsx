@@ -18,7 +18,7 @@ const Information = () => {
         setSectionUpdate, handleClickSave} = useContext(FormulaireContext)
     const [marques, setMarques] = useState(Marques)
 
-    //console.log(infoSku)
+
 
     //fonction
 
@@ -36,7 +36,7 @@ const Information = () => {
                     <InputDesabled id="inputRefFournisseur" label="Référence Fournisseur" value={infoSku.reference_fournisseur} type="text" />
 
                     <Marque />
-                    <Select id="selectPaysOrigine" label="Pays origine" value={paysOrigineUpdate} setValue={setPaysOrigineUpdate} list={Pays} />
+                    <Select id="selectPaysOrigine" label="Pays origine" value={paysOrigineUpdate} setValue={setPaysOrigineUpdate} list={Pays} itemValue="pays" />
 
                 </section>
                 <UniversForm />

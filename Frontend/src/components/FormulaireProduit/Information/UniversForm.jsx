@@ -24,7 +24,7 @@ const UniversForm = () => {
     <section className="row g-3 mt-1">
         <InputDesabled id="inputCatUnivers" type="text" label="Catégorie dans le fichier multimag" value={infoSku.categorie_univers} />
 
-        <Select id="selectUnivers" label="Univers" value={universUpdate} setValue={setUniversUpdate} list={Univers} />
+        <Select id="selectUnivers" label="Univers" value={universUpdate} setValue={setUniversUpdate} list={Univers} itemValue="univers_ref" />
 
         <Input id="inputUniversEn" label="Univers En" value={universEnUpdate} setValue={setUniversEnUpdate} />
     </section>

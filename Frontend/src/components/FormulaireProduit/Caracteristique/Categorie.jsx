@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import {Categories} from "../../../data/Categories"
 import { FormulaireContext } from "../Context/FormulaireContext"
+import Select from "../TemplateFormulaire/Select"
 import { CategorieContext } from "./Context/CategorieContext"
 
 const Categorie = () => {
@@ -26,18 +27,7 @@ const Categorie = () => {
     }, [infoSku, categorieUpdate])
     //render
     return (
-        <div className="col-md-3">
-            <label htmlFor="selectCategorie" className="form-label">Catégorie</label>
-            <select className="form-select" aria-label="Default select example" id="selectCategorie" value={categorieUpdate} onChange={(e)=>{setCategorieUpdate(e.target.value)}} >
-                <option>Choisissez</option>
-                {
-                    Categories &&
-                    Categories.map((item, index)=>(
-                        <option value={item.categorie}>{item.categorie}</option>
-                    ))
-                }
-            </select>
-        </div>  
+            <Select id="selectCategorie" label="Categorie" value={categorieUpdate} setValue={setCategorieUpdate} list={Categories} itemValue="categorie" />
     )
 }
 export default Categorie;

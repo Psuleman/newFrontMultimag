@@ -43,7 +43,7 @@ const Taille = () => {
             <form onSubmit={(e)=>{handleClickSave(e, "tarifs")}}>        
             <div className="card-body">
                     <section className="row g-3">
-                        <Select id="selectTaille" label="Grille taille" value={grilleTailleUpdate} setValue={setGrilleTailleUpdate} list={GrilleTaille} />                   
+                        <Select id="selectTaille" label="Grille taille" value={grilleTailleUpdate} setValue={setGrilleTailleUpdate} list={GrilleTaille} itemValue="grilleTaille" />                   
                     </section>
 
                     {

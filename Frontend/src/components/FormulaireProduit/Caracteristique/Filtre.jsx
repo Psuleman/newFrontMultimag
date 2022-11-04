@@ -23,7 +23,7 @@ const Filtre = () => {
 
     //render
     return (
-        <Select id="selectFiltre" label="Filtre" value={filtreUpdate} setValue={setFiltreUpdate} list={filtres} />
+        <Select id="selectFiltre" label="Filtre" value={filtreUpdate} setValue={setFiltreUpdate} list={filtres} itemValue="filtre" />
     )
 }
 export default Filtre;

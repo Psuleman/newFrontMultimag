@@ -25,7 +25,7 @@ const Marque = () => {
     }, [infoSku])
     //render
     return (
-        <Select id="selectMarque" label="Marque" value={marqueUpdate} setValue={setMarqueUpdate} list={marques} />
+        <Select id="selectMarque" label="Marque" value={marqueUpdate} setValue={setMarqueUpdate} list={marques} itemValue="" />
     )
 }
 export default Marque;
