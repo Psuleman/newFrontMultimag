@@ -1,3 +1,5 @@
+//let url = "http://212.129.3.31:8080/api/produits/"
+let url = "http://localhost:8001/api/produits"
 const headerGET = {
     method: 'GET',
     headers: {
@@ -6,8 +8,6 @@ const headerGET = {
     },
     cache: "default",
 }
-//let url = "http://212.129.3.31:8080/api/produits/"
-let url = "http://localhost:8001/api/produits"
 
 export const getAllProduit = (url) => {
     let urlRequestTotal = url
@@ -49,3 +49,27 @@ export const setProduit = (id, data) => {
     
     return result
 }
+
+export const setNewProduit = (data) => {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+        //Authorization : `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+    };
+    //fetch('http://212.129.3.31:8080/api/produits', requestOptions)
+    let result = fetch(url, requestOptions)
+    .then(response => {
+        return response
+    })
+    //.then(data => return data)
+    .catch(err=>{
+        //console.log(err)
+    });	
+
+    return result;
+}
+

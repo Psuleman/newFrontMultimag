@@ -26,7 +26,6 @@ const Information = () => {
     return (
         <div className="card mb-3">
             <HeaderForm title="Identification du produit" section="information" />
-
             {
             infoSku && (sectionUpdate == "information") &&
             <form onSubmit={(e)=>{handleClickSave(e, "caractéristique")}}>        

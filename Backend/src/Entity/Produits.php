@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use Doctrine\DBAL\Types\Types;
 use ApiPlatform\Metadata\Patch;
@@ -224,13 +223,14 @@ class Produits
     #[Groups('produit:read')]
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Tarifs::class)]
     private Collection $tarifs;
-
+    
+    /**
+     * marque
+     */  
     #[Groups(['produit'])]
-    private ?string $marqueProduit="";
-
-    #[Groups(['produit'])]
-    #[ORM\ManyToOne(inversedBy: 'produits')]
+    #[ORM\ManyToOne(inversedBy: 'produits', cascade: ['persist'])]
     private ?MarqueRef $marque = null;
+
 
     #[Groups(['produit'])]
     #[ORM\ManyToOne(inversedBy: 'produits', cascade: ['persist'])]
@@ -314,6 +314,24 @@ class Produits
 
     #[Groups(['produit'])]
     private ?string $filtre_produit_en = null;
+
+    #[Groups(['produit'])]
+    #[ORM\Column(nullable: true)]
+    private ?float $longueur = null;
+
+    #[Groups(['produit'])]
+    #[ORM\Column(nullable: true)]
+    private ?float $largeur = null;
+
+    #[Groups(['produit'])]
+    #[ORM\Column(nullable: true)]
+    private ?float $hauteur = null;
+
+    #[Groups(['produit'])]
+    #[ORM\Column(nullable: true)]
+    private ?float $poids = null;
+
+
 
     //end
     public function __construct()
@@ -754,31 +772,8 @@ class Produits
         }
         return $this;
     }
-    public function getMarqueProduit() : ?string
-    {
-        if ($this->marque) {
-            $this->marqueProduit = $this->marque->getMarque();
-        } else if($this->marqueProduit=="") {
-            $this->marqueProduit = $this->nom_fournisseur;
-        }
 
 
-        return $this->marqueProduit;
-    }
-    public function setMarqueProduit(string $marqueProduit) : self
-    {
-        $this->marqueProduit = $marqueProduit;
-        return $this;
-    }
-    public function getMarque() : ?MarqueRef
-    {
-        return $this->marque;
-    }
-    public function setMarque(?MarqueRef $marque) : self
-    {
-        $this->marque = $marque;
-        return $this;
-    }
     public function getReferenceCouleur1() : ?string
     {
         return $this->reference_couleur_1;
@@ -1045,6 +1040,66 @@ class Produits
     public function setFiltreProduitEn(?string $filtre_produit_en) : self
     {
         $this->filtre_produit_en = $filtre_produit_en;
+        return $this;
+    }
+
+    public function getMarque(): ?MarqueRef
+    {
+        return $this->marque;
+    }
+
+    public function setMarque(?MarqueRef $marque): self
+    {
+        $this->marque = $marque;
+
+        return $this;
+    }
+
+    public function getLongueur(): ?float
+    {
+        return $this->longueur;
+    }
+
+    public function setLongueur(?float $longueur): self
+    {
+        $this->longueur = $longueur;
+
+        return $this;
+    }
+
+    public function getLargeur(): ?float
+    {
+        return $this->largeur;
+    }
+
+    public function setLargeur(?float $largeur): self
+    {
+        $this->largeur = $largeur;
+
+        return $this;
+    }
+
+    public function getHauteur(): ?float
+    {
+        return $this->hauteur;
+    }
+
+    public function setHauteur(?float $hauteur): self
+    {
+        $this->hauteur = $hauteur;
+
+        return $this;
+    }
+
+    public function getPoids(): ?float
+    {
+        return $this->poids;
+    }
+
+    public function setPoids(?float $poids): self
+    {
+        $this->poids = $poids;
+
         return $this;
     }
 }

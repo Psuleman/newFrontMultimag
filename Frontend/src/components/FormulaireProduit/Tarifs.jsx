@@ -39,7 +39,7 @@ const Tarifs = () => {
         <HeaderForm title="Tarifs" section="tarifs" />
         {
             tarifUpdate && (sectionUpdate == "tarifs") &&
-            <form onSubmit={(e)=>{handleClickSave(e, "matière")}}>        
+            <form onSubmit={(e)=>{handleClickSave(e, "taille")}}>        
             <div className="card-body">
             {
                 tarifUpdate.length>0 && 
@@ -51,21 +51,17 @@ const Tarifs = () => {
                     </div>
                     
                     {/* <SelectMultiplePays indexTarif={index} id={"selectPaysOrigine" + index} /> */}
-                    {
-                        index == 0 ?
-                        <InputDesabled id="inputPrixFrance" label="Prix initial ( € )" value={tarifUpdate[0].prix_vente} type="number" />
-                        :
-                        <div className="col-md-3">
-                            <label htmlFor="inputCouleurFnr" className="form-label">Prix</label>
-                            <input type="number" min="0" className="form-control" id="inputCouleurFnr" value={tarifUpdate[index].prix_vente} onChange={(e)=>{
-                                setTarifUpdate(oldState=>{
-                                    let newState = [...oldState]
-                                    newState[index].prix_vente = e.target.value
-                                    return newState
-                                })
-                            }} />
-                        </div>                        
-                    }
+
+                    <div className="col-md-3">
+                        <label htmlFor="inputCouleurFnr" className="form-label">Prix</label>
+                        <input type="number" min="0" className="form-control" id="inputCouleurFnr" value={tarifUpdate[index].prix_vente} onChange={(e)=>{
+                            setTarifUpdate(oldState=>{
+                                let newState = [...oldState]
+                                newState[index].prix_vente = e.target.value
+                                return newState
+                            })
+                        }} />
+                    </div>                        
 
                     <div className="col-md-3">
                         <label htmlFor="inputRemiseTarifsFrance" className="form-label">Remise en Pourcentage (%)</label>

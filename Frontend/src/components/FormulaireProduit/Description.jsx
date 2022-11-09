@@ -17,7 +17,7 @@ const Description = () => {
         <HeaderForm title="Description" section="description" />
         {
             infoSku && (sectionUpdate == "description") &&
-            <form onSubmit={(e)=>{handleClickSave(e, "taille")}}>        
+            <form onSubmit={(e)=>{handleClickSave(e, "entretienCoupe")}}>        
             <div className="card-body">
                 <NomProduit />
                 <DescriptionProduit />

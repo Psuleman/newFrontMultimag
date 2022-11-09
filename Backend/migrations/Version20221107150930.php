@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20221013085227 extends AbstractMigration
+final class Version20221107150930 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -26,9 +26,9 @@ final class Version20221013085227 extends AbstractMigration
         $this->addSql('CREATE TABLE grille_taille_ref (id INT AUTO_INCREMENT NOT NULL, grille_taille_ref VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE marque_ref (id INT AUTO_INCREMENT NOT NULL, marque VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE matiere (id INT AUTO_INCREMENT NOT NULL, matiere VARCHAR(255) NOT NULL, matiere_en VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE matiere_produit (id INT AUTO_INCREMENT NOT NULL, produit_id INT DEFAULT NULL, matiere_id INT DEFAULT NULL, pourcentage_matiere DOUBLE PRECISION DEFAULT NULL, INDEX IDX_4A8363DBF347EFB (produit_id), INDEX IDX_4A8363DBF46CD258 (matiere_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE pays (id INT AUTO_INCREMENT NOT NULL, continent_id INT DEFAULT NULL, pays VARCHAR(255) NOT NULL, INDEX IDX_349F3CAE921F4C77 (continent_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE produits (id INT AUTO_INCREMENT NOT NULL, marque_id INT DEFAULT NULL, filtre_id INT DEFAULT NULL, sku INT NOT NULL, date_arrivee DATE NOT NULL, code_fournisseur VARCHAR(255) NOT NULL, nom_fournisseur VARCHAR(255) NOT NULL, reference_fournisseur VARCHAR(255) NOT NULL, code_couleur VARCHAR(255) NOT NULL, reference_couleur VARCHAR(255) DEFAULT NULL, code_saison INT NOT NULL, saison VARCHAR(100) DEFAULT NULL, annee_sortie INT NOT NULL, code_categorie_univers INT DEFAULT NULL, categorie_univers VARCHAR(255) DEFAULT NULL, code_mode_aquisition INT DEFAULT NULL, mode_acquisition VARCHAR(255) DEFAULT NULL, code_tag INT DEFAULT NULL, tag VARCHAR(255) DEFAULT NULL, code_famille_5 INT DEFAULT NULL, famille_5 VARCHAR(255) DEFAULT NULL, code_famille_6 INT DEFAULT NULL, famille_6 VARCHAR(255) DEFAULT NULL, grille_taille_fournisseur VARCHAR(100) NOT NULL, date_ref DATETIME DEFAULT NULL, univers VARCHAR(255) DEFAULT NULL, univers_en VARCHAR(255) DEFAULT NULL, couleur VARCHAR(255) DEFAULT NULL, couleur_en VARCHAR(255) DEFAULT NULL, pays_origine VARCHAR(255) DEFAULT NULL, entretien VARCHAR(255) DEFAULT NULL, entretien_en VARCHAR(255) DEFAULT NULL, description_fr VARCHAR(255) DEFAULT NULL, description_en VARCHAR(255) DEFAULT NULL, nom_produit_fr VARCHAR(255) DEFAULT NULL, nom_produit_en VARCHAR(255) DEFAULT NULL, dimension_fr VARCHAR(255) DEFAULT NULL, dimension_en VARCHAR(255) DEFAULT NULL, coupe VARCHAR(255) DEFAULT NULL, coupe_en VARCHAR(255) DEFAULT NULL, pictures LONGTEXT DEFAULT NULL, lien VARCHAR(255) DEFAULT NULL, tags_ref LONGTEXT DEFAULT NULL, code_sous_categorie_fnr INT NOT NULL, sous_categorie_fnr VARCHAR(255) NOT NULL, new_produit TINYINT(1) NOT NULL, referencer TINYINT(1) NOT NULL, new_list_attente TINYINT(1) DEFAULT NULL, INDEX IDX_BE2DDF8C4827B9B2 (marque_id), INDEX IDX_BE2DDF8CCC9B96EA (filtre_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE produits_matiere (produits_id INT NOT NULL, matiere_id INT NOT NULL, INDEX IDX_A986F593CD11A2CF (produits_id), INDEX IDX_A986F593F46CD258 (matiere_id), PRIMARY KEY(produits_id, matiere_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE sous_categorie_ref (id INT AUTO_INCREMENT NOT NULL, categorie_ref_id INT DEFAULT NULL, sous_categorie_ref VARCHAR(255) NOT NULL, sous_categorie_ref_en VARCHAR(255) DEFAULT NULL, INDEX IDX_7BFFA2DA791EB90 (categorie_ref_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE stockage (id INT AUTO_INCREMENT NOT NULL, variant_sku_id INT DEFAULT NULL, stock_0 INT DEFAULT NULL, stock_3 INT DEFAULT NULL, stock_7 INT DEFAULT NULL, stock_9 INT DEFAULT NULL, stock_11 INT DEFAULT NULL, stock_12 INT DEFAULT NULL, stock_14 INT DEFAULT NULL, stock_18 INT DEFAULT NULL, stock_20 INT DEFAULT NULL, stock_60 INT DEFAULT NULL, INDEX IDX_CABCB49222D73CA (variant_sku_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE taille_ref (id INT AUTO_INCREMENT NOT NULL, grille_taille_ref_id INT DEFAULT NULL, taille_ref VARCHAR(255) DEFAULT NULL, stock_id VARCHAR(100) NOT NULL, stock_code VARCHAR(50) DEFAULT NULL, INDEX IDX_82268A2BE4D38067 (grille_taille_ref_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -37,11 +37,11 @@ final class Version20221013085227 extends AbstractMigration
         $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, email VARCHAR(180) NOT NULL, roles LONGTEXT NOT NULL COMMENT \'(DC2Type:json)\', password VARCHAR(255) NOT NULL, nom VARCHAR(255) NOT NULL, prenom VARCHAR(255) DEFAULT NULL, token_mail VARCHAR(255) DEFAULT NULL, token_password VARCHAR(255) DEFAULT NULL, date_token_mail DATETIME DEFAULT NULL, date_token_password DATETIME DEFAULT NULL, service VARCHAR(255) NOT NULL, UNIQUE INDEX UNIQ_8D93D649E7927C74 (email), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE variants (id INT AUTO_INCREMENT NOT NULL, sku_id INT NOT NULL, taille_ref_id INT DEFAULT NULL, taille_fnr VARCHAR(255) NOT NULL, variant_sku VARCHAR(255) DEFAULT NULL, INDEX IDX_B39853E11777D41C (sku_id), INDEX IDX_B39853E14138998F (taille_ref_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE filtre_ref ADD CONSTRAINT FK_3FA8C6C0E359B7AE FOREIGN KEY (sous_categorie_ref_id) REFERENCES sous_categorie_ref (id)');
+        $this->addSql('ALTER TABLE matiere_produit ADD CONSTRAINT FK_4A8363DBF347EFB FOREIGN KEY (produit_id) REFERENCES produits (id)');
+        $this->addSql('ALTER TABLE matiere_produit ADD CONSTRAINT FK_4A8363DBF46CD258 FOREIGN KEY (matiere_id) REFERENCES matiere (id)');
         $this->addSql('ALTER TABLE pays ADD CONSTRAINT FK_349F3CAE921F4C77 FOREIGN KEY (continent_id) REFERENCES continents (id)');
         $this->addSql('ALTER TABLE produits ADD CONSTRAINT FK_BE2DDF8C4827B9B2 FOREIGN KEY (marque_id) REFERENCES marque_ref (id)');
         $this->addSql('ALTER TABLE produits ADD CONSTRAINT FK_BE2DDF8CCC9B96EA FOREIGN KEY (filtre_id) REFERENCES filtre_ref (id)');
-        $this->addSql('ALTER TABLE produits_matiere ADD CONSTRAINT FK_A986F593CD11A2CF FOREIGN KEY (produits_id) REFERENCES produits (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE produits_matiere ADD CONSTRAINT FK_A986F593F46CD258 FOREIGN KEY (matiere_id) REFERENCES matiere (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE sous_categorie_ref ADD CONSTRAINT FK_7BFFA2DA791EB90 FOREIGN KEY (categorie_ref_id) REFERENCES categorie_ref (id)');
         $this->addSql('ALTER TABLE stockage ADD CONSTRAINT FK_CABCB49222D73CA FOREIGN KEY (variant_sku_id) REFERENCES variants (id)');
         $this->addSql('ALTER TABLE taille_ref ADD CONSTRAINT FK_82268A2BE4D38067 FOREIGN KEY (grille_taille_ref_id) REFERENCES grille_taille_ref (id)');
@@ -60,9 +60,9 @@ final class Version20221013085227 extends AbstractMigration
         $this->addSql('ALTER TABLE produits DROP FOREIGN KEY FK_BE2DDF8CCC9B96EA');
         $this->addSql('ALTER TABLE taille_ref DROP FOREIGN KEY FK_82268A2BE4D38067');
         $this->addSql('ALTER TABLE produits DROP FOREIGN KEY FK_BE2DDF8C4827B9B2');
-        $this->addSql('ALTER TABLE produits_matiere DROP FOREIGN KEY FK_A986F593F46CD258');
+        $this->addSql('ALTER TABLE matiere_produit DROP FOREIGN KEY FK_4A8363DBF46CD258');
         $this->addSql('ALTER TABLE tarifs_pays DROP FOREIGN KEY FK_C0E01208A6E44244');
-        $this->addSql('ALTER TABLE produits_matiere DROP FOREIGN KEY FK_A986F593CD11A2CF');
+        $this->addSql('ALTER TABLE matiere_produit DROP FOREIGN KEY FK_4A8363DBF347EFB');
         $this->addSql('ALTER TABLE tarifs DROP FOREIGN KEY FK_F9B8C496F347EFB');
         $this->addSql('ALTER TABLE variants DROP FOREIGN KEY FK_B39853E11777D41C');
         $this->addSql('ALTER TABLE filtre_ref DROP FOREIGN KEY FK_3FA8C6C0E359B7AE');
@@ -75,9 +75,9 @@ final class Version20221013085227 extends AbstractMigration
         $this->addSql('DROP TABLE grille_taille_ref');
         $this->addSql('DROP TABLE marque_ref');
         $this->addSql('DROP TABLE matiere');
+        $this->addSql('DROP TABLE matiere_produit');
         $this->addSql('DROP TABLE pays');
         $this->addSql('DROP TABLE produits');
-        $this->addSql('DROP TABLE produits_matiere');
         $this->addSql('DROP TABLE sous_categorie_ref');
         $this->addSql('DROP TABLE stockage');
         $this->addSql('DROP TABLE taille_ref');

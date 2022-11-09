@@ -9,6 +9,8 @@ use App\Entity\Stockage;
 use App\Entity\Variants;
 use App\Entity\FiltreRef;
 use App\Entity\MarqueRef;
+use App\Entity\CategorieRef;
+use App\Entity\SousCategorieRef;
 use ApiPlatform\Metadata\Operation;
 use Doctrine\ORM\EntityManagerInterface;
 use ApiPlatform\State\ProcessorInterface;
@@ -247,9 +249,55 @@ class ProduitPostProcessor implements ProcessorInterface
                     break;
                 }    
             }
+            if(!$data->getFiltre()){
+                //On instancie CategorieRef
+				$categorieRef = new CategorieRef([
+					"categorie_ref" => $this->minuscule($categorieMotCle),
+					"categorie_ref_en" => ""
+					]);	
+				$motCleCat .= "#i";
+                //liste CatégorieRef
+				$categorieRefTab = $this->_entityManager->getRepository(CategorieRef::class)->findAll();
+				//récupère la liste de CatégorieRef
+				foreach($categorieRefTab as $value){
+					$categorie = $this->majuscule($value->getCategorieRef());
+					$rechercheCategorysRef = preg_match($motCleCat, $categorie); 
 
+					if($rechercheCategorysRef){
+						$categorieRef = $value;
+						break;
+					} 
+				}
+                if(!$categorieRef->getId()){
+                    /**
+                     * si Categorie n'existe pas
+                     */
+                    $categorieRef = $this->_entityManager->getRepository(CategorieRef::class)->findOneBy(["categorie_ref"=>"A définir", "categorie_ref_en"=>"To define"]);
+
+                    if(!$categorieRef){
+                        $categorieRef = new CategorieRef(["categorie_ref"=>"A définir", "categorie_ref_en"=>"To define"]);
+
+                        $this->_entityManager->persist($categorieRef);
+                    }
+                }
+                $sousCategorieRef = $this->_entityManager->getRepository(SousCategorieRef::class)->findOneBy(["sous_categorie_ref"=>"A définir", "sous_categorie_ref_en"=>"To define"]);
+                if(!$sousCategorieRef){
+                    $sousCategorieRef = (new SousCategorieRef(["sous_categorie_ref"=>"Écharpes & Gants", "sous_categorie_ref_en"=>"Scarves & Gloves"]))
+                    ->setCategorieRef($categorieRef); 
+
+                    $this->_entityManager->persist($sousCategorieRef);                 
+                }
+
+                $filtreRef = (new FiltreRef(["filtre"=>$filtreMotCle, "filtre_ref_en"=>"Scarves"]))
+                ->setSousCategorieRef($sousCategorieRef);
+
+                $this->_entityManager->persist($filtreRef);                 
+                $data->setFiltre($filtreRef);
+
+            }
             //Tags Ref à revoir plus tard
             if($filtreOriginale){
+
                 $tags_ref = $universRefObjet["univers_ref"] . "," . $universRefObjet["univers_ref_en"] . ',';
                 $tags_ref .= "Couleur_,Color_,";
                 $tags_ref .= ",,";//Filtre à modifier dans ExportUpdateDataPersister
@@ -317,6 +365,7 @@ class ProduitPostProcessor implements ProcessorInterface
             /**
              * Stockage
             */
+            $this->_entityManager->persist($variants);
             $stockage = (new Stockage())
             ->setVariantSku($variants)
             ->setStock0($data->getStockMag0())
@@ -329,7 +378,6 @@ class ProduitPostProcessor implements ProcessorInterface
             ->setStock18($data->getStockMag18())
             ->setStock20($data->getStockMag20())
             ->setStock60($data->getStockMag60())
-            ->setVariantSku($variants)
             ;
             $findStockage = $this->_entityManager->getRepository(Stockage::class)->findOneBy([
                 "variant_sku" => $variants
@@ -339,6 +387,7 @@ class ProduitPostProcessor implements ProcessorInterface
             }   
             $data->addVariant($variants);         
         }
+
             $this->_entityManager->persist($data);  
             $this->_entityManager->flush();      
             return $data;

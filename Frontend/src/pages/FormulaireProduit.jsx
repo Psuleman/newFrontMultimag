@@ -12,6 +12,8 @@ import Tarifs from "../components/FormulaireProduit/Tarifs";
 import {FormulaireContext} from "../components/FormulaireProduit/Context/FormulaireContext"
 import Moment from 'moment';
 import {setProduit} from "../services/produit.service"
+import Dimension from "../components/FormulaireProduit/Dimension";
+import EntretienCoupe from "../components/FormulaireProduit/EntretienCoupe";
 
 const FormulaireProduit = () => {
     //variable
@@ -39,8 +41,11 @@ const FormulaireProduit = () => {
 	const [coupeEnUpdate, setCoupeEnUpdate] = useState()
 	const [entretienUpdate, setEntretienUpdate] = useState()
 	const [entretienEnUpdate, setEntretienEnUpdate] = useState()
-	const [dimensionFrUpdate, setDimensionFrUpdate] = useState()
-	const [dimensionEnUpdate, setDimensionEnUpdate] = useState()
+
+	const [hauteurUpdate, setHauteurUpdate] = useState()
+	const [longueurUpdate, setLongueurUpdate] = useState()
+	const [largeurUpdate, setLargeurUpdate] = useState()
+	const [poidsUpdate, setPoidsUpdate] = useState()
 
 	const [nomProduitFrUpdate, setNomProduitFrUpdate] = useState("")
 	const [nomProduitEnUpdate, setNomProduitEnUpdate] = useState("")
@@ -56,6 +61,7 @@ const FormulaireProduit = () => {
 	const [tagsReferencementUpdate, setTagsReferencementUpdate] = useState() 
 
     const [sectionUpdate, setSectionUpdate] = useState("")
+
     //Fonction
     useEffect(() => {
         if(localStorage.getItem('user_multimag')){
@@ -111,7 +117,9 @@ const FormulaireProduit = () => {
                     value[0].univers!= null ? setUniversUpdate(value[0].univers) : setUniversUpdate("")
                     value[0].univers_en!= null ? setUniversEnUpdate(value[0].univers_en) : setUniversEnUpdate("")
 
-                    value[0].marqueProduit != null ? setMarqueUpdate(value[0].marqueProduit) : setMarqueUpdate("")
+                    let marque = value[0].nom_fournisseur ? value[0].nom_fournisseur : ""
+                    value[0].marque ? setMarqueUpdate(value[0].marque.marque) : setMarqueUpdate(marque)
+                    // value[0].marque != null ? setMarqueUpdate(value[0].marqueProduit) : setMarqueUpdate("")
 
                     value[0].pays_origine == null ? setPaysOrigineUpdate("") : setPaysOrigineUpdate(value[0].paysOrigine) 
                     
@@ -130,8 +138,6 @@ const FormulaireProduit = () => {
 
                     value[0].coupe != null? setCoupeUpdate(value[0].coupe) : setCoupeUpdate("")
                     value[0].entretien != null? setEntretienUpdate(value.entretien) : setEntretienUpdate("")
-                    value[0].dimension_fr != null? setDimensionFrUpdate(value[0].dimension_fr) :  setDimensionFrUpdate("")
-                    value[0].dimension_en != null? setDimensionEnUpdate(value[0].dimension_en) : setDimensionEnUpdate("")
 
                     value[0].description_fr != null? setDescriptionFrUpdate(value[0].description_fr) :  setDescriptionFrUpdate("")
                     value[0].description_en != null? setDescriptionEnUpdate(value[0].description_en) : setDescriptionEnUpdate("")                    
@@ -142,6 +148,17 @@ const FormulaireProduit = () => {
                     value[0].variants.taille_ref.grille_taille_ref != null? setGrilleTailleUpdate(value[0].variants.taille_ref.grille_taille_ref) : setGrilleTailleUpdate("")
                     //tailles
                     setAttributUpdate(value[0].variants)
+
+                    /**
+                     * Dimension: Hauteur, Poids, Largeur, Longueur
+                     */
+                    value[0].hauteur != null ? setHauteurUpdate(value[0].hauteur) : setHauteurUpdate(0)
+
+                    value[0].largeur != null ? setLargeurUpdate(value[0].largeur) : setLargeurUpdate(0)
+
+                    value[0].longueur != null ? setLongueurUpdate(value[0].longueur) : setLongueurUpdate(0)
+
+                    value[0].poids != null ? setPoidsUpdate(value[0].poids) : setHauteurUpdate(0)
 
                     //tarifs
                     setTarifUpdate(value[0].variants)
@@ -157,6 +174,7 @@ const FormulaireProduit = () => {
         }  
     }, [])
     const handleClickSave = (e, section) => {
+        console.log("section", section)
         e.preventDefault()
         setSectionUpdate(section)
         let token =  JSON.parse(localStorage.getItem('user_multimag')).token
@@ -171,7 +189,7 @@ const FormulaireProduit = () => {
             let referencer = false
             if((produit.sousCategorie!="")
                 && (filtreUpdate!="")
-                //&& (paysOrigineUpdate!="")
+                && (paysOrigineUpdate!="")
                 && (grilleTailleUpdate!="")
                 && (attributUpdate!="")
                 //&& (value[i].coupe!="")
@@ -207,9 +225,10 @@ const FormulaireProduit = () => {
                     }
                 })
             }
+            let marque = { marque : marqueUpdate}
             let data = {
                 sku: infoSku.sku,
-                marqueProduit:  marqueUpdate ? marqueUpdate : infoSku.marque,
+                marque:  marqueUpdate ? marque : infoSku.marque,
                 paysOrigine: paysOrigineUpdate?paysOrigineUpdate : "",
                 univers: universUpdate? universUpdate : infoSku.univers,
                 universEn: universEnUpdate? universEnUpdate : infoSku.universEn,
@@ -267,8 +286,11 @@ const FormulaireProduit = () => {
             coupeEnUpdate: coupeEnUpdate, setCoupeEnUpdate: setCoupeEnUpdate,
             entretienUpdate: entretienUpdate, setEntretienUpdate: setEntretienUpdate,
             entretienEnUpdate: entretienEnUpdate, setEntretienEnUpdate: setEntretienEnUpdate,
-            dimensionFrUpdate: dimensionFrUpdate, setDimensionFrUpdate: setDimensionFrUpdate,
-            dimensionEnUpdate: dimensionEnUpdate, setDimensionEnUpdate: setDimensionEnUpdate,
+
+            hauteurUpdate: hauteurUpdate, setHauteurUpdate: setHauteurUpdate,
+            longueurUpdate: longueurUpdate, setLongueurUpdate: setLongueurUpdate,
+            largeurUpdate: largeurUpdate, setLargeurUpdate: setLargeurUpdate,
+            poidsUpdate: poidsUpdate, setPoidsUpdate: setPoidsUpdate,
 
             descriptionFrUpdate: descriptionFrUpdate, setDescriptionFrUpdate: setDescriptionFrUpdate,
             descriptionEnUpdate: descriptionEnUpdate, setDescriptionEnUpdate: setDescriptionEnUpdate,
@@ -296,17 +318,22 @@ const FormulaireProduit = () => {
                     {/**
                      * Information produit
                      */}
-                    <Information />               
+                    <Information />  
+
                     {/**
                      * Caracteristique produit
                      */}
-                    <Caracteristique />
+                    <Caracteristique />       
 
                     {/**
-                     * Description produit
+                     * Matière produit
                      */}
-                    <Description />  
+                    <Matiere />
 
+                    {/**
+                     * Tarifs produit
+                     */}
+                    <Tarifs />    
 
                     {/**
                      * Taille produit
@@ -314,15 +341,19 @@ const FormulaireProduit = () => {
                     <Taille />  
 
                     {/**
-                     * Tarifs produit
+                     * Description produit
                      */}
-                    <Tarifs />                      
+                    <Description />  
 
                     {/**
-                     * Matière produit
+                     * Description produit
                      */}
-                    <Matiere />
+                    <EntretienCoupe />  
 
+                    {/**
+                     * Dimension
+                     */}
+                     <Dimension />
                 </section>
             </div>
             </FormulaireContext.Provider>

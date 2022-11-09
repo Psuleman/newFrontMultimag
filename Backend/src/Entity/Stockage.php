@@ -60,7 +60,7 @@ class Stockage
     #[ORM\Column(nullable: true)]
     private ?int $stock_60 = null;
 
-    #[ORM\ManyToOne(inversedBy: 'stockages')]
+    #[ORM\ManyToOne(inversedBy: 'stockages', cascade: ['persist'])]
     private ?Variants $variant_sku = null;
     
     public function __construct()

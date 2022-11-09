@@ -4,12 +4,15 @@ import Input from "../TemplateFormulaire/Input"
 
 const Dimension = () => {
     //variable
-    const {dimensionFrUpdate, setDimensionFrUpdate, dimensionEnUpdate, setDimensionEnUpdate} = useContext(FormulaireContext)
+    const {largeurUpdate, setLargeurUpdate, longueurUpdate, setLongueurUpdate, hauteurUpdate, setHauteurUpdate, poidsUpdate, setPoidsUpdate} = useContext(FormulaireContext)
+
     //render
     return (
     <section className="row g-3 mt-1">
-        <Input id="inputDimensionFr" label="Dimension Fr" value={dimensionFrUpdate} setValue={setDimensionFrUpdate} />
-        <Input id="inputDimensionEn" label="Dimension En" value={dimensionEnUpdate} setValue={setDimensionEnUpdate} />
+        <Input id="inputDimensionLongueur" type="number" label="Longueur" value={longueurUpdate} setValue={setLongueurUpdate} />
+        <Input id="inputDimensionLargeur" type="number" label="Largeur" value={largeurUpdate} setValue={setLargeurUpdate} />
+        <Input id="inputDimensionHauteur" type="number" label="Hauteur" value={hauteurUpdate} setValue={setHauteurUpdate} />
+        <Input id="inputDimensionPoids" type="number" label="Poids" value={poidsUpdate} setValue={setPoidsUpdate} />
     </section>
     )
 }

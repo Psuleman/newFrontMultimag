@@ -2,7 +2,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { login } from '../services/auth.service'
+import logo from "../assets/image/dalena.png"
+import "../assets/scss/authentification.scss"
 const Connexion = () => {
     //variable
     const [email, setEmail] = useState()
@@ -27,45 +29,29 @@ const Connexion = () => {
                 password: password,
                 token: "test" //à enlever
             }
-            console.log(JSON.stringify(donnesJson))
-            localStorage.setItem("user_multimag", JSON.stringify(donnesJson)) 
 
-            const requestOptions = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json',
-                accept: 'application/json'
-                },
-                body: JSON.stringify(donnesJson)
-            };
-            //let url = "http://212.129.3.31:8080/api/login"
-            let url = "http://localhost:8001/api/login"
-            fetch(url, requestOptions)
-            .then(response => {
-                
-                if(response.ok)
-                {
-                    const promise = Promise.resolve(response.json());
-                    promise.then((value) => {
+            const promise = Promise.resolve(login(donnesJson));
+            promise.then((value) => {
+                if(value){               
+                    if(!value.token){
+                        setEchecConnexion(true)
+                    }
+                    else{
+                        setEchecConnexion(false)
                         let donneesUser = {
                             email : email,
                             token : value.token
                         }
                         localStorage.setItem("user_multimag", JSON.stringify(donneesUser)) 
-                        navigate('/liste-produit')
-                    })
-                    //Redirection
-                    console.log("redirection")
-                    navigate('/liste-produit')
+                        navigate(`/liste-produit`)
+                    }
+                    setLoading(false)
+                    
+                    console.log("token", value)
+
                 }
-                else{
-                    setEchecConnexion(true)
-                }
-                setLoading(false) 
-                return response.json()
             })
-            .catch(err=>{
-                //console.log(err)
-            });	     
+     
     }
     //render
     return (
@@ -77,13 +63,14 @@ const Connexion = () => {
                     <div className="card-body p-5 text-center">
 
                         <div className="mb-md-5 mt-md-4 pb-5">
-                        <h2 className="fw-bold mb-2 text-uppercase">MULTIMAG</h2>
+                        <div className="mb-2 logoAuth"><img src={logo} /></div>
+                        {/* <h2 className="fw-bold mb-2 text-uppercase">MULTIMAG</h2> */}
                         <p className="text-blue-50 mb-5">Saisissez votre email et votre mot de passe!</p>
 
                         {
                             echecConnexion && 
                             <div className="alert alert-danger" role="alert">                            
-                             <FontAwesomeIcon icon={faTriangleExclamation} /> Echec de connexion
+                             <FontAwesomeIcon icon={faTriangleExclamation} /> Echec de connexion / Mot de passe incorrect
                             </div>
 
                         }

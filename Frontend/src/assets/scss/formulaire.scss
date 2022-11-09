@@ -1,0 +1,72 @@
+@import 'variable.scss';
+
+.form{
+	/*display: flex;*/
+	height: calc(100vh - $hauteur_header - ($padding_container * 2) - ($margin_container *2 )) ;
+
+	
+		form{
+			padding: 10px;
+			max-width: 50%;
+			min-width: 30%;
+			margin: auto;
+			border: solid 1px $gris;
+
+
+			small{
+				color : red;
+				font-size: 0.80rem;
+				display: block;
+				text-align: center;
+			}
+
+			div{
+				display: flex;
+				flex-direction: column;
+				margin: 10px;
+
+				
+				.radio_label{
+					display: flex;
+					flex-direction: row;
+					vertical-align: baseline;
+					margin: 3px;
+				}
+			}
+
+			input{
+				background: $gris;
+			}
+
+		}		
+	.contenaireBtn, .contenaireBtn>div{
+		display:  flex;
+		flex-direction: row;
+	}
+	.contenaireBtn{
+		>div:first-child{
+			margin: 0;
+			width: 25%;
+		}
+		>div{
+			margin: 0;
+			width: 70%;
+		}		
+
+		>div>button{
+			margin-left: 3%;
+
+		}
+	}
+}
+.erreurInput{
+	color: red;
+	font-size: 0.8rem;
+	font-style: italic;
+	margin-top: 2px;
+}
+
+.popup-content{
+	background-color: none;
+	border: 0;
+}

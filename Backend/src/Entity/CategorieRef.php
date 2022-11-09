@@ -18,12 +18,15 @@ class CategorieRef
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255)]
     private $categorie_ref;
+    
     #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $categorie_ref_en;
+    
     public function __construct($tab = [])
     {
         if ($tab) {

@@ -11,8 +11,18 @@ use App\Repository\TailleRefRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
-#[ApiResource(operations: [new Get(controller: 'App\\Entity\\NotFoundAction', output: false), new GetCollection(normalizationContext: ['groups' => 'tailleRef:list'])], paginationEnabled: false)]
+
+
+#[ApiResource(operations: [
+    new Get(controller: 'App\\Entity\\NotFoundAction', output: false), 
+    new GetCollection(
+        normalizationContext: ['groups' => ['tailleRef', 'grilletailleRef']])
+    ], 
+        paginationEnabled: false)
+]
+
 #[ORM\Entity(repositoryClass: TailleRefRepository::class)]
 class TailleRef
 {
@@ -20,18 +30,27 @@ class TailleRef
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(['tailleRef:list'])]
+    #[Groups(['tailleRef', 'grilletailleRef'])]
     private $taille_ref;
-    #[ORM\ManyToOne(targetEntity: GrilleTailleRef::class)]
-    #[Groups(['tailleRef:list'])]
-    private $grille_taille_ref;
+
+
+
     #[ORM\Column(type: 'string', length: 100)]
+    #[Groups(['tailleRef', 'grilletailleRef'])]
     private $stock_id;
+
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    #[Groups(['tailleRef', 'grilletailleRef'])]
     private $stock_code;
+
     #[ORM\OneToMany(mappedBy: 'taille_ref', targetEntity: Variants::class)]
     private Collection $variants;
+
+    #[ORM\ManyToOne(inversedBy: 'tailleRefs')]
+    private ?GrilleTailleRef $grille_taille_ref = null;
+    
     public function __construct($tab = [])
     {
         if ($tab) {
@@ -115,4 +134,5 @@ class TailleRef
         }
         return $this;
     }
+
 }

@@ -14,11 +14,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource(operations: [
-    new Get(controller: 'App\\Entity\\NotFoundAction', output: false), 
-    new GetCollection()],
+#[ApiResource(
+    operations: [
+        new Get(controller: 'App\\Entity\\NotFoundAction', output: false), 
+        new GetCollection()
+    ],
      paginationEnabled: false,
-     uriVariables: ['marque'=>new Link(fromClass: Produits::class, fromProperty: 'marqueProduit')]
      )]
 #[ORM\Entity(repositoryClass: MarqueRefRepository::class)]
 class MarqueRef
@@ -28,17 +29,18 @@ class MarqueRef
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[Groups(['produit:read', 'produit:write'])]
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['produit'])]
     private $marque;
 
     #[ORM\OneToMany(mappedBy: 'marque', targetEntity: Produits::class)]
-    private Collection $produits;    
+    private Collection $produits;
+   
     
-    public function __construct($marque)
+    public function __construct($marqueString="")
     {
-        if ($marque) {
-            $this->setMarque($marque);
+        if ($marqueString) {
+            $this->setMarque($marqueString);
         }
         $this->produits = new ArrayCollection();
     }
@@ -55,29 +57,35 @@ class MarqueRef
         $this->marque = $marque;
         return $this;
     }
+
     /**
      * @return Collection<int, Produits>
      */
-    public function getProduits() : Collection
+    public function getProduits(): Collection
     {
         return $this->produits;
     }
-    public function addProduit(Produits $produit) : self
+
+    public function addProduit(Produits $produit): self
     {
         if (!$this->produits->contains($produit)) {
             $this->produits->add($produit);
             $produit->setMarque($this);
         }
+
         return $this;
     }
-    public function removeProduit(Produits $produit) : self
+
+    public function removeProduit(Produits $produit): self
     {
         if ($this->produits->removeElement($produit)) {
-            // set the owning side to null (unless already changed)
+            //set the owning side to null (unless already changed)
             if ($produit->getMarque() === $this) {
                 $produit->setMarque(null);
             }
         }
+
         return $this;
     }
+
 }

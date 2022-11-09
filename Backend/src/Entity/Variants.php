@@ -23,6 +23,7 @@ class Variants
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('produit')]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'variants')]
@@ -42,7 +43,7 @@ class Variants
     private ?string $variant_sku = null;
 
     #[Groups('produit:read')]
-    #[ORM\OneToMany(mappedBy: 'variant_sku', targetEntity: Stockage::class)]
+    #[ORM\OneToMany(mappedBy: 'variant_sku', targetEntity: Stockage::class, cascade: ['persist'])]
     private Collection $stockages;
     
     public function __construct()

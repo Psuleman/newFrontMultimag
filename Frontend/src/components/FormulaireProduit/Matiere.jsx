@@ -1,13 +1,11 @@
 import { useEffect } from "react";
 import { useContext } from "react";
 import { useState } from "react";
-import {Matieres} from "../../data/Matieres"
 import { FormulaireContext } from "./Context/FormulaireContext";
+import SelectMatiere from "./Matiere/SelectMatiere";
 import FooterForm from "./TemplateFormulaire/FooterForm";
 import HeaderForm from "./TemplateFormulaire/HeaderForm";
-import Input from "./TemplateFormulaire/Input";
-import Select from "./TemplateFormulaire/Select";
-import SelectMatiere from "./TemplateFormulaire/SelectMatiere";
+
 
 const Matiere = () => {
     //variable
@@ -57,7 +55,7 @@ const Matiere = () => {
 
         {
             infoSku && (sectionUpdate == "matière") &&
-            <form onSubmit={(e)=>{handleClickSave(e, "matière")}}>        
+            <form onSubmit={(e)=>{handleClickSave(e, "tarifs")}}>        
             <div className="card-body">
                 {
                     matiereUpdate &&

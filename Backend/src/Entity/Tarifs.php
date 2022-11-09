@@ -23,18 +23,24 @@ class Tarifs
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('produit')]
     private ?int $id = null;
+
     #[ORM\ManyToOne(inversedBy: 'tarifs')]
     private ?Produits $produit = null;
+
     #[Groups('produit:read')]
     #[ORM\Column]
     private ?float $prix_vente = null;
+
     #[Groups('produit:read')]
     #[ORM\Column(nullable: true)]
     private ?float $remise = null;
+
     #[Groups('produit:read')]
     #[ORM\ManyToMany(targetEntity: Pays::class, inversedBy: 'tarifs')]
     private Collection $pays;
+    
     public function __construct()
     {
         $this->pays = new ArrayCollection();
