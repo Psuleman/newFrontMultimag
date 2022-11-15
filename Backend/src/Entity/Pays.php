@@ -20,9 +20,11 @@ class Pays
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
-    #[Groups('produit:read')]
+
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255)]
     private $pays;
+
     #[ORM\ManyToOne(targetEntity: Continents::class)]
     private $continent;
     #[ORM\ManyToMany(targetEntity: Tarifs::class, mappedBy: 'pays')]

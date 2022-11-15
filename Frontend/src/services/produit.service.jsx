@@ -3,15 +3,32 @@ let url = "http://localhost:8001/api/produits"
 const headerGET = {
     method: 'GET',
     headers: {
-        accept: 'application/json',
+        accept: 'application/ld+json',
         //Authorization : `Bearer ${token}` 			
     },
     cache: "default",
 }
 
-export const getAllProduit = (url) => {
-    let urlRequestTotal = url
-    let tab = fetch(urlRequestTotal, header)
+export const getAllProduit = (listeProduit="", filtre="") => {
+    let urlRequestTotal = url + "?page=1"
+    if(listeProduit=="referencement"){
+        urlRequestTotal += `&newProduit=1&referencer=0`
+    }
+    if(listeProduit=="modification"){
+        urlRequestTotal += `&newListAttente=1`
+    }    
+    if(listeProduit=="export"){
+        urlRequestTotal += `&referencer=1`
+    }
+
+    console.log("url", urlRequestTotal)
+    /**
+     * filtre
+     */
+    if(filtre!=""){
+        urlRequestTotal += filtre
+    }
+    let tab = fetch(urlRequestTotal, headerGET)
     .then(function(res) {
         //console.log(res.json())
         return res.json();
@@ -25,7 +42,7 @@ export const getAllProduit = (url) => {
     return tab;
 }
 
-export const getProduitproduit = (url, id) => {
+export const getProduitproduit = (id) => {
 
 }
 export const setProduit = (id, data) => {
@@ -60,6 +77,7 @@ export const setNewProduit = (data) => {
         },
         body: JSON.stringify(data)
     };
+    
     //fetch('http://212.129.3.31:8080/api/produits', requestOptions)
     let result = fetch(url, requestOptions)
     .then(response => {

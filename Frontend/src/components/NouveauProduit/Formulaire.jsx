@@ -7,7 +7,7 @@ import { NouveauProduitContext } from "./Context/NouveauProduitContext"
 
 const Formulaire = () => {
     const [file, setFile] = useState()
-    const {data, setData, setPatienceImport, setFinImport, progressBar, setProgressBar, setTotaldata, setTotalNewProduct }= useContext(NouveauProduitContext)
+    const {data, setData, setPatienceImport, setFinImport, progressBar, setProgressBar, setTotaldata, totalData, setTotalNewProduct }= useContext(NouveauProduitContext)
 
     let i = 0
     //fonction
@@ -18,7 +18,7 @@ const Formulaire = () => {
                 navigate('/')
             }
             else{
-                if(data){
+                if(data && data.length>0){
                     //console.log(data.length)
                     let dateNow = Moment().format('YY')
                     dateNow = parseInt(dateNow)
@@ -73,12 +73,12 @@ const Formulaire = () => {
 
                             }
                             //request post
-                            //console.log(JSON.stringify(donnesJson))
+                            console.log(JSON.stringify(donnesJson))
 
                             const promise = Promise.resolve(setNewProduit(donnesJson));
 
                             promise.then((value) => {
-                                if(value.ok){
+                                if(value && value.ok){
                                     compteurNewProduct++
                                 }
                                 i = i==0 ? 1 : i
@@ -143,6 +143,11 @@ const Formulaire = () => {
                     /**
                      * A compléter
                      */
+                    //  setFinImport(true)
+                    //  setTotalNewProduct(0)
+                    //  setPatienceImport(false)                        
+
+
                 }
             }            
         }
@@ -180,11 +185,18 @@ const Formulaire = () => {
                         let dateProduit = Moment(donnees[i][1], 'DD/MM/YYYY').format("YYYY-MM-DD")
                         if(Moment(dateProduit).isAfter(dateAnterieur)){
                             //console.log(dateAnterieur)
-                                tabTemporaire.push(donnees[i])
+                            tabTemporaire.push(donnees[i])
                         }
                     }
 
-                    setData(tabTemporaire) //A REMETTRE
+                    if((tabTemporaire.length)>0){
+                        setData(tabTemporaire) //A REMETTRE
+                    }
+                    else{
+                     setFinImport(true)
+                     setTotalNewProduct(0)
+                     setPatienceImport(false)                      
+                    }
 
                     /*let donnees = resultat.data
                     setTotaldata(donnees.length)
@@ -225,7 +237,9 @@ const Formulaire = () => {
                 <input className="form-control" type="file" id="formFile" required onChange={(e)=>{setFile(e.target.files)}}  />
             </div>
 
-            <div><button className="btn btn-outline-dark">Envoyer</button></div>
+            <div>
+                <button className="btn btn-outline-dark">Envoyer</button>
+            </div>
             </form>
             </div>
     )

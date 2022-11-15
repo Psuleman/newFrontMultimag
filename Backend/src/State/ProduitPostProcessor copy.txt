@@ -5,6 +5,7 @@ namespace App\State;
 use App\Entity\Pays;
 use App\Entity\Tarifs;
 use App\Entity\Produits;
+use App\Entity\Stockage;
 use App\Entity\Variants;
 use App\Entity\FiltreRef;
 use App\Entity\MarqueRef;
@@ -133,39 +134,39 @@ class ProduitPostProcessor implements ProcessorInterface
                 $data->setSaison("FW" . $data->getAnneeSortie());
 
             // //Couleurs
-            $code_couleur = $data->getCodeCouleur();
-            $reference_couleur_1 = $data->getReferenceCouleur1() ? $data->getReferenceCouleur1() : "";
-            $reference_couleur_2 =$data->getReferenceCouleur2() ? $data->getReferenceCouleur2() : "" ;
-            $result = preg_match("#[\#]{1,}#i", $reference_couleur_1, $delimiter);
-            if($result){
-                $donnees = explode($delimiter[0], $reference_couleur_1);
+            // $code_couleur = $data->getCodeCouleur();
+            // $reference_couleur_1 = $data->getReferenceCouleur1() ? $data->getReferenceCouleur1() : "";
+            // $reference_couleur_2 =$data->getReferenceCouleur2() ? $data->getReferenceCouleur2() : "" ;
+            // $result = preg_match("#[\#]{1,}#i", $reference_couleur_1, $delimiter);
+            // if($result){
+            //     $donnees = explode($delimiter[0], $reference_couleur_1);
 
-                if(count($donnees)>=2){
-                    $code_couleur .= $donnees[0];
-                    $reference_couleur_1 = $donnees[1];                        
-                }
-                if(count($donnees)>=3){
-                    $reference_couleur_2 = $donnees[2] . "" . $reference_couleur_2;
-                }
-            }   
-            $result = preg_match("#[\#]{1,}#i", $reference_couleur_2, $delimiter);
-            if($result){
-                $donnees = explode("#", $reference_couleur_2);
-                //echo count($donnees);
-                if(count($donnees)>=2){
-                    $reference_couleur_1 .= $donnees[0];                    
-                    $reference_couleur_2 = $donnees[1];                        
-                }
-                else{
-                    $reference_couleur_2 = " " . $donnees[0];
-                }
+            //     if(count($donnees)>=2){
+            //         $code_couleur .= $donnees[0];
+            //         $reference_couleur_1 = $donnees[1];                        
+            //     }
+            //     if(count($donnees)>=3){
+            //         $reference_couleur_2 = $donnees[2] . "" . $reference_couleur_2;
+            //     }
+            // }   
+            // $result = preg_match("#[\#]{1,}#i", $reference_couleur_2, $delimiter);
+            // if($result){
+            //     $donnees = explode("#", $reference_couleur_2);
+            //     //echo count($donnees);
+            //     if(count($donnees)>=2){
+            //         $reference_couleur_1 .= $donnees[0];                    
+            //         $reference_couleur_2 = $donnees[1];                        
+            //     }
+            //     else{
+            //         $reference_couleur_2 = " " . $donnees[0];
+            //     }
 
-            }
-            //$reference_couleur_2 = $data->getReferenceCouleur2();
-            $reference_couleur_1 = str_replace("#", '', $reference_couleur_1);
-            $reference_couleur_2 = str_replace("#", "", $reference_couleur_2);    
+            // }
+            // //$reference_couleur_2 = $data->getReferenceCouleur2();
+            // $reference_couleur_1 = str_replace("#", '', $reference_couleur_1);
+            // $reference_couleur_2 = str_replace("#", "", $reference_couleur_2);    
                 
-            $data->setReferenceCouleur($this->minuscule($reference_couleur_1 . " " . $reference_couleur_2));
+            // $data->setReferenceCouleur($this->minuscule($reference_couleur_1 . " " . $reference_couleur_2));
 
             //Univers 
             /******* UNIVERS + CATEGORIE **************/
@@ -295,38 +296,38 @@ class ProduitPostProcessor implements ProcessorInterface
 
             }
             //Tags Ref à revoir plus tard
-            // if($filtreOriginale){
+            if($filtreOriginale){
 
-            //     $tags_ref = $universRefObjet["univers_ref"] . "," . $universRefObjet["univers_ref_en"] . ',';
-            //     $tags_ref .= "Couleur_,Color_,";
-            //     $tags_ref .= ",,";//Filtre à modifier dans ExportUpdateDataPersister
-            //     $tags_ref .= $data->getFiltre()->getSousCategorieRef()->getSousCategorieRef() . "," . $data->getFiltre()->getSousCategorieRef()->getSousCategorieRefEn() . ',';
-            //     $tags_ref .= "Catégorie_" . $data->getFiltre()->getSousCategorieRef()->getSousCategorieRef() . ",Category_" . $data->getFiltre()->getSousCategorieRef()->getSousCategorieRefEn() . ',';
-            //     $tags_ref .= "Créateur_" . $data->getNomFournisseur() . ",Designer_" . $data->getNomFournisseur() . ',';
-            //     $tags_ref .= $data->getReferenceFournisseur() . ',';
-            //     if($data->getFiltre()->getSousCategorieRef())
-            //         $tags_ref .= $data->getFiltre()->getSousCategorieRef()->getCategorieRef()->getCategorieRef() . "," . $data->getFiltre()->getSousCategorieRef()->getCategorieRef()->getCategorieRefEn() . ',';
-            //     $tags_ref .= $data->getSaison() . "" . $data->getAnneeSortie();
+                $tags_ref = $universRefObjet["univers_ref"] . "," . $universRefObjet["univers_ref_en"] . ',';
+                $tags_ref .= "Couleur_,Color_,";
+                $tags_ref .= ",,";//Filtre à modifier dans ExportUpdateDataPersister
+                $tags_ref .= $data->getFiltre()->getSousCategorieRef()->getSousCategorieRef() . "," . $data->getFiltre()->getSousCategorieRef()->getSousCategorieRefEn() . ',';
+                $tags_ref .= "Catégorie_" . $data->getFiltre()->getSousCategorieRef()->getSousCategorieRef() . ",Category_" . $data->getFiltre()->getSousCategorieRef()->getSousCategorieRefEn() . ',';
+                $tags_ref .= "Créateur_" . $data->getNomFournisseur() . ",Designer_" . $data->getNomFournisseur() . ',';
+                $tags_ref .= $data->getReferenceFournisseur() . ',';
+                if($data->getFiltre()->getSousCategorieRef())
+                    $tags_ref .= $data->getFiltre()->getSousCategorieRef()->getCategorieRef()->getCategorieRef() . "," . $data->getFiltre()->getSousCategorieRef()->getCategorieRef()->getCategorieRefEn() . ',';
+                $tags_ref .= $data->getSaison() . "" . $data->getAnneeSortie();
 
-            //     $data->setTagsRef($tags_ref);
-            // }
+                $data->setTagsRef($tags_ref);
+            }
 
             /**
              * TARIFS
              */
-            $findTarifs = $this->_entityManager->getRepository(Tarifs::class)->findOneBy([
-                "produit" => $data
-            ]);
+            // $findTarifs = $this->_entityManager->getRepository(Tarifs::class)->findOneBy([
+            //     "produit" => $data
+            // ]);
 
-            if(!$findTarifs){
-                $tarifs = (new Tarifs())
-                ->setProduit($data)
-                ->setPrixVente($data->getPrixVente())
-                ->addPay($pays)
-                ;
+            // if(!$findTarifs){
+            //     $tarifs = (new Tarifs())
+            //     ->setProduit($data)
+            //     ->setPrixVente($data->getPrixVente())
+            //     ->addPay($pays)
+            //     ;
 
-                $this->_entityManager->persist($tarifs);
-            }
+            //     $this->_entityManager->persist($tarifs);
+            // }
             $this->_entityManager->persist($data);
             $this->_entityManager->flush();
         }
@@ -354,16 +355,6 @@ class ProduitPostProcessor implements ProcessorInterface
         ->setSku($data)
         ->setTailleFnr($data->getTaille())
         ->setVariantSku($data->getSku() ."_" . $data->getTaille())
-        ->setStock0($data->getStockMag0())
-        ->setStock3($data->getStockMag3())
-        ->setStock7($data->getStockMag7())
-        ->setStock9($data->getStockMag9())
-        ->setStock11($data->getStockMag11())
-        ->setStock12($data->getStockMag12())
-        ->setStock14($data->getStockMag14())
-        ->setStock18($data->getStockMag18())
-        ->setStock20($data->getStockMag20())
-        ->setStock60($data->getStockMag60())
         ;
         $findVariants = $this->_entityManager->getRepository(Variants::class)->findOneBy([
             "sku" => $variants->getSku(),
@@ -374,7 +365,26 @@ class ProduitPostProcessor implements ProcessorInterface
             /**
              * Stockage
             */
-            $this->_entityManager->persist($variants); 
+            $this->_entityManager->persist($variants);
+            $stockage = (new Stockage())
+            ->setVariantSku($variants)
+            ->setStock0($data->getStockMag0())
+            ->setStock3($data->getStockMag3())
+            ->setStock7($data->getStockMag7())
+            ->setStock9($data->getStockMag9())
+            ->setStock11($data->getStockMag11())
+            ->setStock12($data->getStockMag12())
+            ->setStock14($data->getStockMag14())
+            ->setStock18($data->getStockMag18())
+            ->setStock20($data->getStockMag20())
+            ->setStock60($data->getStockMag60())
+            ;
+            $findStockage = $this->_entityManager->getRepository(Stockage::class)->findOneBy([
+                "variant_sku" => $variants
+            ]);
+            if(!$findStockage){
+                $variants->addStockage($stockage);
+            }   
             $data->addVariant($variants);         
         }
 

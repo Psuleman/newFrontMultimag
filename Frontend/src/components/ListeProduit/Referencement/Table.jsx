@@ -49,11 +49,11 @@ const Table = () => {
                         <th className="px-2">ACTION</th>
                     </tr>
                     </thead>
-                    {
+                    {/* {
                         skus && skus.map((item, index)=>(
                             <Value key={index} item={item} />
                         ))
-                    }                     
+                    }                      */}
                 </table>
             </div>
         </section>

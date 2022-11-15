@@ -26,25 +26,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-
 #[ApiResource(
-    // uriTemplate: '/produits/{id}/matiere_produits.{_format}',
-    // uriVariables: [
-    //     'id' => new Link(fromClass: Produits::class, fromProperty: 'matiereProduits')
-    // ], 
     operations: [new GetCollection()]
 )]
-#[ApiResource(
-    operations: [
-        new Post(
-            denormalizationContext: ['groups' => ['produit']],
-            processor: ProduitPostProcessor::class,
-
-        ),
-        // new Patch(
-        //     denormalizationContext: ['groups' => ['produit']],
-        // )
-    ]
+#[POST(
+    processor: ProduitPostProcessor::class
 )]
 #[Get(
     normalizationContext: ['groups' => ['produit', 'produit:read']],
@@ -53,6 +39,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
     denormalizationContext: ['groups' => ['produit']],
     processor: ProduitPatchProcessor::class,
     )]
+#[ApiFilter(OrderFilter::class, properties: ['date_arrivee' => 'DESC', 'sku' => 'ASC'])]
+
+#[ApiFilter(SearchFilter::class, properties: ['filtre.sous_categorie_ref.categorie_ref.categorie_ref' => 'exact', 'univers' => 'exact', 'sku' => 'exact', 'marque.marque' => 'exact', 'newProduit' => 'exact', 'referencer' => 'exact', 'newListAttente' => 'exact', 'code_tag' => 'exact'])]
 #[ORM\Entity(repositoryClass: ProduitsRepository::class)]
 class Produits
 {
@@ -62,19 +51,19 @@ class Produits
     #[Groups(['produit'])]
     private ?int $id = null;
 
-    #[Groups(['produit'])]
+    #[Groups(['produit', 'produit:write'])]
     #[ORM\Column(type: 'integer')]
     private ?string $sku = null;
 
-    #[Groups(['produit'])]
+    #[Groups(['produit', 'produit:write'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $code_fournisseur;
     
-    #[Groups(['produit'])]
+    #[Groups(['produit', 'produit:write'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $nom_fournisseur;
 
-    #[Groups(['produit'])]
+    #[Groups(['produit', 'produit:write'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $reference_fournisseur;
     
@@ -86,7 +75,7 @@ class Produits
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $reference_couleur;
 
-    #[Groups(['produit'])]
+    #[Groups(['produit', 'produit:write'])]
     #[ORM\Column(type: 'integer')]
     private $code_saison;
 
@@ -98,11 +87,11 @@ class Produits
     #[ORM\Column(type: 'integer')]
     private $annee_sortie;
 
-    #[Groups(['produit'])]
+    #[Groups(['produit', 'produit:write'])]
     #[ORM\Column(type: 'integer', nullable: true)]
     private $code_categorie_univers;
     
-    #[Groups(['produit'])]
+    #[Groups(['produit', 'produit:write'])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $categorie_univers;
 
@@ -114,11 +103,11 @@ class Produits
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $mode_acquisition;
 
-    #[Groups(['produit'])]
+    #[Groups(['produit', 'produit:write'])]
     #[ORM\Column(type: 'integer', nullable: true)]
     private $code_tag;
 
-    #[Groups(['produit'])]
+    #[Groups(['produit', 'produit:write'])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $tag;
 
@@ -222,7 +211,7 @@ class Produits
     #[ORM\Column(type: 'integer')]
     private $code_sous_categorie_fnr;
 
-    #[Groups(['produit'])]
+    #[Groups(['produit', 'produit:write'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $sous_categorie_fnr;
 
@@ -256,47 +245,47 @@ class Produits
 
     
     //variable sans ajouter dans la base de données
-    #[Groups(['produit'])]
+    #[Groups(['produit', 'produit:write'])]
     private ?string $taille;
 
-    #[Groups(['produit'])]
+    #[Groups(['produit', 'produit:write'])]
     private ?string $reference_couleur_1;
 
-    #[Groups(['produit'])]
+    #[Groups(['produit', 'produit:write'])]
     private ?string $reference_couleur_2;
 
     #[Groups(['produit'])]
     private ?float $prix_vente;
 
     //Stock
-    #[Groups(['produit'])]
+    #[Groups(['produit:write'])]
     private ?int $stock_mag_0;
 
-    #[Groups(['produit'])]
+    #[Groups(['produit:write'])]
     private ?int $stock_mag_3;
 
-    #[Groups(['produit'])]
+    #[Groups(['produit:write'])]
     private ?int $stock_mag_7;
 
-    #[Groups(['produit'])]
+    #[Groups(['produit:write'])]
     private ?int $stock_mag_9;
 
-    #[Groups(['produit'])]
+    #[Groups(['produit:write'])]
     private ?int $stock_mag_11;
 
-    #[Groups(['produit'])]
+    #[Groups(['produit:write'])]
     private ?int $stock_mag_12;
 
-    #[Groups(['produit'])]
+    #[Groups(['produit:write'])]
     private ?int $stock_mag_14;
 
-    #[Groups(['produit'])]
+    #[Groups(['produit:write'])]
     private ?int $stock_mag_18;
 
-    #[Groups(['produit'])]
+    #[Groups(['produit:write'])]
     private ?int $stock_mag_20;
     
-    #[Groups(['produit'])]
+    #[Groups(['produit:write'])]
     private ?int $stock_mag_60;
 
     #[Groups(['produit'])]
@@ -329,7 +318,6 @@ class Produits
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: MatiereProduit::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $matiereProduits;
 
-    #[ApiSubresource()]
     #[Groups('produit:read')]
     #[ORM\OneToMany(mappedBy: 'sku', targetEntity: Variants::class, orphanRemoval: true,  cascade: ['persist'])]
     private Collection $variants;
@@ -352,7 +340,7 @@ class Produits
     #[ORM\ManyToOne(cascade: ['persist'])]
     private ?FiltreRef $filtre = null;
 
-    #[Groups(['produit'])]
+    #[Groups(['produit', 'produit:write'])]
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_arrivee = null;
 
@@ -868,8 +856,6 @@ class Produits
         $this->sous_categorie_fnr = $sous_categorie_fnr;
         return $this;
     }
-
-
 
     public function getReferenceCouleur1() : ?string
     {

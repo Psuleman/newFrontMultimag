@@ -7,6 +7,7 @@ import Ceintre from "../../../assets/image/cintre-de-vetements.png"
 const Value = ({item}) => {
     //variable
     const [showVariant, setShowVariant] = useState(false)
+    const [categorie, setCategorie] = useState()
     const [stock, setStock] = useState([])
     const [imgExist, setImgExist] = useState(false)
     const [tagBackground, setTagBackground] = useState("")
@@ -14,6 +15,7 @@ const Value = ({item}) => {
 
     //fonction
     useEffect(()=>{
+        console.log("item variants", item.variants)
 		//image
 		fetch(item.pictures)
 		.then(function(response) {
@@ -39,21 +41,36 @@ const Value = ({item}) => {
             total : 0,  
             taille : ""          
         }
-        let arrayTemp = item.variants
-        arrayTemp.forEach(element => {
-            tab = {
-                boissy : tab.boissy + element.stockages[0].stock_18,
-                sevigne : tab.sevigne + element.stockages[0].stock_7,
-                herold : tab.herold + element.stockages[0].stock_14,
-                depot : tab.depot + element.stockages[0].stock_0,
-                referencement : tab.referencement + element.stockages[0].stock_9,
-                total : tab.total + element.stockages[0].stock_3,
-                taille : tab.taille + ", " + element.taille_fnr
-            }
-            
-        });
-        tab.taille = tab.taille.substring(1)
+        // if(item.variants){
+        //     let arrayTemp = item.variants
+        //     arrayTemp.forEach(element => {
+        //         tab = {
+        //             boissy : tab.boissy + element.stockages[0].stock_18,
+        //             sevigne : tab.sevigne + element.stockages[0].stock_7,
+        //             herold : tab.herold + element.stockages[0].stock_14,
+        //             depot : tab.depot + element.stockages[0].stock_0,
+        //             referencement : tab.referencement + element.stockages[0].stock_9,
+        //             total : tab.total + element.stockages[0].stock_3,
+        //             taille : tab.taille + ", " + element.taille_fnr
+        //         }
+                
+        //     });
+        //     tab.taille = tab.taille.substring(1)
+        // }
         setStock(tab)
+
+
+        /**
+         * Categorie
+         * 
+         *         console.log("item ", item.filtre.sousCategorieRef.categorieRef.categorieRef)
+
+         */
+        if(item.filtre){
+            let categorieItem = item.filtre ? item.filtre.sousCategorieRef.categorieRef.categorieRef : item.categorie_univers
+            categorieItem += " > " + (item.filtre ? item.filtre.filtre : item.sous_categorie_fnr)
+            setCategorie(categorieItem)
+        }
     }, [])
 
     const handleClick = () => {
@@ -68,7 +85,7 @@ const Value = ({item}) => {
                 <td className="px-2 detailSku">
                 <center>
                     <div className="subsku" onClick={()=>{setShowVariant(!showVariant)}}>
-                        {showVariant ? <i class="fas fa-minus"></i> : <i class="fas fa-plus"></i>}
+                        {showVariant ? <i className="fas fa-minus"></i> : <i className="fas fa-plus"></i>}
                     </div>
                 </center>
                 </td>
@@ -80,7 +97,7 @@ const Value = ({item}) => {
                 <td className="px-2">{item.dateRef ? Moment(item.dateRef).format("DD-MM-YYYY") : ""}</td>
                 <td className="px-2">{item.marque ? item.marque : item.nom_fournisseur}</td>
                 <td className="px-2">{item.univers}</td>
-                <td className="px-2">{item.filtre ? item.filtre.sousCategorieRef.categorie_ref.categorie_ref : item.categorie_univers} > {item.filtre ? item.filtre.filtre : item.sous_categorie_fnr}</td>
+                <td className="px-2">{categorie ? categorie : item.filtre.filtre}</td>
                 <td className="px-2">{item.couleur}</td>
                 <td className="px-2">{item.tarifs[0].prix_vente} €</td>
                 <td className="px-2">{item.tarifs[0].remise ? item.tarifs[0].remise : 0}</td>
@@ -99,6 +116,7 @@ const Value = ({item}) => {
                 <td className="px-2">{stock.depot}</td>
                 <td className="px-2">{stock.referencement}</td>
                 <td className="px-2">{stock.total}</td>
+            
                 {
                     item.code_tag == 0 ? 
                     <td className="px-2 text-bg-warning status">Non tagué</td>
@@ -108,7 +126,7 @@ const Value = ({item}) => {
                 <td className="px-2 action">
                     <center>
                         <div className="modifier text-muted" onClick={handleClick}>
-                            <i class="fa fa-pen"></i>
+                            <i className="fa fa-pen"></i>
                         </div>
                     </center>
                 </td>                

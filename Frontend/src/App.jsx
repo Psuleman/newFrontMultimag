@@ -20,7 +20,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Connexion />} />
-          <Route path="/liste-produit" element={<ListeProduit />} />
+          <Route path="/produits/:liste" element={<ListeProduit />} />
           <Route path="/referencement" element={<Referencement />} />
           <Route path="/modification" element={<Modification />} />
           <Route path="/exportation" element={<Exportation />} />

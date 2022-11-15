@@ -40,6 +40,7 @@ const ListeContextProvider = ({children}) => {
             },
             cache: "default",
         }
+        
         fetch(urlRequestTotal, header)
         .then(function(res) {
             //console.log(res.json())
