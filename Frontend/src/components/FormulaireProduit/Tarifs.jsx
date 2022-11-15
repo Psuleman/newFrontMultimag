@@ -9,13 +9,18 @@ import SelectMultiplePays from "./TemplateFormulaire/SelectMultiplePays";
 const Tarifs = () => {
     //variable
     const [nbTarif, setNbTarif] = useState()
-    const {infoSku, tarifUpdate, setTarifUpdate, 
+    const {infoSku, tarifsDone, setTarifsDone, tarifUpdate, setTarifUpdate, 
     sectionUpdate, setSectionUpdate, handleClickSave} = useContext(FormulaireContext)
 
     //Fonction
     useEffect(()=>{
         setTarifUpdate(infoSku.tarifs)
-        console.log(tarifUpdate)
+
+        if(infoSku.tarifs && infoSku.tarifs[0] && infoSku.tarifs[0].prix_vente > 0)
+            setTarifsDone(true)
+        else
+            setTarifsDone(false)
+        
     }, [infoSku])
 
     const handleClickAddTarifs = () => {
@@ -36,12 +41,15 @@ const Tarifs = () => {
     //render
     return (
         <div className="card mb-3">
-        <HeaderForm title="Tarifs" section="tarifs" />
+        <HeaderForm title="Tarifs" section="tarifs" isDone={tarifsDone} />
         {
             tarifUpdate && (sectionUpdate == "tarifs") &&
-            <form onSubmit={(e)=>{handleClickSave(e, "taille")}}>        
+            <form onSubmit={(e)=>{handleClickSave(e, "taille")}}> 
+       
             <div className="card-body">
-            {
+                <section className="row g-3 mb-3"><small>* Champs obligatoire</small></section>
+
+                {
                 tarifUpdate.length>0 && 
                 tarifUpdate.map((item, index)=>(
                 <section className="row g-3 mb-3">
@@ -53,7 +61,7 @@ const Tarifs = () => {
                     {/* <SelectMultiplePays indexTarif={index} id={"selectPaysOrigine" + index} /> */}
 
                     <div className="col-md-3">
-                        <label htmlFor="inputCouleurFnr" className="form-label">Prix</label>
+                        <label htmlFor="inputCouleurFnr" className="form-label">{index == 0 ? " * Prix" : "Prix"}</label>
                         <input type="number" min="0" className="form-control" id="inputCouleurFnr" value={tarifUpdate[index].prix_vente} onChange={(e)=>{
                             setTarifUpdate(oldState=>{
                                 let newState = [...oldState]
@@ -64,7 +72,7 @@ const Tarifs = () => {
                     </div>                        
 
                     <div className="col-md-3">
-                        <label htmlFor="inputRemiseTarifsFrance" className="form-label">Remise en Pourcentage (%)</label>
+                        <label htmlFor="inputRemiseTarifsFrance" className="form-label">{index == 0 ? " * Remise en Pourcentage (%)" : "Remise en Pourcentage (%)"}</label>
                         <input type="number" min="0" className="form-control" id="inputRemiseTarifsFrance" value={tarifUpdate[index].remise} 
                         onChange={(e)=>{setTarifUpdate(oldState=>{
                             let newState = [...oldState]
@@ -75,7 +83,7 @@ const Tarifs = () => {
                 </section>                    
                 ))
 
-            }
+                }
             {/* <section className="row g-3 mt-1">
             <div className="col-md-3">
                 <label htmlFor="inputAddTarif" className="form-label">Nombre de tarifs dans d'autre pays</label>

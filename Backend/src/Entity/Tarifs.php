@@ -38,7 +38,7 @@ class Tarifs
     private ?float $remise = null;
 
     #[Groups('produit:read')]
-    #[ORM\ManyToMany(targetEntity: Pays::class, inversedBy: 'tarifs')]
+    #[ORM\ManyToMany(targetEntity: Pays::class, inversedBy: 'tarifs', cascade: ['persist'])]
     private Collection $pays;
     
     public function __construct()

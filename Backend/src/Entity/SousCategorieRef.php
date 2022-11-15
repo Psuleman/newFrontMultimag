@@ -2,35 +2,61 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\GetCollection;
+use App\Entity\CategorieRef;
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\ApiProperty;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Post;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\SousCategorieRefRepository;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
-#[ApiResource(operations: [new Get(controller: 'App\\Entity\\NotFoundAction', output: false), new GetCollection()], paginationEnabled: false)]
+
+// #[ApiResource(
+//     operations: [
+//         new Get(), 
+//         new GetCollection()], 
+//         paginationEnabled: false)]
+// #[ApiFilter(filterClass: SearchFilter::class, properties: ['categorie_ref' => 'exact', 'sous_categorie_ref' => 'word_start'])]
+
+// #[ApiResource(
+//     uriTemplate: '/categories/{categorieId}/sous_categories/{id}',
+//     uriVariables: [
+//         'categorieId' => new Link(fromClass: CategorieRef::class, toProperty: 'categorie_ref'),
+//         'id' => new Link(fromClass: SousCategorieRef::class),
+//     ],
+//     operations: [ new Get() ]
+// )]
+// #[ApiResource(
+//     uriTemplate: '/categories/{categorieId}/sous_categories',
+//     uriVariables: [
+//         'sousCategorieId' => new Link(fromClass: CategorieRef::class, toProperty: 'categorie_ref'),
+//     ],
+//     operations: [ new GetCollection() ]
+// )]
 #[ORM\Entity(repositoryClass: SousCategorieRefRepository::class)]
-#[ApiFilter(filterClass: SearchFilter::class, properties: ['categorie_ref' => 'exact', 'sous_categorie_ref' => 'word_start'])]
 class SousCategorieRef
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['produit'])]
     private $id;
 
-    #[Groups('produit')]
+    #[Link(toProperty: 'sous_categorie_ref')]
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['produit'])]
     private $sous_categorie_ref;
 
-    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['produit'])]
     private $sous_categorie_ref_en;
 
-    #[Groups('produit')]
     #[ORM\ManyToOne(targetEntity: CategorieRef::class, cascade: ['persist'])]
+    #[Groups(['produit'])]
     private $categorie_ref;
 
     public function __construct($tab = [])

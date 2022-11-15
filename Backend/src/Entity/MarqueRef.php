@@ -29,14 +29,14 @@ class MarqueRef
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[Link(toProperty: 'marque')]
     #[ORM\Column(type: 'string', length: 255)]
     #[Groups(['produit'])]
     private $marque;
 
     #[ORM\OneToMany(mappedBy: 'marque', targetEntity: Produits::class)]
     private Collection $produits;
-   
-    
+      
     public function __construct($marqueString="")
     {
         if ($marqueString) {

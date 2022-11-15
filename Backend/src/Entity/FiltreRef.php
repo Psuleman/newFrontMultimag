@@ -1,51 +1,60 @@
 <?php
 
 namespace App\Entity;
-
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\ApiProperty;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Metadata\ApiFilter;
-use App\Repository\FiltreRefRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Post;
+use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use App\Repository\FiltreRefRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Patch;
 
-#[ApiResource(
-    operations: [
-        new Get(controller: 'App\\Entity\\NotFoundAction', output: false), 
-        new GetCollection(normalizationContext: ['groups' => 'filtre:list']), 
-        new GetCollection()
-    ], 
-    paginationEnabled: false)
-    ]
+// #[ApiResource(
+//     operations: [ new Post() ]
+// )]
+// #[ApiResource(
+//     uriTemplate: '/sous_categories/{sousCategorieId}/filtre_refs/{id}',
+//     uriVariables: [
+//         'sousCategorieId' => new Link(fromClass: SousCategorieRef::class, toProperty: 'sous_categorie_ref'),
+//         'id' => new Link(fromClass: FiltreRef::class),
+//     ],
+//     operations: [ new Get() ]
+// )]
+// #[ApiResource(
+//     uriTemplate: '/sous_categories/{sousCategorieId}/filtre_refs',
+//     uriVariables: [
+//         'sousCategorieId' => new Link(fromClass: SousCategorieRef::class, toProperty: 'sous_categorie_ref'),
+//     ],
+//     operations: [ new GetCollection() ]
+// )]
 #[ORM\Entity(repositoryClass: FiltreRefRepository::class)]
-#[ApiFilter(SearchFilter::class, properties: ['filtre' => 'word_start'])]
-
 class FiltreRef
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['produit'])]
     private $id;
 
-    #[Groups('produit')]
+    #[Groups(['produit'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $filtre;
 
-    #[Groups('produit')]
+    #[Groups(['produit'])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $filtre_ref_en;
 
-    #[ORM\ManyToOne(targetEntity: SousCategorieRef::class, cascade: ['persist'])]
     #[Groups(['produit'])]
-    private $sousCategorieRef;
-
-    #[ORM\OneToMany(mappedBy: 'filtre', targetEntity: Produits::class)]
-    private Collection $produits;
+    #[ORM\ManyToOne( cascade: ['persist'])]
+    private ?SousCategorieRef $sous_categorie_ref = null;
 
     public function __construct($tab = [])
     {
@@ -57,7 +66,6 @@ class FiltreRef
                 $this->setFiltreRefEn($tab["filtre_ref_en"]);
             }
         }
-        $this->produits = new ArrayCollection();
     }
 
     public function getId() : ?int
@@ -87,39 +95,16 @@ class FiltreRef
         return $this;
     }
 
-    public function getSousCategorieRef() : ?SousCategorieRef
+    public function getSousCategorieRef(): ?SousCategorieRef
     {
-        return $this->sousCategorieRef;
+        return $this->sous_categorie_ref;
     }
-    
-    public function setSousCategorieRef(?SousCategorieRef $sousCategorieRef) : self
+
+    public function setSousCategorieRef(?SousCategorieRef $sous_categorie_ref): self
     {
-        $this->sousCategorieRef = $sousCategorieRef;
+        $this->sous_categorie_ref = $sous_categorie_ref;
+
         return $this;
     }
-    /**
-     * @return Collection<int, Produits>
-     */
-    public function getProduits() : Collection
-    {
-        return $this->produits;
-    }
-    public function addProduit(Produits $produit) : self
-    {
-        if (!$this->produits->contains($produit)) {
-            $this->produits->add($produit);
-            $produit->setFiltre($this);
-        }
-        return $this;
-    }
-    public function removeProduit(Produits $produit) : self
-    {
-        if ($this->produits->removeElement($produit)) {
-            // set the owning side to null (unless already changed)
-            if ($produit->getFiltre() === $this) {
-                $produit->setFiltre(null);
-            }
-        }
-        return $this;
-    }
+
 }

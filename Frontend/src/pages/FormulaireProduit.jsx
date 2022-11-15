@@ -14,6 +14,7 @@ import Moment from 'moment';
 import {setProduit} from "../services/produit.service"
 import Dimension from "../components/FormulaireProduit/Dimension";
 import EntretienCoupe from "../components/FormulaireProduit/EntretienCoupe";
+import { setMatiereProduit } from "../services/matiereproduit.service";
 
 const FormulaireProduit = () => {
     //variable
@@ -23,6 +24,15 @@ const FormulaireProduit = () => {
     const [sku, setSku] = useState(skuProduit)
     const [infoSku, setInfoSku] = useState([])
     //données à partager
+    const [indicationDone, setIndicationDone] = useState()
+    const [caracteristiqueDone, setCaracteristiqueDone] = useState()
+    const [matiereDone, setMatiereDone] = useState()
+    const [tarifsDone, setTarifsDone] = useState()
+    const [tailleDone, setTailleDone] = useState()
+    const [descriptionDone, setDescriptionDone] = useState()
+    const [entretienCoupeDone, setEntretienCoupeDone] = useState()
+    const [dimensionDone, setDimensionDone] = useState()
+
     const [universUpdate, setUniversUpdate] = useState()
     const [universEnUpdate, setUniversEnUpdate] = useState()
     const [marqueUpdate, setMarqueUpdate] = useState()
@@ -166,6 +176,7 @@ const FormulaireProduit = () => {
                     value[0].matiereProduit!=null ? setMatiereUpdate(value[0].matiereProduit) : setMatiereUpdate([])
                     //tags
                     value[0].tags_ref !=null? setTagsReferencementUpdate(value[0].tags_ref) : setTagsReferencementUpdate("")
+
                 })
                
                 .catch(function(err){
@@ -173,8 +184,9 @@ const FormulaireProduit = () => {
             }            
         }  
     }, [])
+
     const handleClickSave = (e, section) => {
-        console.log("section", section)
+        // console.log("section", section)
         e.preventDefault()
         setSectionUpdate(section)
         let token =  JSON.parse(localStorage.getItem('user_multimag')).token
@@ -183,11 +195,11 @@ const FormulaireProduit = () => {
         }
         else{
             //tags ref
-            let tags_text = universUpdate + ',' + universEnUpdate+',Couleur_'+couleurUpdate+',Color_'+ couleurEnUpdate+','+filtreUpdate+','+filtreEnUpdate+','+sousCategorieUpdate+','+sousCategorieEnUpdate+',Catégorie_'+sousCategorieUpdate+',Category_'+sousCategorieEnUpdate+',Créateur_'+marqueUpdate+',Designer_'+marqueUpdate+','+produit.referenceFournisseur+','+categorieUpdate+','+categorieEnUpdate+','+produit.saison
+            let tags_text = universUpdate + ',' + universEnUpdate + ',Couleur_'+couleurUpdate + ',Color_'+ couleurEnUpdate+','+filtreUpdate+','+filtreEnUpdate+','+sousCategorieUpdate+','+sousCategorieEnUpdate+',Catégorie_'+sousCategorieUpdate+',Category_'+sousCategorieEnUpdate+',Créateur_'+marqueUpdate+',Designer_'+marqueUpdate+','+infoSku.reference_fournisseur+','+categorieUpdate+','+categorieEnUpdate+','+infoSku.saison
             setTagsReferencementUpdate(tags_text)
 
             let referencer = false
-            if((produit.sousCategorie!="")
+            if((infoSku.sousCategorie!="")
                 && (filtreUpdate!="")
                 && (paysOrigineUpdate!="")
                 && (grilleTailleUpdate!="")
@@ -202,6 +214,9 @@ const FormulaireProduit = () => {
             ){
                 referencer = true
             }
+
+            //data à sauvegarder
+
             let filtre = {
                 filtre: filtreUpdate? filtreUpdate:"",
                 filtre_ref_en: filtreEnUpdate? filtreEnUpdate:"",
@@ -215,17 +230,70 @@ const FormulaireProduit = () => {
                 }
             }
             let matiere = []
-            if(matiereUpdate && matiereUpdate.length && matiereUpdate[0].matiere!=""){
+            if(matiereUpdate && matiereUpdate.length>0 && matiereUpdate[0].matiere.matiere!=""){
                 matiereUpdate.forEach(element => {
-                    if(element.value!=""){
+                    if(element.pourcentageMatiere>0){
                         matiere.push({
-                            matiere : element.matiere,
-                            pourcentageMatiere: element.pourcentageMatiere
+                            matiere :  element.matiere.matiere,
+                            pourcentageMatiere: parseFloat(element.pourcentageMatiere),
                         })
                     }
                 })
             }
+
+
             let marque = { marque : marqueUpdate}
+
+            /**
+             * Véririfer si tous les section sont complétés
+             */
+            if(marqueUpdate.marque!="" && paysOrigineUpdate!="" && universUpdate!= "" && universEnUpdate!="")
+                setIndicationDone(true)
+            else 
+                setIndicationDone(false)
+
+            if(categorieUpdate!="" && categorieEnUpdate!="" && sousCategorieUpdate!="" && sousCategorieEnUpdate!="" && filtreUpdate!="" && filtreEnUpdate!="" && couleurUpdate!="" && couleurEnUpdate!="")
+                setCaracteristiqueDone(true)
+            else
+                setCaracteristiqueDone(true)
+
+            if(matiereUpdate.length>0)
+                setMatiereDone(true)
+            else
+                setMatiereDone(false)
+
+            if(tarifUpdate[0].prix_vente > 0)
+                setTarifsDone(true)
+            else
+                setTarifsDone(false)
+            
+            let variantDone = 0
+            attributUpdate.forEach(element => {
+                if(element.taille_ref && element.taille_ref!=""){
+                    variantDone++
+                }
+            });
+            if(grilleTailleUpdate && (variantDone == attributUpdate.length)) 
+                setTailleDone(true)
+            else
+                setTailleDone(false)
+
+            if(nomProduitFrUpdate!="" && nomProduitEnUpdate!="" && descriptionFrUpdate!="" && descriptionEnUpdate!="")
+                setDescriptionDone(true)
+            else
+                setDescriptionDone(false)
+
+            if(entretienUpdate!="" && coupeUpdate != "")
+                setEntretienCoupeDone(true)
+            else if(entretienUpdate!="" && coupeUpdate == "")
+                setEntretienCoupeDone(null)
+            else
+                setEntretienCoupeDone(false)
+
+
+            /**
+             * Data à sauvegarder
+             */
             let data = {
                 sku: infoSku.sku,
                 marque:  marqueUpdate ? marque : infoSku.marque,
@@ -241,8 +309,11 @@ const FormulaireProduit = () => {
                 entretienEn: entretienEnUpdate?entretienEnUpdate:"",
                 coupe: coupeUpdate?coupeUpdate:"",
                 coupeEn: coupeEnUpdate?coupeEnUpdate:"",
-                dimensionFr: dimensionFrUpdate? dimensionFrUpdate : "",
-                dimensionEn: dimensionEnUpdate? dimensionEnUpdate : "",
+
+                longueur: longueurUpdate? parseFloat(longueurUpdate) : null,
+                largeur: largeurUpdate? parseFloat(largeurUpdate) : null,
+                hauteur: hauteurUpdate? parseFloat(hauteurUpdate) : null,
+                poids: poidsUpdate? parseFloat(poidsUpdate) : null,                
               
                 descriptionFr: descriptionFrUpdate? descriptionFrUpdate : "",
                 descriptioEn: descriptionEnUpdate? descriptionEnUpdate : "",
@@ -253,15 +324,17 @@ const FormulaireProduit = () => {
               
                 tarifs: tarifUpdate ? tarifUpdate : [],
                 matiereProduits: matiere,
-                tagsRef: tagsReferencementUpdate? tagsReferencementUpdate:"",
+                tags_ref: tagsReferencementUpdate? tagsReferencementUpdate:"",
                 dateRef: Moment().format("YYYY-MM-DD"),
                 referencer: referencer,
               }
               
-            console.log(JSON.stringify(data))
-            console.log('result ',setProduit(infoSku.id, data))
+            console.log("data", JSON.stringify(data))
+            console.log("id : ", infoSku.id)
+            //console.log('result ',setProduit(infoSku.id, data))
         }
     }
+
     //render
     return (
         <Template>
@@ -306,6 +379,15 @@ const FormulaireProduit = () => {
 
             matiereUpdate: matiereUpdate, setMatiereUpdate: setMatiereUpdate,
             handleClickSave: handleClickSave,
+
+            indicationDone : indicationDone, setIndicationDone : setIndicationDone, 
+            caracteristiqueDone : caracteristiqueDone, setCaracteristiqueDone : setCaracteristiqueDone, 
+            matiereDone : matiereDone, setMatiereDone : setMatiereDone, 
+            tarifsDone : tarifsDone, setTarifsDone : setTarifsDone, 
+            tailleDone : tailleDone, setTailleDone : setTailleDone, 
+            descriptionDone : descriptionDone, setDescriptionDone : setDescriptionDone, 
+            entretienCoupeDone : entretienCoupeDone, setEntretienCoupeDone : setEntretienCoupeDone, 
+            dimensionDone : dimensionDone, setDimensionDone : setDimensionDone, 
 
         }}>
             <header>

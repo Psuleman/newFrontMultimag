@@ -16,34 +16,41 @@ const Caracteristique = () => {
      * Couleur, Categorie, dimension, tarifs, coupe, entretien
      */
     //variable
-
-
-    const {infoSku, coupeUpdate, setCoupeUpdate, entretienUpdate, setEntretienUpdate, sectionUpdate, setSectionUpdate, handleClickSave} = useContext(FormulaireContext)
+    const {infoSku, caracteristiqueDone, setCaracteristiqueDone, categorieUpdate, categorieEnUpdate, sousCategorieUpdate, sousCategorieEnUpdate, filtreUpdate, filtreEnUpdate, couleurUpdate, couleurEnUpdate, sectionUpdate, setSectionUpdate, handleClickSave} = useContext(FormulaireContext)
     //fonction
 
+    useEffect(()=>{
+        
+        if(categorieUpdate && categorieUpdate.length>0 && categorieEnUpdate && categorieEnUpdate.length>0 && sousCategorieUpdate && sousCategorieUpdate.length>0 && sousCategorieEnUpdate && sousCategorieEnUpdate.length>0 && filtreUpdate && filtreUpdate.length>0 && filtreEnUpdate && filtreEnUpdate.length>0 && couleurUpdate && couleurUpdate.length>0 && couleurEnUpdate && couleurEnUpdate.length>0)
+            setCaracteristiqueDone(true)
+        else
+            setCaracteristiqueDone(true)
+    }, [])
     //render
     return (
         <div className="card mb-3">
-            <HeaderForm title="Caractéristique" section="caractéristique" />
+            <HeaderForm title="Caractéristique" section="caractéristique" isDone={caracteristiqueDone && caracteristiqueDone} />
             
             {
             infoSku && (sectionUpdate == "caractéristique") &&
             <form onSubmit={(e)=>{handleClickSave(e, "matière")}}>        
             <div className="card-body">
-                    <section className="row g-3">
-                        <InputDesabled id="inputCatUnivers2" type="text" value={infoSku.categorie_univers} label="Catégorie dans le fichier multimag" />
-                        <InputDesabled id="inputSousCategorieFnr" type="text" value={infoSku.sous_categorie_fnr} label="Sous catégorie dans le fichier multimag" />
-                    </section>
+                <section className="row g-3 mb-3"><small>Tous les champs sont obligatoire</small></section>
 
-                    <CategorieContextProvider>
-                        <Categorie />
-                        <SousCategorie />
-                        <Filtre />
-                    </CategorieContextProvider>
+                <section className="row g-3">
+                    <InputDesabled id="inputCatUnivers2" type="text" value={infoSku.categorie_univers} label="Catégorie dans le fichier multimag" />
+                    <InputDesabled id="inputSousCategorieFnr" type="text" value={infoSku.sous_categorie_fnr} label="Sous catégorie dans le fichier multimag" />
+                </section>
 
-                    <CategorieEn />
+                <CategorieContextProvider>
+                    <Categorie />
+                    <SousCategorie />
+                    <Filtre />
+                </CategorieContextProvider>
 
-                    <Couleur />
+                <CategorieEn />
+
+                <Couleur />
               
             </div>
 

@@ -1,0 +1,395 @@
+<?php
+
+namespace App\State;
+
+use App\Entity\Pays;
+use App\Entity\Tarifs;
+use App\Entity\Produits;
+use App\Entity\Stockage;
+use App\Entity\Variants;
+use App\Entity\FiltreRef;
+use App\Entity\MarqueRef;
+use App\Entity\CategorieRef;
+use App\Entity\SousCategorieRef;
+use ApiPlatform\Metadata\Operation;
+use Doctrine\ORM\EntityManagerInterface;
+use ApiPlatform\State\ProcessorInterface;
+
+class ProduitPostProcessor implements ProcessorInterface
+{
+    private $_entityManager;
+
+    public function majuscule($mot)
+    {
+            $mot = str_replace(["à", "â"], "a", $mot);
+            $mot = str_replace(["è", "é", "ê"], "e", $mot);
+            $mot = str_replace(["ï", "î", "ì"], "i", $mot);
+            $mot = str_replace(["ù", "û"], "i", $mot);
+            $mot = str_replace(["ô"], "o", $mot);        
+
+            return strtoupper($mot);
+    }
+    public function minuscule($mot)
+    {
+        if(strlen($mot)>0){
+            $mot = strtolower($mot);
+            $mot[0] = strtoupper($mot[0]);            
+        }
+
+
+        return trim($mot);	
+    }
+    public function extraireString($mot, $debut, $nombredeCaractère){
+        $result = "";
+
+        for($i=$debut; $i<$nombredeCaractère; $i++){
+            $result .= $mot[$i];
+        }
+        return $result;
+        
+    }
+
+    public function __construct(EntityManagerInterface $entityManager) 
+    {
+        $this->_entityManager = $entityManager;
+        $this->newProduct = true;
+    }	
+    
+    public function process($data, Operation $operation, array $uriVariables = [], array $context = [])
+    {
+        // Handle the state
+        /**
+         * saison, referenceCouleur, univers + Univers EN, picture, lien, pays
+         * variants : sku, stock -> OK
+         * stockage : taille_fnr -> OK
+         * tarifs : pays par défaut France, prixVente -> OK
+         * 
+         */
+
+            /**
+             * Vérification si sku existe
+            * si oui : enregistrer sa variants + stock
+            * si non : enregistrer tout
+            */
+            $findProduit = $this->_entityManager->getRepository(Produits::class)->findOneBy([
+            "sku" => $data->getSku(),
+            "date_arrivee" => $data->getDateArrivee(),
+            "reference_fournisseur" => $data->getReferenceFournisseur(),
+            "code_fournisseur" => $data->getCodeFournisseur(),
+            "nom_fournisseur" => $data->getNomFournisseur(),
+
+        ]);
+        if(!$findProduit){
+            //Nouveau produit
+            $data->setNewProduit(true);
+            $data->setReferencer(false);
+            $data->setNewListAttente(false);
+            //sous categorie
+            $sous_categorie = $this->minuscule($data->getSousCategorieFnr());
+            $data->setSousCategorieFnr($sous_categorie);
+            
+            //tag
+            $data->setTag($this->minuscule($data->getTag()));
+
+            //marque
+            $marque = $this->minuscule($data->getNomFournisseur());
+            $marque = strtolower($marque);
+
+            $tab = explode(" ", $marque);
+            $marqueUpdate = "";
+            foreach($tab as $valeur){
+                $marqueUpdate .= ucfirst($valeur) . " ";
+            }
+            $marque = trim($marqueUpdate);
+            $marque = str_replace("Homme", "", $marque);
+            $marque = str_replace("Femme", "", $marque);
+            $marque = str_replace("Maison", "", $marque);
+            $marque = trim($marque);
+            $data->setNomFournisseur(ucwords($marque));
+            
+            $marquefind = $this->_entityManager->getRepository(MarqueRef::class)->findOneBy(["marque" => $data->getMarque()]);
+
+            if($marquefind)
+                $data->setMarque($marquefind);
+            else{
+                $marqueRef = new MarqueRef($marque);
+            }
+
+            //pays
+            $pays = new Pays(["pays"=>"France", "continent"=>""]);
+            $find = $this->_entityManager->getRepository(Pays::class)->findOneBy([
+                "pays" => "France",
+                ]);	    	
+            if(!$find)
+                $this->_entityManager->persist($pays);
+            else{
+                $pays = $find;    		
+            }
+
+            //saison
+            if($data->getCodeSaison() == 1)
+                $data->setSaison("SS" . $data->getAnneeSortie());
+                
+            else
+                $data->setSaison("FW" . $data->getAnneeSortie());
+
+            //Couleurs
+            $code_couleur = $data->getCodeCouleur();
+            $reference_couleur_1 = $data->getReferenceCouleur1() ? $data->getReferenceCouleur1() : "";
+            $reference_couleur_2 =$data->getReferenceCouleur2() ? $data->getReferenceCouleur2() : "" ;
+            $result = preg_match("#[\#]{1,}#i", $reference_couleur_1, $delimiter);
+            if($result){
+                $donnees = explode($delimiter[0], $reference_couleur_1);
+
+                if(count($donnees)>=2){
+                    $code_couleur .= $donnees[0];
+                    $reference_couleur_1 = $donnees[1];                        
+                }
+                if(count($donnees)>=3){
+                    $reference_couleur_2 = $donnees[2] . "" . $reference_couleur_2;
+                }
+            }   
+            $result = preg_match("#[\#]{1,}#i", $reference_couleur_2, $delimiter);
+            if($result){
+                $donnees = explode("#", $reference_couleur_2);
+                //echo count($donnees);
+                if(count($donnees)>=2){
+                    $reference_couleur_1 .= $donnees[0];                    
+                    $reference_couleur_2 = $donnees[1];                        
+                }
+                else{
+                    $reference_couleur_2 = " " . $donnees[0];
+                }
+
+            }
+            //$reference_couleur_2 = $data->getReferenceCouleur2();
+            $reference_couleur_1 = str_replace("#", '', $reference_couleur_1);
+            $reference_couleur_2 = str_replace("#", "", $reference_couleur_2);    
+                
+            $data->setReferenceCouleur($this->minuscule($reference_couleur_1 . " " . $reference_couleur_2));
+
+            //Univers 
+            /******* UNIVERS + CATEGORIE **************/
+            $categorieMotCle = $data->getCategorieUnivers(); //ex : VET. Homme ou BIJOUTERIE
+            $motCleCat = "#^";
+            $univers_referencement = "Autres"; //Par défaut "Autres"
+            $result = preg_match("#[. ]#i", $categorieMotCle, $delimiter); //Délimitateur
+            if($result){
+                /**
+                 * On récupère catégorie
+                 * On récupère univers
+                 */
+                $donnees = explode($delimiter[0], $categorieMotCle);
+                $categorieMotCle = trim($this->majuscule($donnees[0]));
+                $motCleCat .= $categorieMotCle;
+                $univers_referencement = trim($this->majuscule($donnees[1]));
+            }
+            else{
+                /**
+                 * on extrait une partie de CatégorieRef
+                 */
+                $categorieMotCle = trim($this->majuscule($categorieMotCle));
+                $motCleCat .= $categorieMotCle;
+            } 
+                    
+            $universRefObjet = ["univers_ref"=>"Autres", "univers_ref_en"=>"Other", "univers_ref_abreviation"=>"A"];
+            $universRefTab = [
+                ["univers_ref"=>"Femme", "univers_ref_en"=>"Women", "univers_ref_abreviation"=>"F"], 
+                ["univers_ref"=>"Homme", "univers_ref_en"=>"Men", "univers_ref_abreviation"=>"H"], 
+                ["univers_ref"=>"Maison", "univers_ref_en"=>"Home", "univers_ref_abreviation"=>"M"], 
+                ["univers_ref"=>"Autres", "univers_ref_en"=>"Other", "univers_ref_abreviation"=>"A"], 
+            ];
+                
+            foreach ($universRefTab as $key => $value) {
+                // code...
+                $motCle = '#^'. $this->majuscule($value["univers_ref_abreviation"]) . "#i";
+
+                $rechercheUniversRef = preg_match($motCle, $univers_referencement);
+                    
+                if($rechercheUniversRef){
+                    $universRefObjet = $value;
+                    break;
+                }    
+            }
+            if($this->majuscule($data->getCategorieUnivers()) == "DESIGN"){
+                $universRefObjet = $this->_entityManager->getRepository(UniversRef::class)->findOneBy([
+                    "univers_ref" => "Maison"
+                ]);
+            }
+
+            $data->setUnivers($universRefObjet["univers_ref"]);
+            $data->setUniversEn($universRefObjet["univers_ref_en"]);
+
+            //picture
+            $img = "";
+            for($i=1; $i<10; $i++)
+                $img .= "https://leclaireur-shopify.imgix.net/" . $data->getSku() . "/" . $data->getSku() . "-0".$i.".png;";
+
+            $img .= "https://leclaireur-shopify.imgix.net/" . $data->getSku() . "/" . $data->getSku() . "-360.mp4";
+            $data->setPictures($img);
+
+            //lien
+            $lien = "https://leclaireur.com/products/" . $data->getSku();
+            $data->setLien($lien);
+
+            //marque à revoir plus tard
+
+            //Filtre //A revior plus tard
+            $filtreMotCle = $this->minuscule($data->getSousCategorieFnr());
+            $FiltreRefObjet = new FiltreRef(["filtre"=>$filtreMotCle, "filtre_ref_en" => ""]);
+            $filtreRefTab = $this->_entityManager->getRepository(FiltreRef::class)->findAll();
+            foreach ($filtreRefTab as $key => $value) {
+                // code...
+                $motCle = '#^'. $FiltreRefObjet->getFiltre() . "#i";
+                $filtreOriginale = $this->majuscule($value->getFiltre());
+                $rechercheFiltreRef = preg_match($motCle, $filtreOriginale);
+                if($rechercheFiltreRef){
+                    $FiltreRefObjet = $value; //objet filtre
+                    $data->setFiltre($FiltreRefObjet);
+                    break;
+                }    
+            }
+            if(!$data->getFiltre()){
+                //On instancie CategorieRef
+				$categorieRef = new CategorieRef([
+					"categorie_ref" => $this->minuscule($categorieMotCle),
+					"categorie_ref_en" => ""
+					]);	
+				$motCleCat .= "#i";
+                //liste CatégorieRef
+				$categorieRefTab = $this->_entityManager->getRepository(CategorieRef::class)->findAll();
+				//récupère la liste de CatégorieRef
+				foreach($categorieRefTab as $value){
+					$categorie = $this->majuscule($value->getCategorieRef());
+					$rechercheCategorysRef = preg_match($motCleCat, $categorie); 
+
+					if($rechercheCategorysRef){
+						$categorieRef = $value;
+						break;
+					} 
+				}
+                if(!$categorieRef->getId()){
+                    /**
+                     * si Categorie n'existe pas
+                     */
+                    $categorieRef = $this->_entityManager->getRepository(CategorieRef::class)->findOneBy(["categorie_ref"=>"A définir", "categorie_ref_en"=>"To define"]);
+
+                    if(!$categorieRef){
+                        $categorieRef = new CategorieRef(["categorie_ref"=>"A définir", "categorie_ref_en"=>"To define"]);
+
+                        $this->_entityManager->persist($categorieRef);
+                    }
+                }
+                $sousCategorieRef = $this->_entityManager->getRepository(SousCategorieRef::class)->findOneBy(["sous_categorie_ref"=>"A définir", "sous_categorie_ref_en"=>"To define"]);
+                if(!$sousCategorieRef){
+                    $sousCategorieRef = (new SousCategorieRef(["sous_categorie_ref"=>"Écharpes & Gants", "sous_categorie_ref_en"=>"Scarves & Gloves"]))
+                    ->setCategorieRef($categorieRef); 
+
+                    $this->_entityManager->persist($sousCategorieRef);                 
+                }
+
+                $filtreRef = (new FiltreRef(["filtre"=>$filtreMotCle, "filtre_ref_en"=>"Scarves"]))
+                ->setSousCategorieRef($sousCategorieRef);
+
+                $this->_entityManager->persist($filtreRef);                 
+                $data->setFiltre($filtreRef);
+
+            }
+            //Tags Ref à revoir plus tard
+            if($filtreOriginale){
+
+                $tags_ref = $universRefObjet["univers_ref"] . "," . $universRefObjet["univers_ref_en"] . ',';
+                $tags_ref .= "Couleur_,Color_,";
+                $tags_ref .= ",,";//Filtre à modifier dans ExportUpdateDataPersister
+                $tags_ref .= $data->getFiltre()->getSousCategorieRef()->getSousCategorieRef() . "," . $data->getFiltre()->getSousCategorieRef()->getSousCategorieRefEn() . ',';
+                $tags_ref .= "Catégorie_" . $data->getFiltre()->getSousCategorieRef()->getSousCategorieRef() . ",Category_" . $data->getFiltre()->getSousCategorieRef()->getSousCategorieRefEn() . ',';
+                $tags_ref .= "Créateur_" . $data->getNomFournisseur() . ",Designer_" . $data->getNomFournisseur() . ',';
+                $tags_ref .= $data->getReferenceFournisseur() . ',';
+                if($data->getFiltre()->getSousCategorieRef())
+                    $tags_ref .= $data->getFiltre()->getSousCategorieRef()->getCategorieRef()->getCategorieRef() . "," . $data->getFiltre()->getSousCategorieRef()->getCategorieRef()->getCategorieRefEn() . ',';
+                $tags_ref .= $data->getSaison() . "" . $data->getAnneeSortie();
+
+                $data->setTagsRef($tags_ref);
+            }
+
+            /**
+             * TARIFS
+             */
+            $findTarifs = $this->_entityManager->getRepository(Tarifs::class)->findOneBy([
+                "produit" => $data
+            ]);
+
+            if(!$findTarifs){
+                $tarifs = (new Tarifs())
+                ->setProduit($data)
+                ->setPrixVente($data->getPrixVente())
+                ->addPay($pays)
+                ;
+
+                $this->_entityManager->persist($tarifs);
+            }
+            $this->_entityManager->persist($data);
+            $this->_entityManager->flush();
+        }
+        else{
+            $findProduit->setTaille($data->getTaille());
+            $findProduit->setStockMag0($data->getStockMag0());
+            $findProduit->setStockMag3($data->getStockMag3());
+            $findProduit->setStockMag7($data->getStockMag7());
+            $findProduit->setStockMag9($data->getStockMag9());
+            $findProduit->setStockMag11($data->getStockMag11());
+            $findProduit->setStockMag12($data->getStockMag12());
+            $findProduit->setStockMag14($data->getStockMag14());
+            $findProduit->setStockMag18($data->getStockMag18());
+            $findProduit->setStockMag20($data->getStockMag20());
+            $findProduit->setStockMag60($data->getStockMag60());
+
+            $data = $findProduit;
+        }
+        // $this->_entityManager->persist($data);
+
+        /**
+         * Variantes
+         */
+        $variants = (new Variants())
+        ->setSku($data)
+        ->setTailleFnr($data->getTaille())
+        ->setVariantSku($data->getSku() ."_" . $data->getTaille())
+        ;
+        $findVariants = $this->_entityManager->getRepository(Variants::class)->findOneBy([
+            "sku" => $variants->getSku(),
+            "taille_fnr" => $variants->getTailleFnr()
+        ]);
+
+        if(!$findVariants){
+            /**
+             * Stockage
+            */
+            $this->_entityManager->persist($variants);
+            $stockage = (new Stockage())
+            ->setVariantSku($variants)
+            ->setStock0($data->getStockMag0())
+            ->setStock3($data->getStockMag3())
+            ->setStock7($data->getStockMag7())
+            ->setStock9($data->getStockMag9())
+            ->setStock11($data->getStockMag11())
+            ->setStock12($data->getStockMag12())
+            ->setStock14($data->getStockMag14())
+            ->setStock18($data->getStockMag18())
+            ->setStock20($data->getStockMag20())
+            ->setStock60($data->getStockMag60())
+            ;
+            $findStockage = $this->_entityManager->getRepository(Stockage::class)->findOneBy([
+                "variant_sku" => $variants
+            ]);
+            if(!$findStockage){
+                $variants->addStockage($stockage);
+            }   
+            $data->addVariant($variants);         
+        }
+
+            $this->_entityManager->persist($data);  
+            $this->_entityManager->flush();      
+            return $data;
+        }
+}

@@ -2,32 +2,32 @@
 
 namespace App\Repository;
 
-use App\Entity\Matiere;
+use App\Entity\FiltreRef;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Matiere>
+ * @extends ServiceEntityRepository<FiltreRef>
  *
- * @method Matiere|null find($id, $lockMode = null, $lockVersion = null)
- * @method Matiere|null findOneBy(array $criteria, array $orderBy = null)
- * @method Matiere[]    findAll()
- * @method Matiere[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method FiltreRef|null find($id, $lockMode = null, $lockVersion = null)
+ * @method FiltreRef|null findOneBy(array $criteria, array $orderBy = null)
+ * @method FiltreRef[]    findAll()
+ * @method FiltreRef[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MatiereRepository extends ServiceEntityRepository
+class FiltreRefRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Matiere::class);
+        parent::__construct($registry, FiltreRef::class);
     }
 
     /**
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function add(Matiere $entity, bool $flush = true): void
+    public function add(FiltreRef $entity, bool $flush = true): void
     {
         $this->_em->persist($entity);
         if ($flush) {
@@ -39,7 +39,7 @@ class MatiereRepository extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function remove(Matiere $entity, bool $flush = true): void
+    public function remove(FiltreRef $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);
         if ($flush) {
@@ -48,15 +48,15 @@ class MatiereRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return Matiere[] Returns an array of Matiere objects
+    //  * @return FiltreRef[] Returns an array of FiltreRef objects
     //  */
     /*
     public function findByExampleField($value)
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.exampleField = :val')
             ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
+            ->orderBy('f.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
@@ -65,10 +65,10 @@ class MatiereRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Matiere
+    public function findOneBySomeField($value): ?FiltreRef
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.exampleField = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()

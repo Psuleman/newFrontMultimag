@@ -32,10 +32,8 @@ class TailleRef
     private $id;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(['tailleRef', 'grilletailleRef'])]
+    #[Groups(['tailleRef', 'grilletailleRef', 'variants'])]
     private $taille_ref;
-
-
 
     #[ORM\Column(type: 'string', length: 100)]
     #[Groups(['tailleRef', 'grilletailleRef'])]
@@ -45,10 +43,7 @@ class TailleRef
     #[Groups(['tailleRef', 'grilletailleRef'])]
     private $stock_code;
 
-    #[ORM\OneToMany(mappedBy: 'taille_ref', targetEntity: Variants::class)]
-    private Collection $variants;
-
-    #[ORM\ManyToOne(inversedBy: 'tailleRefs')]
+    #[ORM\ManyToOne(inversedBy: 'tailleRefs', cascade: ['persist'])]
     private ?GrilleTailleRef $grille_taille_ref = null;
     
     public function __construct($tab = [])
@@ -67,7 +62,6 @@ class TailleRef
                 $this->setStockCode($tab["stock_code"]);
             }
         }
-        $this->variants = new ArrayCollection();
     }
     public function getId() : ?int
     {
@@ -107,31 +101,6 @@ class TailleRef
     public function setStockCode(?string $stock_code) : self
     {
         $this->stock_code = $stock_code;
-        return $this;
-    }
-    /**
-     * @return Collection<int, Variants>
-     */
-    public function getVariants() : Collection
-    {
-        return $this->variants;
-    }
-    public function addVariant(Variants $variant) : self
-    {
-        if (!$this->variants->contains($variant)) {
-            $this->variants->add($variant);
-            $variant->setTailleRef($this);
-        }
-        return $this;
-    }
-    public function removeVariant(Variants $variant) : self
-    {
-        if ($this->variants->removeElement($variant)) {
-            // set the owning side to null (unless already changed)
-            if ($variant->getTailleRef() === $this) {
-                $variant->setTailleRef(null);
-            }
-        }
         return $this;
     }
 

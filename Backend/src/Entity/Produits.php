@@ -2,43 +2,57 @@
 
 namespace App\Entity;
 
+use App\Entity\Tarifs;
+use App\Entity\Variants;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
+use App\Entity\MatiereProduit;
 use Doctrine\DBAL\Types\Types;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiFilter;
+use App\State\ProduitPostProcessor;
+use App\State\ProduitPatchProcessor;
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProduitsRepository;
 use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use App\State\ProduitPatchProcesseur;
-use App\State\ProduitPostProcessor;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+
 #[ApiResource(
-    paginationItemsPerPage: 10, 
-    paginationClientEnabled: true,
+    // uriTemplate: '/produits/{id}/matiere_produits.{_format}',
+    // uriVariables: [
+    //     'id' => new Link(fromClass: Produits::class, fromProperty: 'matiereProduits')
+    // ], 
+    operations: [new GetCollection()]
+)]
+#[ApiResource(
     operations: [
-        new Get(normalizationContext: ['groups' => ['produit', 'produit:read']]),
-        new GetCollection(normalizationContext: ['groups' => ['produit', 'produit:read']]),
-        new Delete()
-    ],
+        new Post(
+            denormalizationContext: ['groups' => ['produit']],
+            processor: ProduitPostProcessor::class,
+
+        ),
+        // new Patch(
+        //     denormalizationContext: ['groups' => ['produit']],
+        // )
+    ]
 )]
-#[POST(
-    normalizationContext: ['groups' => ['produit', 'produit:write']],
-    processor: ProduitPostProcessor::class
+#[Get(
+    normalizationContext: ['groups' => ['produit', 'produit:read']],
 )]
-#[PATCH(
-    denormalizationContext: ['groups' => ['produit', 'produit:write']],
-    processor: ProduitPatchProcesseur::class
-)]
-#[ApiFilter(OrderFilter::class, properties: ['date_arrivee' => 'DESC', 'sku' => 'ASC'])]
-#[ApiFilter(SearchFilter::class, properties: ['filtre.sousCategorieRef.categorie_ref.categorie_ref' => 'exact', 'univers' => 'exact', 'sku' => 'exact', 'marque.marque' => 'exact', 'newProduit' => 'exact', 'referencer' => 'exact', 'code_tag' => 'exact'])]
+#[Patch(
+    denormalizationContext: ['groups' => ['produit']],
+    processor: ProduitPatchProcessor::class,
+    )]
 #[ORM\Entity(repositoryClass: ProduitsRepository::class)]
 class Produits
 {
@@ -53,10 +67,6 @@ class Produits
     private ?string $sku = null;
 
     #[Groups(['produit'])]
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date_arrivee = null;
-
-    #[Groups(['produit'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $code_fournisseur;
     
@@ -67,7 +77,7 @@ class Produits
     #[Groups(['produit'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $reference_fournisseur;
-
+    
     #[Groups(['produit:write'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $code_couleur;
@@ -91,7 +101,7 @@ class Produits
     #[Groups(['produit'])]
     #[ORM\Column(type: 'integer', nullable: true)]
     private $code_categorie_univers;
-
+    
     #[Groups(['produit'])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $categorie_univers;
@@ -123,7 +133,7 @@ class Produits
     #[Groups(['produit:write'])]
     #[ORM\Column(type: 'integer', nullable: true)]
     private $code_famille_6;
-
+    
     #[Groups(['produit:write'])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $famille_6;
@@ -204,7 +214,7 @@ class Produits
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $lien;
 
-    #[Groups('produit:read')]
+    #[Groups(['produit'])]
     #[ORM\Column(type: 'text', nullable: true)]
     private $tags_ref;
 
@@ -216,25 +226,21 @@ class Produits
     #[ORM\Column(type: 'string', length: 255)]
     private $sous_categorie_fnr;
 
-    #[Groups('produit:read')]
-    #[ORM\OneToMany(mappedBy: 'sku', targetEntity: Variants::class,  cascade: ['persist'])]
-    private Collection $variants;
-
-    #[Groups('produit:read')]
-    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Tarifs::class)]
-    private Collection $tarifs;
-    
-    /**
-     * marque
-     */  
     #[Groups(['produit'])]
-    #[ORM\ManyToOne(inversedBy: 'produits', cascade: ['persist'])]
-    private ?MarqueRef $marque = null;
-
+    #[ORM\Column(nullable: true)]
+    private ?float $longueur = null;
 
     #[Groups(['produit'])]
-    #[ORM\ManyToOne(inversedBy: 'produits', cascade: ['persist'])]
-    private ?FiltreRef $filtre = null;
+    #[ORM\Column(nullable: true)]
+    private ?float $largeur = null;
+
+    #[Groups(['produit'])]
+    #[ORM\Column(nullable: true)]
+    private ?float $hauteur = null;
+
+    #[Groups(['produit'])]
+    #[ORM\Column(nullable: true)]
+    private ?float $poids = null;
 
     #[Groups(['produit'])]
     #[ORM\Column(type: 'boolean')]
@@ -248,9 +254,7 @@ class Produits
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $newListAttente;
 
-    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: MatiereProduit::class)]
-    private Collection $matiereProduits;
-
+    
     //variable sans ajouter dans la base de données
     #[Groups(['produit'])]
     private ?string $taille;
@@ -263,6 +267,7 @@ class Produits
 
     #[Groups(['produit'])]
     private ?float $prix_vente;
+
     //Stock
     #[Groups(['produit'])]
     private ?int $stock_mag_0;
@@ -295,9 +300,6 @@ class Produits
     private ?int $stock_mag_60;
 
     #[Groups(['produit'])]
-    private array $matieres = [];
-
-    #[Groups(['produit'])]
     private ?string $categorie = null;
 
     #[Groups(['produit'])]
@@ -314,24 +316,45 @@ class Produits
 
     #[Groups(['produit'])]
     private ?string $filtre_produit_en = null;
+    /**
+     * marque
+     */  
+    #[Groups(['produit'])]
+    #[ORM\ManyToOne(inversedBy: 'produits', cascade: ['persist'])]
+    private ?MarqueRef $marque = null;
+
+
+    #[ApiSubresource()]
+    #[Groups(['produit:read'])]
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: MatiereProduit::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $matiereProduits;
+
+    #[ApiSubresource()]
+    #[Groups('produit:read')]
+    #[ORM\OneToMany(mappedBy: 'sku', targetEntity: Variants::class, orphanRemoval: true,  cascade: ['persist'])]
+    private Collection $variants;
 
     #[Groups(['produit'])]
-    #[ORM\Column(nullable: true)]
-    private ?float $longueur = null;
+    private array $matieres = [];
 
     #[Groups(['produit'])]
-    #[ORM\Column(nullable: true)]
-    private ?float $largeur = null;
+    private array $variantProduits = [];
+
+    #[ApiSubresource()]
+    #[Groups('produit:read')]
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Tarifs::class, orphanRemoval: true,  cascade: ['persist'])]
+    private Collection $tarifs;
+    
+    #[Groups(['produit'])]
+    private array $tarifsProduits = [];
 
     #[Groups(['produit'])]
-    #[ORM\Column(nullable: true)]
-    private ?float $hauteur = null;
+    #[ORM\ManyToOne(cascade: ['persist'])]
+    private ?FiltreRef $filtre = null;
 
     #[Groups(['produit'])]
-    #[ORM\Column(nullable: true)]
-    private ?float $poids = null;
-
-
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $date_arrivee = null;
 
     //end
     public function __construct()
@@ -353,15 +376,138 @@ class Produits
         $this->sku = $sku;
         return $this;
     }
-    public function getDateArrivee() : ?\DateTimeInterface
+    
+    public function getMarque(): ?MarqueRef
     {
-        return $this->date_arrivee;
+        return $this->marque;
     }
-    public function setDateArrivee(\DateTimeInterface $date_arrivee) : self
+
+    public function setMarque(?MarqueRef $marque): self
     {
-        $this->date_arrivee = $date_arrivee;
+        $this->marque = $marque;
+
         return $this;
     }
+
+
+    /**
+     * @return Collection<int, MatiereProduit>
+     */
+    public function getMatiereProduits() : Collection
+    {
+        return $this->matiereProduits;
+    }
+    public function addMatiereProduit(MatiereProduit $matiereProduit) : self
+    {
+        if (!$this->matiereProduits->contains($matiereProduit)) {
+            $this->matiereProduits->add($matiereProduit);
+            $matiereProduit->setProduit($this);
+        }
+        return $this;
+    }
+    public function removeMatiereProduit(MatiereProduit $matiereProduit) : self
+    {
+        if ($this->matiereProduits->removeElement($matiereProduit)) {
+            // set the owning side to null (unless already changed)
+            if ($matiereProduit->getProduit() === $this) {
+                $matiereProduit->setProduit(null);
+            }
+        }
+        return $this;
+    }
+
+    public function getMatieres() : array
+    {
+        return $this->matieres;
+    }
+    public function setMatieres(?array $matieres) : self
+    {
+        $this->matieres = $matieres;
+        return $this;
+    }
+    
+    /**
+     * @return Collection<int, Variants>
+     */
+    public function getVariants() : Collection
+    {
+        return $this->variants;
+    }
+    public function addVariant(Variants $variant) : self
+    {
+        if (!$this->variants->contains($variant)) {
+            $this->variants->add($variant);
+            $variant->setSku($this);
+        }
+        return $this;
+    }
+    public function removeVariant(Variants $variant) : self
+    {
+        if ($this->variants->removeElement($variant)) {
+            // set the owning side to null (unless already changed)
+            if ($variant->getSku() === $this) {
+                $variant->setSku(null);
+            }
+        }
+        return $this;
+    }
+    public function getVariantProduits() : array
+    {
+        return $this->variantProduits;
+    }
+    public function setVariantProduits(?array $variantProduits) : self
+    {
+        $this->variantProduits = $variantProduits;
+        return $this;
+    }
+    
+    /**
+     * @return Collection<int, Tarifs>
+     */
+    public function getTarifs() : Collection
+    {
+        return $this->tarifs;
+    }
+    public function addTarif(Tarifs $tarif) : self
+    {
+        if (!$this->tarifs->contains($tarif)) {
+            $this->tarifs->add($tarif);
+            $tarif->setProduit($this);
+        }
+        return $this;
+    }
+    public function removeTarif(Tarifs $tarif) : self
+    {
+        if ($this->tarifs->removeElement($tarif)) {
+            // set the owning side to null (unless already changed)
+            if ($tarif->getProduit() === $this) {
+                $tarif->setProduit(null);
+            }
+        }
+        return $this;
+    }
+    public function getTarifsProduits() : array
+    {
+        return $this->tarifsProduits;
+    }
+    public function setTarifsProduits(?array $tarifsProduits) : self
+    {
+        $this->tarifsProduits = $tarifsProduits;
+        return $this;
+    }
+
+    public function getFiltre(): ?FiltreRef
+    {
+        return $this->filtre;
+    }
+
+    public function setFiltre(?FiltreRef $filtre): self
+    {
+        $this->filtre = $filtre;
+
+        return $this;
+    }
+
     public function getCodeFournisseur() : ?string
     {
         return $this->code_fournisseur;
@@ -722,56 +868,7 @@ class Produits
         $this->sous_categorie_fnr = $sous_categorie_fnr;
         return $this;
     }
-    /**
-     * @return Collection<int, Variants>
-     */
-    public function getVariants() : Collection
-    {
-        return $this->variants;
-    }
-    public function addVariant(Variants $variant) : self
-    {
-        if (!$this->variants->contains($variant)) {
-            $this->variants->add($variant);
-            $variant->setSku($this);
-        }
-        return $this;
-    }
-    public function removeVariant(Variants $variant) : self
-    {
-        if ($this->variants->removeElement($variant)) {
-            // set the owning side to null (unless already changed)
-            if ($variant->getSku() === $this) {
-                $variant->setSku(null);
-            }
-        }
-        return $this;
-    }
-    /**
-     * @return Collection<int, Tarifs>
-     */
-    public function getTarifs() : Collection
-    {
-        return $this->tarifs;
-    }
-    public function addTarif(Tarifs $tarif) : self
-    {
-        if (!$this->tarifs->contains($tarif)) {
-            $this->tarifs->add($tarif);
-            $tarif->setProduit($this);
-        }
-        return $this;
-    }
-    public function removeTarif(Tarifs $tarif) : self
-    {
-        if ($this->tarifs->removeElement($tarif)) {
-            // set the owning side to null (unless already changed)
-            if ($tarif->getProduit() === $this) {
-                $tarif->setProduit(null);
-            }
-        }
-        return $this;
-    }
+
 
 
     public function getReferenceCouleur1() : ?string
@@ -900,15 +997,7 @@ class Produits
         $this->stock_mag_60 = $stock_mag_60;
         return $this;
     }
-    public function getFiltre() : ?FiltreRef
-    {
-        return $this->filtre;
-    }
-    public function setFiltre(?FiltreRef $filtre) : self
-    {
-        $this->filtre = $filtre;
-        return $this;
-    }
+
     public function getNewProduit() : ?bool
     {
         return $this->newProduit;
@@ -936,40 +1025,7 @@ class Produits
         $this->newListAttente = $newListAttente;
         return $this;
     }
-    /**
-     * @return Collection<int, MatiereProduit>
-     */
-    public function getMatiereProduits() : Collection
-    {
-        return $this->matiereProduits;
-    }
-    public function addMatiereProduit(MatiereProduit $matiereProduit) : self
-    {
-        if (!$this->matiereProduits->contains($matiereProduit)) {
-            $this->matiereProduits->add($matiereProduit);
-            $matiereProduit->setProduit($this);
-        }
-        return $this;
-    }
-    public function removeMatiereProduit(MatiereProduit $matiereProduit) : self
-    {
-        if ($this->matiereProduits->removeElement($matiereProduit)) {
-            // set the owning side to null (unless already changed)
-            if ($matiereProduit->getProduit() === $this) {
-                $matiereProduit->setProduit(null);
-            }
-        }
-        return $this;
-    }
-    public function getMatieres() : array
-    {
-        return $this->matieres;
-    }
-    public function setMatieres(?array $matieres) : self
-    {
-        $this->matieres = $matieres;
-        return $this;
-    }
+
     public function getCategorie() : ?string
     {
         if ($this->filtre) {
@@ -1043,17 +1099,6 @@ class Produits
         return $this;
     }
 
-    public function getMarque(): ?MarqueRef
-    {
-        return $this->marque;
-    }
-
-    public function setMarque(?MarqueRef $marque): self
-    {
-        $this->marque = $marque;
-
-        return $this;
-    }
 
     public function getLongueur(): ?float
     {
@@ -1099,6 +1144,18 @@ class Produits
     public function setPoids(?float $poids): self
     {
         $this->poids = $poids;
+
+        return $this;
+    }
+
+    public function getDateArrivee(): ?\DateTimeInterface
+    {
+        return $this->date_arrivee;
+    }
+
+    public function setDateArrivee(?\DateTimeInterface $date_arrivee): self
+    {
+        $this->date_arrivee = $date_arrivee;
 
         return $this;
     }

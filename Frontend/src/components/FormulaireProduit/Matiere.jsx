@@ -10,20 +10,21 @@ import HeaderForm from "./TemplateFormulaire/HeaderForm";
 const Matiere = () => {
     //variable
     const [nbMatiere, setNbMatiere] = useState()
-    const {infoSku, matiereUpdate, setMatiereUpdate, 
+    const {infoSku, matiereDone, setMatiereDone, matiereUpdate, setMatiereUpdate, 
         sectionUpdate, setSectionUpdate, handleClickSave} = useContext(FormulaireContext)
     //fonction
     useEffect(()=>{
         if(matiereUpdate.length>0){
-
+            setMatiereDone(true)
         }
         else{
+            setMatiereDone(false)
             let tab = [1,2]
            
             let arrayMatiere = []
             for(let i=0; i<tab.length; i++){
                 arrayMatiere[i]={
-                    matiere: "",
+                    matiere: {matiere : ""},
                     pourcentageMatiere: 0
                 }
             }
@@ -39,7 +40,7 @@ const Matiere = () => {
             let nbMatiereRestant = 10 - total
             for(let i=0; i<nbMatiere && i<10; i++){
                 tab.push({
-                    matiere: "",
+                    matiere: {matiere : ""},
                     pourcentageMatiere:0
                 })
             }
@@ -51,17 +52,24 @@ const Matiere = () => {
     //render
     return (
         <div className="card mb-3">
-        <HeaderForm title="Matière" section="matière" />
+        <HeaderForm title="Matière" section="matière" isDone={matiereDone} />
 
         {
             infoSku && (sectionUpdate == "matière") &&
             <form onSubmit={(e)=>{handleClickSave(e, "tarifs")}}>        
             <div className="card-body">
+                <section className="row g-3 mb-3"><small>* Champs obligatoire</small></section>
                 {
                     matiereUpdate &&
                     matiereUpdate.map((i, index)=>(
-                        <section className="row g-3 mt-1">
-                            <SelectMatiere label={"Matière " + (index + 1)} value={matiereUpdate[index].matiere} id={"selectMatiere" + (index + 1)} indexMatiere={index} />
+                        <section className="row g-3">
+                            {
+                                parseInt(index) == 0 ?
+                                <SelectMatiere label={"* Matière " + (index + 1)} value={matiereUpdate[index].matiere.matiere} id={"selectMatiere" + (index + 1)} indexMatiere={index} />
+                                :
+                                <SelectMatiere label={"Matière " + (index + 1)} value={matiereUpdate[index].matiere.matiere} id={"selectMatiere" + (index + 1)} indexMatiere={index} />
+
+                            }
 
                             {/* <div className="col-md-3">
                                 <label htmlFor={"selectMatiere" + (index+1)} className="form-label">{"Matière " + (index + 1)}</label>
@@ -81,7 +89,13 @@ const Matiere = () => {
 
 
                             <div className="col-md-3">
-                                <label htmlFor={"inputPourcentMatiere" + (index + 1)} className="form-label">{"Pourcentage matière " + (index + 1)}</label>
+                                {
+                                    parseInt(index) == 0 ?
+                                    <label htmlFor={"inputPourcentMatiere" + (index + 1)} className="form-label">{"* Pourcentage matière " + (index + 1)}</label>
+                                    :
+                                    <label htmlFor={"inputPourcentMatiere" + (index + 1)} className="form-label">{"Pourcentage matière " + (index + 1)}</label>
+
+                                }
                                 <input type="number" className="form-control" id={"inputPourcentMatiere" + (index + 1)} value={matiereUpdate[index].pourcentageMatiere} onChange={(e)=>{ setMatiereUpdate(oldState=>{
                                 let newState = [...oldState]
                                 newState[index].pourcentageMatiere = e.target.value

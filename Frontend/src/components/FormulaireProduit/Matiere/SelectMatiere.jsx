@@ -56,7 +56,7 @@ const SelectMatiere = ({label, value, id, indexMatiere}) => {
                                 <div className="p-1 cursor-pointer" id={label+"_"+index} key={label+"_"+index} onClick={() => {
                                     setMatiereUpdate(oldState=>{
                                         let newState = [...oldState]
-                                        newState[indexMatiere].matiere = item
+                                        newState[indexMatiere].matiere.matiere = item
                                         return newState
                                     })
                                 }}>{ item }</div>

@@ -1,28 +1,30 @@
 import { useContext } from "react";
 import { FormulaireContext } from "../Context/FormulaireContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleExclamation, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 
-const HeaderForm = ({title, section}) => {
+const HeaderForm = ({title, section, isDone=null}) => {
     //Variable
     const {sectionUpdate, setSectionUpdate} = useContext(FormulaireContext)
 
     //fonction
-    const handleClick = () => {
-        console.log
-    }
+
     //render
     return (
-        <div className="card-header bg-transparent d-flex justify-content-between cursor-pointer"
-            onClick={()=>{
-                (sectionUpdate == section) ? setSectionUpdate("") : setSectionUpdate(section)
-            }}
-        >
-        <div>{title}</div>
-        {
-            (sectionUpdate == section) ?
-            <div><i className="fas fa-chevron-up"></i></div>
-            :
-            <div><i className="fas fa-chevron-down"></i></div>
-        }
+        <div className="card-header bg-transparent d-flex justify-content-between cursor-pointer" onClick={()=>{ (sectionUpdate == section) ? setSectionUpdate("") : setSectionUpdate(section) }} >
+            <div className="me-3">{title}</div>
+            <div className="text-success">{isDone!=null && isDone && <span><FontAwesomeIcon icon={faCircleCheck} /> <small>Terminé</small></span>}</div>
+            <div className="text-danger">{isDone!=null && !isDone && <span><FontAwesomeIcon icon={faCircleExclamation} /> <small>A modifier</small></span>}</div>
+            <div className="text-info">{isDone==null && <span><FontAwesomeIcon icon={faCircleExclamation} /> <small>Champs facultatif vide</small></span>} </div>
+            <div className="ms-auto">
+            {
+                (sectionUpdate == section) ?
+                <i className="fas fa-chevron-up"></i>
+                :
+                <i className="fas fa-chevron-down"></i>
+            }                
+            </div>
+
     </div>
     )
 }

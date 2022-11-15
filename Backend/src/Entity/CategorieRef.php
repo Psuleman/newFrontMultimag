@@ -10,20 +10,27 @@ use ApiPlatform\Metadata\ApiFilter;
 use App\Repository\CategorieRefRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-#[ApiResource(operations: [new Get(controller: 'App\\Entity\\NotFoundAction', output: false), new GetCollection()], paginationEnabled: false)]
+
+// #[ApiResource(operations: [
+//         new Get(), 
+//         new GetCollection()
+//     ], 
+//     paginationEnabled: false)
+// ]
 #[ORM\Entity(repositoryClass: CategorieRefRepository::class)]
 class CategorieRef
 {
+    #[Groups(['produit'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
     
-    #[Groups('produit')]
+    #[Groups(['produit'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $categorie_ref;
     
-    #[Groups('produit')]
+    #[Groups(['produit'])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $categorie_ref_en;
     

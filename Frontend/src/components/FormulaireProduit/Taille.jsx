@@ -12,8 +12,8 @@ import { TailleContext }  from "./Taille/Context/TailleContext"
 const Taille = () => {
     //variable
     const [loading, setLoading] = useState(false)
-    const {infoSku, grilleTailleUpdate, setGrilleTailleUpdate, attributUpdate, setAttributUpdate, sectionUpdate, setSectionUpdate, handleClickSave} = useContext(FormulaireContext)    
-    const tab = [1,2,3]
+    const {infoSku, tailleDone, setTailleDone, grilleTailleUpdate, setGrilleTailleUpdate, attributUpdate, setAttributUpdate, sectionUpdate, setSectionUpdate, handleClickSave} = useContext(FormulaireContext)    
+
     // const [tailles, setTailles] = useState([])
     //fonction
     useEffect(() => {
@@ -24,12 +24,23 @@ const Taille = () => {
             }
             else{
                 setAttributUpdate(infoSku.variants)
+                // console.log("grilleTaille", grilleTailleUpdate)
 
-                // GrilleTaille.forEach(element => {
-                //     if(element.grilleTaille == grilleTailleUpdate){
-                //         setTailles(element.tailles)
-                //     }
-                // });
+                if(infoSku.variants){
+                let variantDone = 0
+                infoSku.variants.forEach(element => {
+                    if(element.taille_ref && element.taille_ref.length>0){
+                        variantDone++
+                    }
+                });
+                if((grilleTailleUpdate && grilleTailleUpdate.length>0) && (variantDone == infoSku.variants.length)){
+                    setTailleDone(true)
+                } 
+                else{
+                    setTailleDone(false)
+                }
+                    
+                }
             }
         }
          
@@ -38,11 +49,13 @@ const Taille = () => {
     //render
     return (
         <div className="card mb-3">
-        <HeaderForm title="Taille" section="taille" />
+        <HeaderForm title="Taille" section="taille" isDone={tailleDone} />
         {
             infoSku && (sectionUpdate == "taille") &&
-            <form onSubmit={(e)=>{handleClickSave(e, "tarifs")}}>        
+            <form onSubmit={(e)=>{handleClickSave(e, "description")}}>        
             <div className="card-body">
+                <section className="row g-3 mb-3"><small>Tous les champs sont obligatoire</small></section>
+
                 <section className="row g-3">
                     <Select id="selectTaille" label="Grille taille" value={grilleTailleUpdate} setValue={setGrilleTailleUpdate} list={GrilleTaille} itemValue="grilleTaille" />                   
                 </section>

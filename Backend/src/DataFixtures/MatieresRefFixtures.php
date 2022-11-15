@@ -2,12 +2,9 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Matiere;
-
-
-
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\Entity\Matieres;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 
 class MatieresRefFixtures extends Fixture
 {
@@ -426,8 +423,8 @@ class MatieresRefFixtures extends Fixture
 			$value["matiere"] = trim($value["matiere"]);
 			$value["matiere_en"] = trim($value["matiere_en"]);
 			
-			$matieres = new Matiere($value);
-			$find = $manager->getRepository(Matiere::class)->findOneBy([
+			$matieres = new Matieres($value);
+			$find = $manager->getRepository(Matieres::class)->findOneBy([
 				"matiere" => $matieres->getMatiere(),
 			]);
 

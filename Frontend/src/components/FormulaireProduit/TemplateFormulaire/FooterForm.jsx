@@ -10,7 +10,7 @@ const FooterForm = () => {
 
     //fonction
     useEffect(()=>{
-        let value = sectionUpdate == "matière" ? "Enregistrer" : "Suivant"
+        let value = sectionUpdate == "dimensions" ? "Enregistrer" : "Suivant"
         setValueBouton(value)
     }, [])
     //render
