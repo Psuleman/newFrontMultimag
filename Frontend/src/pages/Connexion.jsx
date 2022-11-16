@@ -43,7 +43,7 @@ const Connexion = () => {
                             token : value.token
                         }
                         localStorage.setItem("user_multimag", JSON.stringify(donneesUser)) 
-                        navigate(`/liste-produit`)
+                        navigate(`/produits/listes`)
                     }
                     setLoading(false)
                     

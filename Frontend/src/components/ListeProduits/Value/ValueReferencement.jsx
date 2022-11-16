@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Ceintre from "../../../assets/image/cintre-de-vetements.png"
 import Moment from "moment"
+import { useContext } from "react"
+import { ListeContext } from "../Context/ListeContext"
 
 const ValueReferencement = ({item}) => {
     //variable
@@ -11,6 +13,8 @@ const ValueReferencement = ({item}) => {
     const [imgExist, setImgExist] = useState(false)
     const [tagBackground, setTagBackground] = useState("")
     let navigate = useNavigate()
+
+    const {liste} = useContext(ListeContext)
 
     //fonction
     useEffect(()=>{
@@ -72,12 +76,16 @@ const ValueReferencement = ({item}) => {
     
     //Render
     return (
+        <tbody>
             <tr>
                 <td className="px-2"><a href={item.lien} target="black">{item.sku}</a></td>
                 <td className="px-2">{item.saison}</td>
                 <td className="px-2">{Moment(item.date_arrivee).format("DD-MM-YYYY")}</td>
-                <td className="px-2">{item.dateRef ? Moment(item.dateRef).format("DD-MM-YYYY") : ""}</td>
-                <td className="px-2">{item.marque ? item.marque : item.nom_fournisseur}</td>
+                {
+                    liste != "referencement" &&
+                    <td className="px-2">{item.dateRef ? Moment(item.dateRef).format("DD-MM-YYYY") : ""}</td>
+                }
+                <td className="px-2">{item.marque ? item.marque.marque : item.nom_fournisseur}</td>
                 <td className="px-2">{item.univers}</td>
                 <td className="px-2">{categorie ? categorie : item.filtre.filtre}</td>
                 <td className="px-2">{item.couleur}</td>
@@ -104,7 +112,9 @@ const ValueReferencement = ({item}) => {
                         </div>
                     </center>
                 </td>                
-            </tr>
+            </tr>            
+        </tbody>
+
     )
 }
 export default ValueReferencement;

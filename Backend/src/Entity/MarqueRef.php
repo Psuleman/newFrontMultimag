@@ -29,7 +29,6 @@ class MarqueRef
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[Link(toProperty: 'marque')]
     #[ORM\Column(type: 'string', length: 255)]
     #[Groups(['produit'])]
     private $marque;

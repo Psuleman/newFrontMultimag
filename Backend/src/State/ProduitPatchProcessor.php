@@ -52,6 +52,11 @@ class ProduitPatchProcessor implements ProcessorInterface
     public function process($data, Operation $operation, array $uriVariables = ["matiereProduits"], array $context = [])
     {
         /**
+         * Date ref
+         */
+        $data->setDateRef(new \DateTime("now"));
+
+        /**
          * marque
          */
         if($data->getMarque()){
@@ -153,11 +158,10 @@ class ProduitPatchProcessor implements ProcessorInterface
                     }
 
                     if($isVariant){
-                        $grilleTailleRef = new GrilleTailleRef(["grilleTailleRef"=> "prisca"]);
+                        $grilleTailleRef = new GrilleTailleRef(["grilleTailleRef" => $data->getGrilleTailleRef()]);
                         $findGrilleTailleRef = $this->_grilleTailleRefRepository->findOneBy(
                             ["grilleTailleRef" => $grilleTailleRef->getGrilleTailleRef()]
                         );
-
 
                         if($findGrilleTailleRef){
                             $grilleTailleRef = $findGrilleTailleRef;
@@ -175,6 +179,12 @@ class ProduitPatchProcessor implements ProcessorInterface
                             $tailleRef = $findTailleRef;
                         } 
                         $value->setTailleRef($tailleRef);
+
+                        if($data->getReferencer() == true)
+                            $value->setStock9(1);
+                        else
+                            $value->setStock9(0);
+
                         $this->_entityManager->persist($value);
                     }
 

@@ -73,7 +73,7 @@ const Recapitulatif = () => {
                         attributUpdate[0] &&
                         attributUpdate[0].taille_ref && 
                         <p className="card-text"><em>Tailles : </em>
-                        {attributUpdate.map((item, index)=>( <span>{index>0 && ", "} {item.taille_ref}</span> ))}
+                        {attributUpdate.map((item, index)=>( <span>{index>0 && ", "} {item.taille_ref.taille_ref}</span> ))}
                         </p>
                     }
 

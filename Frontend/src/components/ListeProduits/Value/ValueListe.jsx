@@ -90,7 +90,7 @@ const ValueListe = ({item}) => {
             <td className="px-2">{item.saison}</td>
             <td className="px-2">{Moment(item.date_arrivee).format("DD-MM-YYYY")}</td>
             <td className="px-2">{item.dateRef ? Moment(item.dateRef).format("DD-MM-YYYY") : ""}</td>
-            <td className="px-2">{item.marque ? item.marque : item.nom_fournisseur}</td>
+            <td className="px-2">{item.marque ? item.marque.marque : item.nom_fournisseur}</td>
             <td className="px-2">{item.univers}</td>
             <td className="px-2">{categorie ? categorie : item.filtre.filtre}</td>
             <td className="px-2">{item.couleur}</td>

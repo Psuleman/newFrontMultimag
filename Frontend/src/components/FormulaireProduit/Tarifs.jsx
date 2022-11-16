@@ -14,7 +14,7 @@ const Tarifs = () => {
 
     //Fonction
     useEffect(()=>{
-        setTarifUpdate(infoSku.tarifs)
+        //setTarifUpdate(infoSku.tarifs)
 
         if(infoSku.tarifs && infoSku.tarifs[0] && infoSku.tarifs[0].prix_vente > 0)
             setTarifsDone(true)

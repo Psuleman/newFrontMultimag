@@ -48,7 +48,7 @@ const NouveauProduit = () => {
     return (
         <Template>
             <header>
-                <div><Link to="/liste-produit">Liste des produits > </Link></div>
+                <div><Link to="/produits/listes">Liste des produits > </Link></div>
                 <div className="fs-3 fw-bolder">Importer les produits</div>
             </header>
             <NouveauProduitContext.Provider value={{

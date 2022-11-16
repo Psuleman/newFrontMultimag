@@ -36,7 +36,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: ['groups' => ['produit', 'produit:read']],
 )]
 #[Patch(
-    denormalizationContext: ['groups' => ['produit']],
+    //denormalizationContext: ['groups' => ['produit']],
     processor: ProduitPatchProcessor::class,
     )]
 #[ApiFilter(OrderFilter::class, properties: ['date_arrivee' => 'DESC', 'sku' => 'ASC'])]
@@ -132,6 +132,9 @@ class Produits
     private ?string $grille_taille_fournisseur = null;
 
     #[Groups(['produit'])]
+    private ?string $grille_taille_ref = null;
+
+    #[Groups(['produit'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateRef = null;
 
@@ -147,9 +150,7 @@ class Produits
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $couleur;
 
-    #[Groups(['produit'])]
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $couleur_en;
+
 
     #[Groups(['produit'])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -312,6 +313,8 @@ class Produits
     #[ORM\ManyToOne(inversedBy: 'produits', cascade: ['persist'])]
     private ?MarqueRef $marque = null;
 
+    #[Groups(['produit'])]
+    private ?string $marque_update = null;
 
     #[ApiSubresource()]
     #[Groups(['produit:read'])]
@@ -344,6 +347,9 @@ class Produits
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_arrivee = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $couleur_en = null;
+
     //end
     public function __construct()
     {
@@ -373,6 +379,17 @@ class Produits
     public function setMarque(?MarqueRef $marque): self
     {
         $this->marque = $marque;
+
+        return $this;
+    }
+    public function getMarqueUpdate(): ?string
+    {
+        return $this->marque_update;
+    }
+
+    public function setMarqueUpdate(?string $marque_update): self
+    {
+        $this->marque_update = $marque_update;
 
         return $this;
     }
@@ -667,6 +684,15 @@ class Produits
         $this->grille_taille_fournisseur = $grille_taille_fournisseur;
         return $this;
     }
+    public function getGrilleTailleRef() : ?string
+    {
+        return $this->grille_taille_ref;
+    }
+    public function setGrilleTailleRef(string $grille_taille_ref) : self
+    {
+        $this->grille_taille_ref = $grille_taille_ref;
+        return $this;
+    }
     public function getDateRef() : ?\DateTimeInterface
     {
         return $this->dateRef;
@@ -703,15 +729,7 @@ class Produits
         $this->couleur = $couleur;
         return $this;
     }
-    public function getCouleurEn() : ?string
-    {
-        return $this->couleur_en;
-    }
-    public function setCouleurEn(?string $couleur_en) : self
-    {
-        $this->couleur_en = $couleur_en;
-        return $this;
-    }
+
     public function getPaysOrigine() : ?string
     {
         return $this->pays_origine;
@@ -1142,6 +1160,18 @@ class Produits
     public function setDateArrivee(?\DateTimeInterface $date_arrivee): self
     {
         $this->date_arrivee = $date_arrivee;
+
+        return $this;
+    }
+
+    public function getCouleurEn(): ?string
+    {
+        return $this->couleur_en;
+    }
+
+    public function setCouleurEn(?string $couleur_en): self
+    {
+        $this->couleur_en = $couleur_en;
 
         return $this;
     }

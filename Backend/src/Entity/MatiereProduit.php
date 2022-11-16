@@ -66,6 +66,9 @@ class MatiereProduit
     #[ORM\Column(nullable: true)]
     private ?float $pourcentageMatiere = null;
 
+    #[Groups(['produit'])]
+    private ?string $matiere_value = null;
+
     #[Groups(['produit', 'matiere_produit'])]
     #[ORM\ManyToOne(cascade:['persist'])]
     private ?Matieres $matiere = null;
@@ -102,6 +105,18 @@ class MatiereProduit
     public function setMatiere(?Matieres $matiere): self
     {
         $this->matiere = $matiere;
+
+        return $this;
+    }
+    
+    public function getMatiereValue(): ?string
+    {
+        return $this->matiere->getMatiere();
+    }
+
+    public function setMatiereValue(?string $matiere_value): self
+    {
+        $this->matiere_value = $matiere_value;
 
         return $this;
     }

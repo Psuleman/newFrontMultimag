@@ -20,8 +20,6 @@ export const getAllProduit = (listeProduit="", filtre="") => {
     if(listeProduit=="export"){
         urlRequestTotal += `&referencer=1`
     }
-
-    console.log("url", urlRequestTotal)
     /**
      * filtre
      */
@@ -42,8 +40,20 @@ export const getAllProduit = (listeProduit="", filtre="") => {
     return tab;
 }
 
-export const getProduitproduit = (id) => {
+export const getProduit = (sku) => {
+    let urlRequest = url += `?sku=${sku}`
+    
+    let result = fetch(urlRequest,headerGET)
+    .then(function(res){ 
+        return res.json() 
+    })
+    .then(function(value){ 
+        return value; 
+    })
+    .catch(function(err){
+    })
 
+    return result;
 }
 export const setProduit = (id, data) => {
     const headerPATCH = {

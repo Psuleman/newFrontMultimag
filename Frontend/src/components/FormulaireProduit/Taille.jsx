@@ -8,6 +8,7 @@ import Select from "./TemplateFormulaire/Select";
 import HeaderForm from "./TemplateFormulaire/HeaderForm";
 import TailleVariant from "./Taille/TailleVariant";
 import { TailleContext }  from "./Taille/Context/TailleContext"
+import InputDesabled from "./TemplateFormulaire/InputDesabled";
 
 const Taille = () => {
     //variable
@@ -23,7 +24,8 @@ const Taille = () => {
                 navigate('/')
             }
             else{
-                setAttributUpdate(infoSku.variants)
+                //setAttributUpdate(infoSku.variants)
+                console.log("attributUpdate", attributUpdate)
                 // console.log("grilleTaille", grilleTailleUpdate)
 
                 if(infoSku.variants){
@@ -55,7 +57,9 @@ const Taille = () => {
             <form onSubmit={(e)=>{handleClickSave(e, "description")}}>        
             <div className="card-body">
                 <section className="row g-3 mb-3"><small>Tous les champs sont obligatoire</small></section>
-
+                <section className="row g-3 mb-3">
+                    <InputDesabled label="Catégorie dans le fichier multimag" value={infoSku.categorie_univers} />
+                </section>
                 <section className="row g-3">
                     <Select id="selectTaille" label="Grille taille" value={grilleTailleUpdate} setValue={setGrilleTailleUpdate} list={GrilleTaille} itemValue="grilleTaille" />                   
                 </section>

@@ -21,19 +21,27 @@ const Table = () => {
                     { liste == "modification" && <ThModification/>}
                     { liste == "export" && <ThExport/>}
                     {
-                        skus && totalSkus && totalSkus==0 && 
+                        totalSkus==0 && 
                         <tbody>
                             <tr>AucunProduit</tr>
                         </tbody>
                     } 
                     {
-                        skus && totalSkus && totalSkus>0 && liste == "listes" && 
+                        totalSkus>0 && liste == "listes" && 
                         skus.map((item, index)=>( <ValueListe item={item} />))
                     }
                     {
-                        skus && totalSkus && totalSkus>0 && liste == "referencement" && 
+                        totalSkus>0 && liste == "referencement" && 
                         skus.map((item, index)=>( <ValueReferencement item={item} />))
-                    }                   
+                    }
+                    {
+                        totalSkus>0 && liste == "modification" && 
+                        skus.map((item, index)=>( <ValueReferencement item={item} />))
+                    }    
+                                        {
+                        totalSkus>0 && liste == "export" && 
+                        skus.map((item, index)=>( <ValueReferencement item={item} />))
+                    }   
                 </table>
             </div>
         </section>

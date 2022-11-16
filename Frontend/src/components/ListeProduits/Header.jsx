@@ -1,11 +1,17 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { ListeContext } from "./Context/ListeContext";
+import ExportCsv from "./ExportCsv";
 
 const Header = () => {
     //variable
-    const {totalSkus, liste} = useContext(ListeContext)
+    const {totalSkus, liste, skus} = useContext(ListeContext)
+
     //fonction
+    const handleClick = () => {
+        
+    }
+
     //render
     return (
     <header>
@@ -36,16 +42,32 @@ const Header = () => {
             }
 
         </div>
-        <div className="d-flex justify-content-between pt-2 pb-2 action">
-            <div className="p-2">Action</div>
+        {
+            (totalSkus!=0 && !totalSkus) && 
+            <div className="d-flex justify-content-center pt-2 pb-2 action">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>                
+            </div>
+
+        }
+        {
+            (totalSkus && totalSkus>0 && liste=="export") &&
+            <div className="d-flex justify-content-between pt-2 pb-2 action">
+                {/* <ExportCsv list={skus} /> */}
+            </div>
+
+        }
+        {/* <div className="d-flex justify-content-between pt-2 pb-2 action">
+            <div className="p-2">Action {totalSkus}</div>
             {
-                !totalSkus &&
+                (totalSkus!=0 && !totalSkus) && 
                 <div class="spinner-border" role="status">
                     <span class="visually-hidden">Loading...</span>
               </div>
             }
             <div className="p-2">Configuration des actions</div>
-        </div>
+        </div> */}
     </header>
     )
 }

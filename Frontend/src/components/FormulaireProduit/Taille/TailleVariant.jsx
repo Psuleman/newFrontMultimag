@@ -39,7 +39,7 @@ const TailleVariant = () => {
                                 console.log("attribut = ", attributUpdate)
                                 setAttributUpdate((oldState)=>{
                                     let newState = [...oldState]
-                                    newState[item].taille_ref = element.taille_ref
+                                    newState[item].taille_ref.taille_ref = element.taille_ref
                                     return newState
                                 })
                             }
@@ -48,7 +48,7 @@ const TailleVariant = () => {
                         if(!existStockId){
                             setAttributUpdate((oldState)=>{
                                 let newState = [...oldState]
-                                newState[item].taille_ref = null
+                                newState[item].taille_ref.taille_ref = null
                                 return newState
                             })
                         }
@@ -77,10 +77,10 @@ const TailleVariant = () => {
                     <label  htmlFor="selectTaille" className="form-label">Taille {attributUpdate[index].tailleRef}</label>
                     {
                         (grilleTailleUpdate || grilleTailleUpdate!="") ?
-                        <select className="form-select" aria-label="Default select example" id="selectTaille" value={attributUpdate[index].taille_ref} onChange={(e)=>{
+                        <select className="form-select" aria-label="Default select example" id="selectTaille" value={attributUpdate[index].taille_ref.taille_ref} onChange={(e)=>{
                             setAttributUpdate((oldState)=>{
                                 let newState = [...oldState]
-                                newState[index].taille_ref = e.target.value
+                                newState[index].taille_ref.taille_ref = e.target.value
                                 return newState
                             })
                             console.log(attributUpdate)
