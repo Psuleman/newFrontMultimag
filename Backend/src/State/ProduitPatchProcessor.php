@@ -59,13 +59,13 @@ class ProduitPatchProcessor implements ProcessorInterface
         /**
          * marque
          */
-        if($data->getMarque()){
+        if($data->getMarqueUpdate()){
             $findMarque = $this->_marqueRepository->findOneBy([
-                "marque" => $data->getMarque()->getMarque()
+                "marque" => $data->getMarqueUpdate()
             ]);
 
             if(!$findMarque){
-                $findMarque = $data->getMarque();
+                $findMarque = (new MarqueRef())->setMarque("test");
                 $this->_entityManager->persist($findMarque);
             }
             $data->setMarque($findMarque);            
@@ -111,7 +111,7 @@ class ProduitPatchProcessor implements ProcessorInterface
                     if($key=="pourcentageMatiere"){
                         $matiereProduit->setPourcentageMatiere($value);
                     }
-                    if($key == "matiere")
+                    if($key == "matieres")
                     {
                         $matiere = (new Matieres())
                         ->setMatiere($value);

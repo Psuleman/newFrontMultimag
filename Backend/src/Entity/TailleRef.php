@@ -2,27 +2,30 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\ApiProperty;
-use ApiPlatform\Metadata\ApiFilter;
-use App\Repository\TailleRefRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Metadata\Link;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use App\Repository\TailleRefRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 
 #[ApiResource(operations: [
-    new Get(controller: 'App\\Entity\\NotFoundAction', output: false), 
+    new Get(
+        normalizationContext: ['groups' => ['tailleRef', 'produit']])
+    , 
     new GetCollection(
-        normalizationContext: ['groups' => ['tailleRef', 'grilletailleRef']])
+        normalizationContext: ['groups' => ['tailleRef', 'produit']])
     ], 
-        paginationEnabled: false)
+    paginationEnabled: false
+    )
 ]
-
 #[ORM\Entity(repositoryClass: TailleRefRepository::class)]
 class TailleRef
 {
@@ -31,18 +34,21 @@ class TailleRef
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[Groups(['produit', 'tailleRef', 'variants'])]
+    #[Link(toProperty: 'taille_ref')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(['tailleRef', 'grilletailleRef', 'variants'])]
     private $taille_ref;
 
+    
     #[ORM\Column(type: 'string', length: 100)]
-    #[Groups(['tailleRef', 'grilletailleRef'])]
+    #[Groups(['tailleRef'])]
     private $stock_id;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
-    #[Groups(['tailleRef', 'grilletailleRef'])]
+    #[Groups(['tailleRef'])]
     private $stock_code;
 
+    #[Groups(['produit', 'tailleRef'])]
     #[ORM\ManyToOne(inversedBy: 'tailleRefs', cascade: ['persist'])]
     private ?GrilleTailleRef $grille_taille_ref = null;
     

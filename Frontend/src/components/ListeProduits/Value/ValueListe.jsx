@@ -116,7 +116,9 @@ const ValueListe = ({item}) => {
                 item.code_tag == 0 ? 
                 <td className="px-2 text-bg-warning status">Non tagué</td>
                 :
-                <td className="px-2 status">{item.tag}</td>
+                <td className="px-2 status">{item.tag}
+                {item.referencer == 1 && <p className="text-success">Référencer</p>}
+                </td>
             }
             <td className="px-2 action">
                 <center>
@@ -133,12 +135,12 @@ const ValueListe = ({item}) => {
                 <td className="px-2 sku" colSpan="2" >{i.variant_sku}</td>
                 <td className="px-2" colSpan="10"></td>
                 <td className="px-2">{i.taille_fnr}</td>
-                <td className="px-2">{i.stockages[0].stock_18}</td> 
-                <td className="px-2">{i.stockages[0].stock_7}</td>
-                <td className="px-2">{i.stockages[0].stock_14}</td>
-                <td className="px-2">{i.stockages[0].stock_0}</td>
-                <td className="px-2">{i.stockages[0].stock_9}</td>
-                <td className="px-2">{i.stockages[0].stock_3}</td>
+                <td className="px-2">{i.stock_18}</td> 
+                <td className="px-2">{i.stock_7}</td>
+                <td className="px-2">{i.stock_14}</td>
+                <td className="px-2">{i.stock_0}</td>
+                <td className="px-2">{i.stock_9}</td>
+                <td className="px-2">{i.stock_3}</td>
                 <td className="px-2 status" />                
                 <td className="px-2 action" />                
             </tr>

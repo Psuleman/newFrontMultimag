@@ -14,7 +14,7 @@ const Matiere = () => {
         sectionUpdate, setSectionUpdate, handleClickSave} = useContext(FormulaireContext)
     //fonction
     useEffect(()=>{
-        console.log("matiereUpdate", matiereUpdate)
+        // console.log("matiereUpdate", matiereUpdate)
         if(matiereUpdate.length>0 && matiereUpdate[0].pourcentageMatiere){
             setMatiereDone(true)
         }

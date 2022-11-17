@@ -29,15 +29,15 @@ class Tarifs
     #[ORM\ManyToOne(inversedBy: 'tarifs')]
     private ?Produits $produit = null;
 
-    #[Groups('produit:read')]
+    #[Groups('produit')]
     #[ORM\Column]
     private ?float $prix_vente = null;
 
-    #[Groups('produit:read')]
+    #[Groups('produit')]
     #[ORM\Column(nullable: true)]
     private ?float $remise = null;
 
-    #[Groups('produit:read')]
+    #[Groups('produit')]
     #[ORM\ManyToMany(targetEntity: Pays::class, inversedBy: 'tarifs', cascade: ['persist'])]
     private Collection $pays;
     

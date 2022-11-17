@@ -19,6 +19,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+
 #[ApiResource(paginationEnabled: false, denormalizationContext: ['groups' => ['user', 'user:write']], normalizationContext: ['groups' => ['user', 'user:read']])]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['email' => 'exact', 'tokenMail' => 'exact', 'tokenPassword' => 'exact'])]

@@ -17,24 +17,24 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource(
-    uriTemplate: '/products/{id}/tests.{_format}',
-    uriVariables: [
-        'id' => new Link(fromClass: Product::class, fromProperty: 'test')
-    ], 
-    operations: [new GetCollection()]
-)]
-#[ApiResource(
-    operations: [
-        new GetCollection(),
-        new Post(
-            denormalizationContext: ['groups' => ['product']],
-        ),
-        new Patch(
-            denormalizationContext: ['groups' => ['product']],
-        )
-    ]
-)]
+// #[ApiResource(
+//     uriTemplate: '/products/{id}/tests.{_format}',
+//     uriVariables: [
+//         'id' => new Link(fromClass: Product::class, fromProperty: 'test')
+//     ], 
+//     operations: [new GetCollection()]
+// )]
+// #[ApiResource(
+//     operations: [
+//         new GetCollection(),
+//         new Post(
+//             denormalizationContext: ['groups' => ['product']],
+//         ),
+//         new Patch(
+//             denormalizationContext: ['groups' => ['product']],
+//         )
+//     ]
+// )]
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
 {

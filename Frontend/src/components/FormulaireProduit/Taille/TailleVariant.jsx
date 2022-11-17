@@ -14,7 +14,7 @@ const TailleVariant = () => {
     const [tailles, setTailles] = useState([]) 
     useEffect(()=>{
         if(grilleTailleUpdate && grilleTailleUpdate != ""){
-            console.log("loding true")
+            // console.log("loding true")
             setLoading(true)
             const promise = Promise.resolve(setGrilleTailleList(grilleTailleUpdate));
             promise.then((value) => {
@@ -24,19 +24,19 @@ const TailleVariant = () => {
                  * mise à jour attribut update
                  */
                 if(attributUpdate && value && value[0]){
-                    console.log("ici")
+                    // console.log("ici")
                     for(let item in attributUpdate){
                         let existStockId = false
                         value[0].tailleRefs.forEach(element => {
-                            // console.log("attribut ", attributUpdate[item].taille_fnr)
-                            // console.log("element ", element.stock_code)
+                            // // console.log("attribut ", attributUpdate[item].taille_fnr)
+                            // // console.log("element ", element.stock_code)
                             let stock_code = element.stock_code + ""
                             let tailleFrn = attributUpdate[item].taille_fnr + ""
 
                             if(stock_code == tailleFrn){
                                 existStockId = true
-                                console.log("element = ", element)
-                                console.log("attribut = ", attributUpdate)
+                                // console.log("element = ", element)
+                                // console.log("attribut = ", attributUpdate)
                                 setAttributUpdate((oldState)=>{
                                     let newState = [...oldState]
                                     newState[item].taille_ref.taille_ref = element.taille_ref
@@ -53,9 +53,9 @@ const TailleVariant = () => {
                             })
                         }
                     }
-                    console.log("tailles ", value[0].tailleRefs)
+                    // console.log("tailles ", value[0].tailleRefs)
                     setTailles(value[0].tailleRefs) 
-                    console.log("loding false")
+                    // console.log("loding false")
                     setLoading(false)
                 }
 
@@ -83,7 +83,7 @@ const TailleVariant = () => {
                                 newState[index].taille_ref.taille_ref = e.target.value
                                 return newState
                             })
-                            console.log(attributUpdate)
+                            // console.log(attributUpdate)
                         }}>
                             <option selected>Choisissez</option>
                             {

@@ -19,15 +19,34 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource()]
 #[ApiResource(
+    normalizationContext: ['groups'=>["produit", "variants"]],
     operations: [
-        new Get(
-            normalizationContext: ['groups' => ['produit', 'variants']]
-        )        
+        new Get(),
+        new GetCollection()
     ]
-
 )]
+// #[ApiResource(
+//     operations: [
+//         new Get(
+//             normalizationContext: ['groups' => ['produit', 'variants']]
+//         ),
+//         new GetCollection(
+//             normalizationContext: ['groups' => ['produit', 'variants']]
+//         )    
+//     ]
+
+// )]
+// #[ApiResource(
+//     uriTemplate: "/variants/{id}/taille_refs/{idTailleRef}",
+//     uriVariables: [
+//         "id"=> new Link(fromClass: Variants::class),
+//         "idTailleRef" => new Link(fromClass: TailleRef::class, toProperty: "taille_ref")
+//     ],
+//     operations: [
+//         new GetCollection()
+//     ]
+// )]
 #[Post(
     denormalizationContext: ['groups'=> ['variants']]
 )]

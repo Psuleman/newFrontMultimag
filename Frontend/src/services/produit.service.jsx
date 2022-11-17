@@ -41,7 +41,7 @@ export const getAllProduit = (listeProduit="", filtre="") => {
 }
 
 export const getProduit = (sku) => {
-    let urlRequest = url += `?sku=${sku}`
+    let urlRequest = url + `?sku=${sku}`
     
     let result = fetch(urlRequest,headerGET)
     .then(function(res){ 

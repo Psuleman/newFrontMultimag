@@ -24,7 +24,7 @@ const Information = () => {
         else 
             setIndicationDone(false)
     }, [])
-
+    // console.log("reference couleur", infoSku.reference_fournisseur)
     //render
     return (
         <div className="card mb-3">
@@ -37,7 +37,7 @@ const Information = () => {
                 <section className="row g-3">
                     <InputDesabled id="inputSku" label="SKU" value={infoSku.sku} type="text" />
                     <InputDesabled id="inputRefFournisseur" label="Référence Fournisseur" value={infoSku.reference_fournisseur} type="text" />
-
+                
                     <Marque />
                     <Select id="selectPaysOrigine" label="Pays origine" value={paysOrigineUpdate} setValue={setPaysOrigineUpdate} list={Pays} itemValue="pays" />
 

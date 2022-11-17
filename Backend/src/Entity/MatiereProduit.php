@@ -66,8 +66,6 @@ class MatiereProduit
     #[ORM\Column(nullable: true)]
     private ?float $pourcentageMatiere = null;
 
-    #[Groups(['produit'])]
-    private ?string $matiere_value = null;
 
     #[Groups(['produit', 'matiere_produit'])]
     #[ORM\ManyToOne(cascade:['persist'])]

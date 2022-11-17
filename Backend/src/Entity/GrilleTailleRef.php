@@ -15,13 +15,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
+    normalizationContext: ['groups' => ['produit', 'tailleRef', 'grilleTailleRef']],
     operations: [
-        new Get(
-            normalizationContext: ['groups' => ['grilletailleRef']]
-        ), 
-        new GetCollection(
-            normalizationContext: ['groups' => ['grilletailleRef']]
-            )
+        new Get(), 
+        new GetCollection()
         ], 
         paginationEnabled: false
         )
@@ -35,11 +32,11 @@ class GrilleTailleRef
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[Groups(['produit', 'tailleRef', 'grilleTailleRef'])]
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['grilletailleRef'])]
     private $grilleTailleRef;
 
-    #[Groups(['grilletailleRef'])]
+    #[Groups(['grilleTailleRef'])]
     #[ORM\OneToMany(mappedBy: 'grille_taille_ref', targetEntity: TailleRef::class)]
     private Collection $tailleRefs;
     

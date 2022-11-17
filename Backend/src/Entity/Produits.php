@@ -33,10 +33,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
     processor: ProduitPostProcessor::class
 )]
 #[Get(
-    normalizationContext: ['groups' => ['produit', 'produit:read']],
+    normalizationContext: ['groups' => ['produit']],
 )]
 #[Patch(
-    //denormalizationContext: ['groups' => ['produit']],
+    //denormalizationContext: ['groups' => 'produit'],
     processor: ProduitPatchProcessor::class,
     )]
 #[ApiFilter(OrderFilter::class, properties: ['date_arrivee' => 'DESC', 'sku' => 'ASC'])]
@@ -48,22 +48,22 @@ class Produits
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     private ?int $id = null;
 
-    #[Groups(['produit', 'produit:write'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'integer')]
     private ?string $sku = null;
 
-    #[Groups(['produit', 'produit:write'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255)]
     private $code_fournisseur;
     
-    #[Groups(['produit', 'produit:write'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255)]
     private $nom_fournisseur;
 
-    #[Groups(['produit', 'produit:write'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255)]
     private $reference_fournisseur;
     
@@ -71,15 +71,15 @@ class Produits
     #[ORM\Column(type: 'string', length: 255)]
     private $code_couleur;
 
-    #[Groups('produit:read')]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $reference_couleur;
 
-    #[Groups(['produit', 'produit:write'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'integer')]
     private $code_saison;
 
-    #[Groups('produit:read')]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private $saison;
 
@@ -87,11 +87,11 @@ class Produits
     #[ORM\Column(type: 'integer')]
     private $annee_sortie;
 
-    #[Groups(['produit', 'produit:write'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'integer', nullable: true)]
     private $code_categorie_univers;
     
-    #[Groups(['produit', 'produit:write'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $categorie_univers;
 
@@ -103,11 +103,11 @@ class Produits
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $mode_acquisition;
 
-    #[Groups(['produit', 'produit:write'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'integer', nullable: true)]
     private $code_tag;
 
-    #[Groups(['produit', 'produit:write'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $tag;
 
@@ -127,84 +127,82 @@ class Produits
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $famille_6;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(length: 100)]
     private ?string $grille_taille_fournisseur = null;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     private ?string $grille_taille_ref = null;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateRef = null;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $univers;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $univers_en;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $couleur;
 
-
-
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $pays_origine;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $entretien;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $entretienEn;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description_fr;
 
-    #[Groups('produit:read')]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description_en;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $nom_produit_fr;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $nom_produit_en;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $dimension_fr;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $dimension_en;
     
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $coupe;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $coupeEn;
 
-    #[Groups(['produit:read'])]
+    #[Groups(['produit'])]
     #[ORM\Column(type: 'text', nullable: true)]
     private $pictures;
 
-    #[Groups('produit:read')]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $lien;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'text', nullable: true)]
     private $tags_ref;
 
@@ -212,50 +210,50 @@ class Produits
     #[ORM\Column(type: 'integer')]
     private $code_sous_categorie_fnr;
 
-    #[Groups(['produit', 'produit:write'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255)]
     private $sous_categorie_fnr;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(nullable: true)]
     private ?float $longueur = null;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(nullable: true)]
     private ?float $largeur = null;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(nullable: true)]
     private ?float $hauteur = null;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(nullable: true)]
     private ?float $poids = null;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'boolean')]
     private $newProduit;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'boolean')]
     private $referencer;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $newListAttente;
 
     
     //variable sans ajouter dans la base de données
-    #[Groups(['produit', 'produit:write'])]
+    #[Groups('produit')]
     private ?string $taille;
 
-    #[Groups(['produit', 'produit:write'])]
+    #[Groups('produit')]
     private ?string $reference_couleur_1;
 
-    #[Groups(['produit', 'produit:write'])]
+    #[Groups('produit')]
     private ?string $reference_couleur_2;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     private ?float $prix_vente;
 
     //Stock
@@ -289,61 +287,61 @@ class Produits
     #[Groups(['produit:write'])]
     private ?int $stock_mag_60;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     private ?string $categorie = null;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     private ?string $sous_categorie = null;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     private ?string $filtre_produit = null;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     private ?string $categorie_en = null;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     private ?string $sous_categorie_en = null;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     private ?string $filtre_produit_en = null;
+
     /**
      * marque
      */  
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\ManyToOne(inversedBy: 'produits', cascade: ['persist'])]
     private ?MarqueRef $marque = null;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     private ?string $marque_update = null;
 
     #[ApiSubresource()]
-    #[Groups(['produit:read'])]
+    #[Groups(['produit'])]
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: MatiereProduit::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $matiereProduits;
 
-    #[Groups('produit:read')]
+    #[Groups('produit')]
     #[ORM\OneToMany(mappedBy: 'sku', targetEntity: Variants::class, orphanRemoval: true,  cascade: ['persist'])]
     private Collection $variants;
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     private array $matieres = [];
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     private array $variantProduits = [];
 
-    #[ApiSubresource()]
-    #[Groups('produit:read')]
+    #[Groups('produit')]
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Tarifs::class, orphanRemoval: true,  cascade: ['persist'])]
     private Collection $tarifs;
     
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     private array $tarifsProduits = [];
 
-    #[Groups(['produit'])]
+    #[Groups('produit')]
     #[ORM\ManyToOne(cascade: ['persist'])]
     private ?FiltreRef $filtre = null;
 
-    #[Groups(['produit', 'produit:write'])]
+    #[Groups('produit')]
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_arrivee = null;
 

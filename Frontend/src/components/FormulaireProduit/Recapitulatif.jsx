@@ -65,7 +65,7 @@ const Recapitulatif = () => {
                         tarifUpdate &&
                         tarifUpdate[0] &&  
                         tarifUpdate[0].prix_vente && 
-                        <p className="card-text"><em>Tarifs : </em>{tarifUpdate[0].prix_vente + "€"}{tarifUpdate[0].remise>0 && <span> - {tarifUpdate[0].remise} % </span>}</p>
+                        <p className="card-text"><em>Tarifs : </em>{tarifUpdate[0].prix_vente + "€"}{tarifUpdate[0].remise>0 && <span className="text-white bg-danger p-1 ms-1" > - {tarifUpdate[0].remise} % </span>}</p>
                     }
 
                     {

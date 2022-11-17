@@ -12,7 +12,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-#[ApiResource(operations: [new Get(controller: 'App\\Entity\\NotFoundAction', output: false), new GetCollection()], paginationEnabled: false)]
+
+#[ApiResource(
+    operations: [
+        new Get(), 
+        new GetCollection()
+    ], 
+    paginationEnabled: false
+    )
+]
 #[ORM\Entity(repositoryClass: PaysRepository::class)]
 class Pays
 {

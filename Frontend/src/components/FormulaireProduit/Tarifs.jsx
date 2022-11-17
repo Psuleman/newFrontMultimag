@@ -72,7 +72,7 @@ const Tarifs = () => {
                     </div>                        
 
                     <div className="col-md-3">
-                        <label htmlFor="inputRemiseTarifsFrance" className="form-label">{index == 0 ? " * Remise en Pourcentage (%)" : "Remise en Pourcentage (%)"}</label>
+                        <label htmlFor="inputRemiseTarifsFrance" className="form-label">{index == 0 ? "Remise en Pourcentage (%)" : "Remise en Pourcentage (%)"}</label>
                         <input type="number" min="0" className="form-control" id="inputRemiseTarifsFrance" value={tarifUpdate[index].remise} 
                         onChange={(e)=>{setTarifUpdate(oldState=>{
                             let newState = [...oldState]

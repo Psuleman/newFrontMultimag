@@ -14,7 +14,7 @@ const Taille = () => {
     //variable
     const [loading, setLoading] = useState(false)
     const {infoSku, tailleDone, setTailleDone, grilleTailleUpdate, setGrilleTailleUpdate, attributUpdate, setAttributUpdate, sectionUpdate, setSectionUpdate, handleClickSave} = useContext(FormulaireContext)    
-
+    // console.log('grilleTailleUpdate', grilleTailleUpdate)
     // const [tailles, setTailles] = useState([])
     //fonction
     useEffect(() => {
@@ -25,24 +25,24 @@ const Taille = () => {
             }
             else{
                 //setAttributUpdate(infoSku.variants)
-                console.log("attributUpdate", attributUpdate)
-                // console.log("grilleTaille", grilleTailleUpdate)
+                // console.log("attributUpdate", attributUpdate)
+                // // console.log("grilleTaille", grilleTailleUpdate)
 
-                if(infoSku.variants){
-                let variantDone = 0
-                infoSku.variants.forEach(element => {
-                    if(element.taille_ref && element.taille_ref.length>0){
-                        variantDone++
-                    }
-                });
-                if((grilleTailleUpdate && grilleTailleUpdate.length>0) && (variantDone == infoSku.variants.length)){
-                    setTailleDone(true)
-                } 
-                else{
-                    setTailleDone(false)
-                }
+                // if(infoSku.variants){
+                // let variantDone = 0
+                // infoSku.variants.forEach(element => {
+                //     if(element.taille_ref && element.taille_ref.length>0){
+                //         variantDone++
+                //     }
+                // });
+                // if((grilleTailleUpdate && grilleTailleUpdate.length>0) && (variantDone == infoSku.variants.length)){
+                //     setTailleDone(true)
+                // } 
+                // else{
+                //     setTailleDone(false)
+                // }
                     
-                }
+                //
             }
         }
          

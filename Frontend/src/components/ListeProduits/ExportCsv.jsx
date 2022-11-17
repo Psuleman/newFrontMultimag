@@ -78,7 +78,6 @@ const ExportCsv = ({list}) => {
                 categorie: item==0 ? element.filtre.sousCategorieRef.categorieRef.categorieRef:"",
                 tags: item==0 ? element.tagsRef : null,
                 tags_command : "REPLACE" ,
-                tags_command : "REPLACE" ,
                 published : "FALSE" ,
                 published_scope : "web",
                 image_command : "REPLACE" ,

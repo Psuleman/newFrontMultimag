@@ -88,7 +88,7 @@ const ValueReferencement = ({item}) => {
                 <td className="px-2">{item.marque ? item.marque.marque : item.nom_fournisseur}</td>
                 <td className="px-2">{item.univers}</td>
                 <td className="px-2">{categorie ? categorie : item.filtre.filtre}</td>
-                <td className="px-2">{item.couleur}</td>
+                <td className="px-2">{item.couleur ? item.couleur : item.reference_couleur}</td>
                 <td className="px-2">{item.tarifs[0].prix_vente} €</td>
                 <td className="px-2">{item.tarifs[0].remise ? item.tarifs[0].remise : 0}</td>
                 <td className="px-2">
