@@ -56,6 +56,7 @@ const FormulaireProduit = () => {
 	const [longueurUpdate, setLongueurUpdate] = useState()
 	const [largeurUpdate, setLargeurUpdate] = useState()
 	const [poidsUpdate, setPoidsUpdate] = useState()
+	const [dimensionfrUpdate, setDimensionFrUpdate] = useState("")
 
 	const [nomProduitFrUpdate, setNomProduitFrUpdate] = useState("")
 	const [nomProduitEnUpdate, setNomProduitEnUpdate] = useState("")
@@ -139,7 +140,7 @@ const FormulaireProduit = () => {
                                 let descriptionFr = valeur[0].description_fr != null ? valeur[0].description_fr : ""
                                 let descriptionEn = valeur[0].description_en != null ? valeur[0].description_en : ""
                                 let coupe = valeur[0].coupe != null ? valeur[0].coupe : ""
-                                let entretien = valeur[0].entretien != null ? valeur[0].coupe : ""
+                                let entretien = (valeur[0].entretien != null) ? valeur[0].entretien : ""
 
                                 //tailles
                                 // console.log(valeur[0]);
@@ -166,6 +167,7 @@ const FormulaireProduit = () => {
  
                                  let poids = valeur[0].poids != null ? valeur[0].poids : 0
 
+                                 let dimension = valeur[0].dimension_fr != null ? valeur[0].dimension_fr : ""
 
 
                                 //tarifs
@@ -223,7 +225,7 @@ const FormulaireProduit = () => {
                                 setLargeurUpdate(largeur)
                                 setLongueurUpdate(longueur)
                                 setPoidsUpdate(poids)
-
+                                setDimensionFrUpdate(dimension)
                                 //tags
                                 valeur[0].tags_ref !=null? setTagsReferencementUpdate(valeur[0].tags_ref) : setTagsReferencementUpdate("")
 
@@ -278,7 +280,7 @@ const FormulaireProduit = () => {
                                 else
                                     setEntretienCoupeDone(false)
 
-                                if(largeur!=0 && longueur!=0 && hauteur!=0 && poids!=0)
+                                if(dimension!="" && largeur!=0 && longueur!=0 && hauteur!=0 && poids!=0)
                                     setDimensionDone(true)
                                 else
                                     setDimensionDone(false)
@@ -395,16 +397,16 @@ const FormulaireProduit = () => {
             else
                 setEntretienCoupeDone(false)
 
-            if(largeurUpdate!=0 && longueurUpdate!=0 && hauteurUpdate!=0 && poidsUpdate !=0)
+            if(dimensionfrUpdate!="" && largeurUpdate!=0 && longueurUpdate!=0 && hauteurUpdate!=0 && poidsUpdate !=0)
                 setDimensionDone(true)
             else
-                setDimensionDone(false)
+                setDimensionDone(null)
             /**
              * Data à sauvegarder
              */
             let data = {
                 sku: infoSku.sku,
-                marqueUpdate:  marqueUpdate ? marqueUpdate : infoSku.marque.marque,
+                marqueUpdate:  marqueUpdate ? marqueUpdate : (infoSku.marque? infoSku.marque.marque: infoSku.nom_fournisseur),
                 paysOrigine: paysOrigineUpdate?paysOrigineUpdate : "",
                 univers: universUpdate? universUpdate : infoSku.univers,
                 universEn: universEnUpdate? universEnUpdate : infoSku.universEn,
@@ -422,7 +424,8 @@ const FormulaireProduit = () => {
                 largeur: largeurUpdate? parseFloat(largeurUpdate) : null,
                 hauteur: hauteurUpdate? parseFloat(hauteurUpdate) : null,
                 poids: poidsUpdate? parseFloat(poidsUpdate) : null,                
-              
+                dimensionFr: dimensionfrUpdate? dimensionfrUpdate : null,
+
                 descriptionFr: descriptionFrUpdate? descriptionFrUpdate : "",
                 descriptioEn: descriptionEnUpdate? descriptionEnUpdate : "",
                 nomProduitFr: nomProduitFrUpdate? nomProduitFrUpdate : "",
@@ -432,7 +435,6 @@ const FormulaireProduit = () => {
                 variantProduits: attributUpdate ? attributUpdate : [],
               
                 tarifsProduits: tarifUpdate ? tarifUpdate : [],
-                matieres: matiere,
                 tagsRef: tagsReferencementUpdate? tagsReferencementUpdate:"",
                 dateRef: Moment().format("YYYY-MM-DD"),
                 referencer: referencer,
@@ -440,7 +442,8 @@ const FormulaireProduit = () => {
               
              console.log("data", JSON.stringify(data))
             // console.log("id : ", infoSku.id)
-            setProduit(infoSku.id, data)
+            console.log(infoSku)
+            console.log(setProduit(infoSku.id, data))
         }
     }
 // console.log(infoSku)
@@ -473,6 +476,7 @@ const FormulaireProduit = () => {
             longueurUpdate: longueurUpdate, setLongueurUpdate: setLongueurUpdate,
             largeurUpdate: largeurUpdate, setLargeurUpdate: setLargeurUpdate,
             poidsUpdate: poidsUpdate, setPoidsUpdate: setPoidsUpdate,
+            dimensionfrUpdate: dimensionfrUpdate, setDimensionFrUpdate: setDimensionFrUpdate,
 
             descriptionFrUpdate: descriptionFrUpdate, setDescriptionFrUpdate: setDescriptionFrUpdate,
             descriptionEnUpdate: descriptionEnUpdate, setDescriptionEnUpdate: setDescriptionEnUpdate,

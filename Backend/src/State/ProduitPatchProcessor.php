@@ -143,7 +143,7 @@ class ProduitPatchProcessor implements ProcessorInterface
                     $tailleRefItem = "";
                     foreach ($variantItemProduit as $cle => $valeur) {
                         # code...
-                        if($cle == "taille_fnr" && $valeur == $value->getTailleFnr()){
+                        if($cle == "taille_fnr" &&  $valeur == $value->getTailleFnr() ){
                             $isVariant = true;
                         }
                         if($isVariant && $cle == "taille_ref"){
@@ -157,7 +157,7 @@ class ProduitPatchProcessor implements ProcessorInterface
 
                     }
 
-                    if($isVariant){
+                    if($isVariant && $tailleRefItem!=""){
                         $grilleTailleRef = new GrilleTailleRef(["grilleTailleRef" => $data->getGrilleTailleRef()]);
                         $findGrilleTailleRef = $this->_grilleTailleRefRepository->findOneBy(
                             ["grilleTailleRef" => $grilleTailleRef->getGrilleTailleRef()]

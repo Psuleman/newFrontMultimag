@@ -1,12 +1,13 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { ListeContext } from "./Context/ListeContext";
+import { ListeExportContext } from "./Context/ListeExportContext";
 import ExportCsv from "./ExportCsv";
 
 const Header = () => {
     //variable
     const {totalSkus, liste, skus} = useContext(ListeContext)
-
+    const {listesProduitExport} = useContext(ListeExportContext)
     //fonction
     const handleClick = () => {
         
@@ -52,9 +53,9 @@ const Header = () => {
 
         }
         {
-            (totalSkus && totalSkus>0 && liste=="export") &&
+            (listesProduitExport && totalSkus>0 && liste=="export") &&
             <div className="d-flex justify-content-between pt-2 pb-2 action">
-                {/* <ExportCsv list={skus} /> */}
+                <ExportCsv />
             </div>
 
         }

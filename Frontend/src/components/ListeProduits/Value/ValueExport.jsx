@@ -67,7 +67,7 @@ const ValueExport = ({item}) => {
             categorieItem += " > " + (item.filtre ? item.filtre.filtre : item.sous_categorie_fnr)
             setCategorie(categorieItem)
         }
-    }, [])
+    }, [item])
 
     const handleClick = () => {
         let path = `/produit/` + item.sku + ``;

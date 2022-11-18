@@ -113,13 +113,13 @@ const ListeContextProvider = ({children}) => {
             skus: skus, setSkus: setSkus,
             totalSkus: totalSkus, setTotalSkus: setTotalSkus,
             categorieFiltre: categorieFiltre, setCategorieFiltre: setCategorieFiltre,
-            categorieFiltreTab, categorieFiltreTab, setCategorieFiltreTab: setCategorieFiltreTab,
+            categorieFiltreTab: categorieFiltreTab, setCategorieFiltreTab: setCategorieFiltreTab,
             universFiltre: universFiltre, setUniversFiltre: setUniversFiltre,
-            universFiltreTab, universFiltreTab, setUniversFiltreTab: setUniversFiltreTab,
+            universFiltreTab: universFiltreTab, setUniversFiltreTab: setUniversFiltreTab,
             marqueFiltre: marqueFiltre, setMarqueFiltre: setMarqueFiltre,
-            marqueFiltreTab, marqueFiltreTab, setMarqueFiltreTab: setMarqueFiltreTab,
+            marqueFiltreTab: marqueFiltreTab, setMarqueFiltreTab: setMarqueFiltreTab,
             tagFiltre: tagFiltre, setTagFiltre: setTagFiltre,
-            tagFiltreTab, tagFiltreTab, setTagFiltreTab: setTagFiltreTab,
+            tagFiltreTab: tagFiltreTab, setTagFiltreTab: setTagFiltreTab,
             
         }}>
             {children}

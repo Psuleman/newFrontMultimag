@@ -224,7 +224,7 @@ class ProduitPostProcessor implements ProcessorInterface
             for($i=1; $i<10; $i++)
                 $img .= "https://leclaireur-shopify.imgix.net/" . $data->getSku() . "/" . $data->getSku() . "-0".$i.".png;";
 
-            $img .= "https://leclaireur-shopify.imgix.net/" . $data->getSku() . "/" . $data->getSku() . "-360.mp4";
+            $img .= "https://leclaireur-shopify.imgix.net/" . $data->getSku() . "/" . $data->getSku() . "-360.mp4;";
             $data->setPictures($img);
 
             //lien

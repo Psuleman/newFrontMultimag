@@ -166,9 +166,6 @@ class Produits
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description_fr;
 
-    #[Groups('produit')]
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $description_en;
 
     #[Groups('produit')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -347,6 +344,10 @@ class Produits
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $couleur_en = null;
+
+    #[Groups(['produit'])]
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $description_en = null;
 
     //end
     public function __construct()
@@ -764,15 +765,7 @@ class Produits
         $this->description_fr = $description_fr;
         return $this;
     }
-    public function getDescriptioEn() : ?string
-    {
-        return $this->description_en;
-    }
-    public function setDescriptioEn(?string $description_en = "") : self
-    {
-        $this->description_en = $description_en;
-        return $this;
-    }
+
     public function getNomProduitFr() : ?string
     {
         return $this->nom_produit_fr;
@@ -1170,6 +1163,18 @@ class Produits
     public function setCouleurEn(?string $couleur_en): self
     {
         $this->couleur_en = $couleur_en;
+
+        return $this;
+    }
+
+    public function getDescriptionEn(): ?string
+    {
+        return $this->description_en;
+    }
+
+    public function setDescriptionEn(?string $description_en): self
+    {
+        $this->description_en = $description_en;
 
         return $this;
     }
