@@ -30,6 +30,7 @@ class UserFixtures extends Fixture
             ["nom"=>"Poulsen", "prenom"=>"Victor", "email"=>"victor@leclaireur.com", "password"=>"xog64qeAmiDp", "service"=>"e-shop"],
             ["nom"=>"Suleman", "prenom"=>"Prisca", "email"=>"prisca@dalena.fr", "password"=>"Ime94Ms5v5OV", "service"=>"IT"],
             ["nom"=>"Yankioua", "prenom"=>"Bénédicte", "email"=>"benedicte@leclaireur.com", "password"=>"cgb3SLKxJ2xx", "service"=>"e-shop"],
+            ["nom"=>"Leusch", "prenom"=>"Juliette", "email"=>"juliette@dalena.fr", "password"=>"dsfgh54ZMLDT", "service"=>"e-shop"],
             ];
 
         foreach ($Users as $key => $value) {

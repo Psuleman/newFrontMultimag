@@ -24,19 +24,19 @@ class ReferenceController extends AbstractController
 		/**
 		 * USER
 		 */
-		$findUser = $em->getRepository(User::class)->findAll();
-		foreach ($findUser as $key => $value) {
-			# code...
-			$user = $value;
-			$hashedPassword = $passwordHasher->hashPassword(
-				$user,
-				$user->getPassword()
-			);
-			$user->setPassword($hashedPassword);
+		// $findUser = $em->getRepository(User::class)->findAll();
+		// foreach ($findUser as $key => $value) {
+		// 	# code...
+		// 	$user = $value;
+		// 	$hashedPassword = $passwordHasher->hashPassword(
+		// 		$user,
+		// 		$user->getPassword()
+		// 	);
+		// 	$user->setPassword($hashedPassword);
 
-			$em->persist($user);
-			$em->flush();
-		}
+		// 	$em->persist($user);
+		// 	$em->flush();
+		// }
 
 		//
         $sousCategorieRefTab = [
@@ -333,21 +333,22 @@ class ReferenceController extends AbstractController
 			["filtre"=>"Écharpes", "filtre_ref_en"=>"Scarves", "sousCategorieRef"=>"Echarpes & Gants"],
 			["filtre"=>"Écharpes", "filtre_ref_en"=>"Scarves", "sousCategorieRef"=>"Écharpes & Gants"],
 			];
-        foreach ($filtresRef as $key => $value) {
-            $sousCategorieRef = $em->getRepository(SousCategorieRef::class)->findOneBy([
-                "sous_categorie_ref"=>$value["sousCategorieRef"]]);
+
+			foreach ($filtresRef as $key => $value) {
+				$sousCategorieRef = $em->getRepository(SousCategorieRef::class)->findOneBy([
+					"sous_categorie_ref"=>$value["sousCategorieRef"]]);
 
 
-            $filtreReferencement = $em->getRepository(FiltreRef::class)->findOneBy([
-                "filtre"=>$value["filtre"]]);
+				$filtreReferencement = $em->getRepository(FiltreRef::class)->findOneBy([
+					"filtre"=>$value["filtre"]]);
 
-            if($sousCategorieRef)
-				$filtreReferencement->setSousCategorieRef($sousCategorieRef);
+				if($sousCategorieRef)
+					$filtreReferencement->setSousCategorieRef($sousCategorieRef);
 
-            $em->persist($filtreReferencement);
-            $em->flush();
-		
-        }
+				$em->persist($filtreReferencement);
+				$em->flush();
+			
+			}
 
 		foreach ($sousCategorieRefTab as $key => $value) {
 			# code...
