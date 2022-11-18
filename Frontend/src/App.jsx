@@ -27,7 +27,7 @@ function App() {
           <Route path="/nouveau-produit" element={<NouveauProduit />} />
           <Route path="/produit/:skuProduit" element={<FormulaireProduit />} />
           <Route path="/mon-compte" element={<MonCompte />} />
-          <Route path="/utilisateur" element={<GestionUtilisateur />} />
+          {/* <Route path="/utilisateur" element={<GestionUtilisateur />} /> */}
         </Routes>
       </BrowserRouter>
     </div>

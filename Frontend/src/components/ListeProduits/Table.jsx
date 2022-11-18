@@ -104,20 +104,32 @@ const Table = () => {
             /**
              * liste à exporter
              */
-            let tabExport = [...tab]
-            for(let item in tabExport){
-                let title = tabExport[item].title ? tabExport[item].title.replace(`"`, `""`) : null
-                let descriptionFr = tabExport[item].descriptionFr ? tabExport[item].descriptionFr.replace(`"`, `""`) : null
-                let img_alt_text = tabExport[item].img_alt_text ? tabExport[item].img_alt_text.replace(`"`, `""`) : null  
+            let tabExport = []
+            // tab.forEach(element => {
+            //     let item = element
+            //     let titleExport = element.title ? element.title.replace(`"`, `""`) : null
+            //     item.title = element.title ? `${titleExport}`: null
+            //     let description = element.descriptionFr ? element.descriptionFr.replace(`"`, `""`) : null
+            //     item.descriptionFr = element.descriptionFr ? `${description}` : null
+            //     let img_alt_text_export = element.img_alt_text ? element.img_alt_text.replace(`"`, `""`) : null 
+            //     item.img_alt_text = element.img_alt_text ? `${img_alt_text_export}` : null
+            //     tabExport.push(item)
+            // });
+            for(let item in tab){
+                let title = tab[item].title ? tab[item].title.replace(`"`, `""`) : null
+                let descriptionFr = tab[item].descriptionFr ? tab[item].descriptionFr.replace(`"`, `""`) : null
+                let img_alt_text = tab[item].img_alt_text ? tab[item].img_alt_text.replace(`"`, `""`) : null  
                 
+                tabExport[item] = tab[item]
 
                 tabExport[item].title = tabExport[item].title ? `"${title}"`: null,
                 tabExport[item].descriptionFr = tabExport[item].descriptionFr ? `"${descriptionFr}"`: null,//body html
-                tabExport[item].tags = `"${tabExport[item].tags}"`,
+                tabExport[item].tags =tabExport[item].tags ? `"${tabExport[item].tags}"`: null,
                 tabExport[item].img_alt_text = tabExport[item].img_alt_text ? `"${img_alt_text}"`: null
 
             }
             setListesProduitExport(tabExport)
+            console.log("tabExport", tabExport)
         }
     }, [skus])
 

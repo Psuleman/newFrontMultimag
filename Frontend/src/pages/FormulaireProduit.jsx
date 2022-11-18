@@ -427,7 +427,7 @@ const FormulaireProduit = () => {
                 dimensionFr: dimensionfrUpdate? dimensionfrUpdate : null,
 
                 descriptionFr: descriptionFrUpdate? descriptionFrUpdate : "",
-                descriptioEn: descriptionEnUpdate? descriptionEnUpdate : "",
+                descriptionEn: descriptionEnUpdate? descriptionEnUpdate : "",
                 nomProduitFr: nomProduitFrUpdate? nomProduitFrUpdate : "",
                 nomProduitEn: nomProduitEnUpdate? nomProduitEnUpdate : "", 
                 matieres: matiere,

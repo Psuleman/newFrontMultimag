@@ -11,6 +11,7 @@ const Description = () => {
     const {infoSku, descriptionDone, setDescriptionDone, universEnUpdate, setUniversEnUpdate , descriptionFrUpdate, setDescriptionFrUpdate, descriptionEnUpdate, setDescriptionEnUpdate, nomProduitFrUpdate, setNomProduitFrUpdate, nomProduitEnUpdate, setNomProduitEnUpdate, 
     sectionUpdate, setSectionUpdate, handleClickSave} = useContext(FormulaireContext)
 
+    console.log("description en ", infoSku)
     //fonction 
     useEffect(()=>{
         if(nomProduitFrUpdate && nomProduitFrUpdate.length>0 && nomProduitEnUpdate && nomProduitEnUpdate.length>0 && descriptionFrUpdate && descriptionFrUpdate.length>0 && descriptionEnUpdate && descriptionEnUpdate.length>0)

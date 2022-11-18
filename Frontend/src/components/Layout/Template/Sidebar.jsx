@@ -15,9 +15,9 @@ const Sidebar = () => {
                     <li><Link to="/nouveau-produit" className="nav-link">Nouveau produit</Link></li>
                 </ul>
             </div>
-            <Link className="nav-link" to="/referencement">Référencement</Link>
-            <Link className="nav-link" to="/modification">Modification en attente</Link>
-            <Link className="nav-link" to="/utilisateur">Gestion des utilisateurs</Link>
+            <Link className="nav-link" to="/produits/referencement">Référencement</Link>
+            <Link className="nav-link" to="/produits/modification">Modification en attente</Link>
+            {/* <Link className="nav-link" to="/utilisateur">Gestion des utilisateurs</Link> */}
             <div className="nav-link">
                 Compte
                 <ul>

@@ -12,6 +12,10 @@ const ValueExport = ({item}) => {
     const [stock, setStock] = useState([])
     const [imgExist, setImgExist] = useState(false)
     const [tagBackground, setTagBackground] = useState("")
+    const [title, setTitle] = useState()
+    const [description, setDescription] = useState()
+    const [imgAltText, setImgAltText] = useState()
+
     let navigate = useNavigate()
 
     const {liste} = useContext(ListeContext)
@@ -33,32 +37,12 @@ const ValueExport = ({item}) => {
 
 		}).catch((err)=>{});
 
-
-        // let tab = {
-        //     boissy : 0,
-        //     sevigne : 0,
-        //     herold : 0,
-        //     depot : 0,
-        //     referencement : 0,
-        //     total : 0,  
-        //     taille : ""          
-        // }
-        // let arrayTemp = item.variants
-        // arrayTemp.forEach(element => {
-        //     tab = {
-        //         boissy : tab.boissy + element.stock_18,
-        //         sevigne : tab.sevigne + element.stock_7,
-        //         herold : tab.herold + element.stock_14,
-        //         depot : tab.depot + element.stock_0,
-        //         referencement : tab.referencement + element.stock_9,
-        //         total : tab.total + element.stock_3,
-        //         taille : tab.taille + ", " + element.taille_fnr
-        //     }
-            
-        // });
-        // tab.taille = tab.taille.substring(1)
-        // setStock(tab)
-
+        /**
+         * Title, description, img_alt_text
+         */
+         item.title && setTitle(subStr(item.title))
+         item.descriptionFr && setDescription(subStr(item.descriptionFr))
+         item.img_alt_text && setImgAltText(subStr(item.img_alt_text))
         /**
          * Categorie
          */
@@ -69,6 +53,14 @@ const ValueExport = ({item}) => {
         }
     }, [item])
 
+    const subStr = (text) => {
+        text=text.replace(`\"\"`, '@')
+        text=text.replace(`\"`, '')
+
+        text = text.replace('@', '"' )
+
+        console.log(text)
+    }
     const handleClick = () => {
         let path = `/produit/` + item.sku + ``;
         navigate(path)
