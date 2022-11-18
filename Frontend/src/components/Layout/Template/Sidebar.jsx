@@ -10,7 +10,7 @@ const Sidebar = () => {
         <nav className="nav flex-column">
             <div className="nav-link">
                 Produits
-                <ul>
+                <ul className="submenu">
                     <li><Link to="/produits/listes" className="nav-link">liste des produits</Link></li>
                     <li><Link to="/nouveau-produit" className="nav-link">Nouveau produit</Link></li>
                 </ul>
@@ -20,9 +20,9 @@ const Sidebar = () => {
             {/* <Link className="nav-link" to="/utilisateur">Gestion des utilisateurs</Link> */}
             <div className="nav-link">
                 Compte
-                <ul>
+                <ul className="submenu">
                     <li><Link to="/mon-compte" className="nav-link">Configuration</Link></li>
-                    <li><Link href="/" className="nav-link">Déconnexion</Link></li>
+                    <li><Link to="/" className="nav-link">Déconnexion</Link></li>
                 </ul>
             </div>
         </nav>
