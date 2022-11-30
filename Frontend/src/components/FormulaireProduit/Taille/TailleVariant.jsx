@@ -63,6 +63,8 @@ const TailleVariant = () => {
         }
 
     }, [grilleTailleUpdate])
+
+    console.log("attributUpdate[index].taille_ref.taille_ref", attributUpdate[0].taille_ref.taille_ref)
     //render
     return (
         <div>

@@ -15,23 +15,43 @@ import { useEffect } from "react"
             else{
                 setArrayList(oldList=>{
                     let newList = []
-                    let regex = new RegExp(search, "i")
+                    let regex = new RegExp(majuscule(search), "i")
                     if(search && search != ""){
-                        oldList.forEach(element => {
-                            let item = (itemValue != "") ? eval('element.' + itemValue) : element
-                            if(item.match(regex))
-                                newList.push(element)
+                        list.forEach(element => {
+                            if(itemValue==""){
+                                if(element && majuscule(element).match(regex))
+                                    newList.push(element)                                
+                            }
+                            else{
+                                let item = eval('element.' + itemValue)
+                                if(majuscule(item).match(regex))
+                                    newList.push(element)                                
+                            }
+
                         });
                     }
                     return newList
-                })
-                
+                })                
             }
         }
 
 
     }, [search, list])
 
+    const majuscule = (text) => {
+        if(text){        
+        let result = text.replace(/[àâä]/i, 'a')
+        result = result.replace(/[éèêë]/i, 'e')
+        result = result.replace(/[öô]/i, 'o')
+        result = result.replace(/[iìîï]/i, 'i')
+        result = result.replace(/[ùü]/i, 'u')
+        
+        return result.toUpperCase()
+        }
+        else{
+            return text
+        }
+    }
     const sortList = (tab) => {
         let arraySort = new Set()
 
@@ -60,6 +80,12 @@ import { useEffect } from "react"
         console.log("tabObjet", tabObjet)
         return tabObjet;
     }
+
+    const handleClick = () => {
+        let tab = [...arrayList]
+        tab.push(search)
+        setValue(search)
+    }
     //Render
     return (
     <div className="col-md-3">
@@ -71,7 +97,12 @@ import { useEffect } from "react"
                 <div className="input-group">
                     <span className="input-group-text rounded-0 border border-0" id="basic-addon1"><i className="fas fa-search"></i></span>
                     <input type="text" className="form-control rounded-0 border border-0" placeholder={label} aria-label={label} aria-describedby="basic-addon1" value={search} onChange={(e)=>setSearch(e.target.value)} />
+                    <button className="input-group-text rounded-0 border border-0" type="button" onClick={handleClick}>Ajouter</button>
                 </div>
+                {/* <div className="input-group">
+                    <span className="input-group-text rounded-0 border border-0" id="basic-addon1"><i className="fas fa-search"></i></span>
+                    <input type="text" className="form-control rounded-0 border border-0" placeholder={label} aria-label={label} aria-describedby="basic-addon1" value={search} onChange={(e)=>setSearch(e.target.value)} />
+                </div> */}
                 </div>
                 <div className="height-select border border-1">
                 {

@@ -8,6 +8,7 @@ const Marque = () => {
     //variable
     const {marqueUpdate, setMarqueUpdate, infoSku} = useContext(FormulaireContext)
     const [marques, setMarques] = useState([])
+
     //Fonction
     useEffect(()=>{
         let arrayMarque = [...Marques]

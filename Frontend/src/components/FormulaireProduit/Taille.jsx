@@ -12,6 +12,7 @@ import InputDesabled from "./TemplateFormulaire/InputDesabled";
 
 const Taille = () => {
     //variable
+    const [listGrilleTaille, setListeGrilleTaille] = useState([])
     const [loading, setLoading] = useState(false)
     const {infoSku, tailleDone, setTailleDone, grilleTailleUpdate, setGrilleTailleUpdate, attributUpdate, setAttributUpdate, sectionUpdate, setSectionUpdate, handleClickSave} = useContext(FormulaireContext)    
     // console.log('grilleTailleUpdate', grilleTailleUpdate)
@@ -24,6 +25,26 @@ const Taille = () => {
                 navigate('/')
             }
             else{
+                let categorie_univers =  infoSku.categorie_univers+""
+                let categorieFnr = categorie_univers.split(/[. ]/i)
+
+                let tab = []
+                if(categorieFnr.length>1){
+                    let regex = new RegExp(majuscule(categorieFnr[0]), "i")
+
+                    GrilleTaille.forEach(element => {
+                        if(majuscule(element.grilleTaille).match(regex))
+                            tab.push(element)
+                    });
+                    setListeGrilleTaille(tab)                
+                }
+                else{
+                    setListeGrilleTaille(GrilleTaille)
+                }
+
+
+
+                // console.log(categorieFnr[0])
                 //setAttributUpdate(infoSku.variants)
                 // console.log("attributUpdate", attributUpdate)
                 // // console.log("grilleTaille", grilleTailleUpdate)
@@ -48,6 +69,21 @@ const Taille = () => {
          
 
     }, [infoSku])
+
+    const majuscule = (text) => {
+        if(text){        
+            let result = text.replace(/[àâä]/i, 'a')
+        result = result.replace(/[éèêë]/i, 'e')
+        result = result.replace(/[öô]/i, 'o')
+        result = result.replace(/[iìîï]/i, 'i')
+        result = result.replace(/[ùü]/i, 'u')
+        
+        return result.toUpperCase()
+        }
+        else{
+            return text
+        }
+    }
     //render
     return (
         <div className="card mb-3">
@@ -58,10 +94,11 @@ const Taille = () => {
             <div className="card-body">
                 <section className="row g-3 mb-3"><small>Tous les champs sont obligatoire</small></section>
                 <section className="row g-3 mb-3">
-                    <InputDesabled label="Catégorie dans le fichier multimag" value={infoSku.categorie_univers} />
+                <InputDesabled label="Catégorie dans le fichier multimag" value={infoSku.categorie_univers} />
+                <InputDesabled label="Grille Taille Fournisseur" value={infoSku.grille_taille_fournisseur} />
                 </section>
                 <section className="row g-3">
-                    <Select id="selectTaille" label="Grille taille" value={grilleTailleUpdate} setValue={setGrilleTailleUpdate} list={GrilleTaille} itemValue="grilleTaille" />                   
+                    <Select id="selectTaille" label="Grille taille" value={grilleTailleUpdate} setValue={setGrilleTailleUpdate} list={listGrilleTaille} itemValue="grilleTaille" />                   
                 </section>
                 <TailleContext.Provider value={{
                     loading:loading, setLoading: setLoading,

@@ -1,5 +1,5 @@
-//let url = "http://212.129.3.31:8080/api/grille_taille_refs/"
-let url = "http://localhost:8001/api/grille_taille_refs"
+let url = "http://212.129.3.31:8080/api/grille_taille_refs"
+// let url = "http://localhost:8001/api/grille_taille_refs"
 
 const headerGET = {
     method: 'GET',

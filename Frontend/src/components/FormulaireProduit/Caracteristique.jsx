@@ -18,7 +18,6 @@ const Caracteristique = () => {
     //variable
     const {infoSku, caracteristiqueDone, setCaracteristiqueDone, categorieUpdate, categorieEnUpdate, sousCategorieUpdate, sousCategorieEnUpdate, filtreUpdate, filtreEnUpdate, couleurUpdate, couleurEnUpdate, sectionUpdate, setSectionUpdate, handleClickSave} = useContext(FormulaireContext)
     //fonction
-
     useEffect(()=>{
         
         if(categorieUpdate && categorieUpdate.length>0 && categorieEnUpdate && categorieEnUpdate.length>0 && sousCategorieUpdate && sousCategorieUpdate.length>0 && sousCategorieEnUpdate && sousCategorieEnUpdate.length>0 && filtreUpdate && filtreUpdate.length>0 && filtreEnUpdate && filtreEnUpdate.length>0 && couleurUpdate && couleurUpdate.length>0 && couleurEnUpdate && couleurEnUpdate.length>0)

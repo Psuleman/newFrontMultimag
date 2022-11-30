@@ -16,10 +16,15 @@ const ValueReferencement = ({item}) => {
 
     const {liste} = useContext(ListeContext)
 
+    let image = ""
+    let images = item.pictures
+    images = images.split(";")
+    
     //fonction
     useEffect(()=>{
 		//image
-		fetch(item.pictures)
+		// fetch(item.pictures)
+		fetch(image)
 		.then(function(response) {
 			if(response.status != 404){
 				setImgExist(true)
@@ -63,8 +68,8 @@ const ValueReferencement = ({item}) => {
          * Categorie
          */
         if(item.filtre){
-            let categorieItem = item.filtre ? item.filtre.sousCategorieRef.categorieRef.categorieRef : item.categorie_univers
-            categorieItem += " > " + (item.filtre ? item.filtre.filtre : item.sous_categorie_fnr)
+            let categorieItem = (item.filtre_produit) ? item.categorie : item.categorie_univers
+            categorieItem += " > " + (item.filtre_produit ? item.filtre_produit : item.sous_categorie_fnr)
             setCategorie(categorieItem)
         }
     }, [])
@@ -94,7 +99,7 @@ const ValueReferencement = ({item}) => {
                 <td className="px-2">
                 {
                     imgExist ? 
-                    <img src={item.pictures} alt="non disponible" /> 
+                    <img src={image} alt="non disponible"  className="imgListTab"/> 
                     :
                     <img src={Ceintre} alt="non disponible" className="imgListTab" />
                 }

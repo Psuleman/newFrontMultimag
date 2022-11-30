@@ -211,9 +211,10 @@ class ProduitPostProcessor implements ProcessorInterface
                 }    
             }
             if($this->majuscule($data->getCategorieUnivers()) == "DESIGN"){
-                $universRefObjet = $this->_entityManager->getRepository(UniversRef::class)->findOneBy([
-                    "univers_ref" => "Maison"
-                ]);
+                // $universRefObjet = $this->_entityManager->getRepository(UniversRef::class)->findOneBy([
+                //     "univers_ref" => "Maison"
+                // ]);
+                $universRefObjet = ["univers_ref"=>"Maison", "univers_ref_en"=>"Home", "univers_ref_abreviation"=>"M"];
             }
 
             $data->setUnivers($universRefObjet["univers_ref"]);
@@ -222,7 +223,7 @@ class ProduitPostProcessor implements ProcessorInterface
             //picture
             $img = "";
             for($i=1; $i<10; $i++)
-                $img .= "https://leclaireur-shopify.imgix.net/" . $data->getSku() . "/" . $data->getSku() . "-0".$i.".png;";
+                $img .= "https://leclaireur-shopify.imgix.net/" . $data->getSku() . "/" . $data->getSku() . "-0".$i.".png.webp;";
 
             $img .= "https://leclaireur-shopify.imgix.net/" . $data->getSku() . "/" . $data->getSku() . "-360.mp4;";
             $data->setPictures($img);
@@ -279,15 +280,15 @@ class ProduitPostProcessor implements ProcessorInterface
                         $this->_entityManager->persist($categorieRef);
                     }
                 }
-                $sousCategorieRef = $this->_entityManager->getRepository(SousCategorieRef::class)->findOneBy(["sous_categorie_ref"=>"A définir", "sous_categorie_ref_en"=>"To define"]);
+                $sousCategorieRef = $this->_entityManager->getRepository(SousCategorieRef::class)->findOneBy(["sous_categorie_ref"=>$data->getSousCategorieFnr()]);
                 if(!$sousCategorieRef){
-                    $sousCategorieRef = (new SousCategorieRef(["sous_categorie_ref"=>"Écharpes & Gants", "sous_categorie_ref_en"=>"Scarves & Gloves"]))
+                    $sousCategorieRef = (new SousCategorieRef(["sous_categorie_ref"=>$data->getSousCategorieFnr(), "sous_categorie_ref_en"=>""]))
                     ->setCategorieRef($categorieRef); 
 
                     $this->_entityManager->persist($sousCategorieRef);                 
                 }
 
-                $filtreRef = (new FiltreRef(["filtre"=>$filtreMotCle, "filtre_ref_en"=>"Scarves"]))
+                $filtreRef = (new FiltreRef(["filtre"=>$filtreMotCle, "filtre_ref_en"=>""]))
                 ->setSousCategorieRef($sousCategorieRef);
 
                 $this->_entityManager->persist($filtreRef);                 

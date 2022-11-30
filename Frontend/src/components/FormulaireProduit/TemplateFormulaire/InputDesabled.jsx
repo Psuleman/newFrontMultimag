@@ -1,8 +1,11 @@
 const InputDesabled = ({id, type, value, label }) => {
+    let valeur = value
+    let typeInput = type
+    let idInput = id
     return (
     <div className="col-md-3">
-        <label htmlFor={id} className="form-label">{label}</label>
-        <input type={type} className="form-control" id={id} value={value} disabled />
+        <label htmlFor={idInput} className="form-label">{label}</label>
+        <input type={typeInput} className="form-control" id={idInput} value={valeur} disabled />
     </div>   
     )
 }

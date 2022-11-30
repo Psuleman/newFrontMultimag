@@ -1,5 +1,5 @@
-//let url = "http://212.129.3.31:8080/api/matiere_produits"
-let url = "http://localhost:8001/api/matiere_produits"
+let url = "http://212.129.3.31:8080/api/matiere_produits"
+// let url = "http://localhost:8001/api/matiere_produits"
 
 export const setMatiereProduit = (data, operation) => {
     const requestOptions = {

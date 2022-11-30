@@ -56,7 +56,7 @@ const FormulaireProduit = () => {
 	const [longueurUpdate, setLongueurUpdate] = useState()
 	const [largeurUpdate, setLargeurUpdate] = useState()
 	const [poidsUpdate, setPoidsUpdate] = useState()
-	const [dimensionfrUpdate, setDimensionFrUpdate] = useState("")
+	const [dimensionFrUpdate, setDimensionFrUpdate] = useState("")
 
 	const [nomProduitFrUpdate, setNomProduitFrUpdate] = useState("")
 	const [nomProduitEnUpdate, setNomProduitEnUpdate] = useState("")
@@ -114,7 +114,7 @@ const FormulaireProduit = () => {
                             let valeur = value[item]
                             if(item == "hydra:member"){
                                 setInfoSku(valeur[0])
-                                
+                                console.log("valeur[0] : ",valeur[0])
                                 //Information
                                 let univers = valeur[0].univers!= null ? valeur[0].univers : ""
                                 let universEn = valeur[0].univers_en!= null ? valeur[0].univers_en : ""
@@ -128,7 +128,8 @@ const FormulaireProduit = () => {
                                 let categorie = valeur[0].categorie != null ? valeur[0].categorie : ""
                                 let categorieEn = valeur[0].categorie_en != null ? valeur[0].categorie_en : ""
                                 let sousCategorie = valeur[0].sous_categorie != null? valeur[0].sous_categorie : ""
-                                let sousCategorieEn = valeur[0].sous_categorie_en != null? valeur[0].sous_categorie_en : ""
+                                
+                                let sousCategorieEn = valeur[0].sous_categorie_en? valeur[0].sous_categorie_en : ""
 
                                 let filtre = valeur[0].filtre_produit != null? valeur[0].filtre_produit : ""
                                 let filtreEn = valeur[0].filtre_produit_en != null? valeur[0].filtre_produit_en : ""                                
@@ -150,6 +151,10 @@ const FormulaireProduit = () => {
                                     let item = valeur[0].variants[i]
                                     let tailleRef = item.taille_ref? item.taille_ref.taille_ref : ""
                                     grilleTaille = item.taille_ref? item.taille_ref.grille_taille_ref.grilleTailleRef : ""
+
+                                    if(grilleTaille=="" && item.taille_fnr=="TU"){
+                                        grilleTaille="Taille Unique"
+                                    }
                                     variant[i] = {
                                         taille_fnr: item.taille_fnr,
                                         taille_ref: {taille_ref: tailleRef},
@@ -160,15 +165,10 @@ const FormulaireProduit = () => {
                                  * Dimension: Hauteur, Poids, Largeur, Longueur
                                  */
                                  let hauteur= valeur[0].hauteur != null ? valeur[0].hauteur : 0
-
                                  let largeur= valeur[0].largeur != null ? valeur[0].largeur : 0
- 
                                  let longueur= valeur[0].longueur != null ? valeur[0].longueur : 0
- 
                                  let poids = valeur[0].poids != null ? valeur[0].poids : 0
-
-                                 let dimension = valeur[0].dimension_fr != null ? valeur[0].dimension_fr : ""
-
+                                 let dimension = valeur[0].dimension_fr ? valeur[0].dimension_fr : ""
 
                                 //tarifs
                                 let tarifs = []
@@ -220,7 +220,7 @@ const FormulaireProduit = () => {
                                 setNomProduitEnUpdate(nomProduitEn)
                                 setUniversUpdate(univers)
                                 setUniversEnUpdate(universEn)
-                                setMarqueUpdate(marque.marque)
+                                setMarqueUpdate(valeur[0].marque ? valeur[0].marque.marque : marque)
                                 setHauteurUpdate(hauteur)
                                 setLargeurUpdate(largeur)
                                 setLongueurUpdate(longueur)
@@ -236,10 +236,11 @@ const FormulaireProduit = () => {
                                     setIndicationDone(true)
                                  else 
                                     setIndicationDone(false)
+
                                 if(categorie!="" && categorieEn!="" && sousCategorie!="" && sousCategorieEn!="" && filtre!="" && filtreEn!="" && couleur!="" && couleurEn!="")
                                     setCaracteristiqueDone(true)
                                 else
-                                    setCaracteristiqueDone(true)
+                                    setCaracteristiqueDone(false)
                                 
                                 if(matiere.length>0)
                                     setMatiereDone(true)
@@ -283,7 +284,7 @@ const FormulaireProduit = () => {
                                 if(dimension!="" && largeur!=0 && longueur!=0 && hauteur!=0 && poids!=0)
                                     setDimensionDone(true)
                                 else
-                                    setDimensionDone(false)
+                                    setDimensionDone(null)
                             }
                         }
                     }
@@ -292,6 +293,9 @@ const FormulaireProduit = () => {
         }  
     }, [])
 
+    console.log("info ", infoSku)
+
+    
     const handleClickSave = (e, section) => {
         // // console.log("section", section)
         e.preventDefault()
@@ -397,7 +401,7 @@ const FormulaireProduit = () => {
             else
                 setEntretienCoupeDone(false)
 
-            if(dimensionfrUpdate!="" && largeurUpdate!=0 && longueurUpdate!=0 && hauteurUpdate!=0 && poidsUpdate !=0)
+            if(dimensionFrUpdate!="" && largeurUpdate!=0 && longueurUpdate!=0 && hauteurUpdate!=0 && poidsUpdate !=0)
                 setDimensionDone(true)
             else
                 setDimensionDone(null)
@@ -424,7 +428,7 @@ const FormulaireProduit = () => {
                 largeur: largeurUpdate? parseFloat(largeurUpdate) : null,
                 hauteur: hauteurUpdate? parseFloat(hauteurUpdate) : null,
                 poids: poidsUpdate? parseFloat(poidsUpdate) : null,                
-                dimensionFr: dimensionfrUpdate? dimensionfrUpdate : null,
+                dimensionFr: dimensionFrUpdate? dimensionFrUpdate : null,
 
                 descriptionFr: descriptionFrUpdate? descriptionFrUpdate : "",
                 descriptionEn: descriptionEnUpdate? descriptionEnUpdate : "",
@@ -476,7 +480,7 @@ const FormulaireProduit = () => {
             longueurUpdate: longueurUpdate, setLongueurUpdate: setLongueurUpdate,
             largeurUpdate: largeurUpdate, setLargeurUpdate: setLargeurUpdate,
             poidsUpdate: poidsUpdate, setPoidsUpdate: setPoidsUpdate,
-            dimensionfrUpdate: dimensionfrUpdate, setDimensionFrUpdate: setDimensionFrUpdate,
+            dimensionFrUpdate: dimensionFrUpdate, setDimensionFrUpdate: setDimensionFrUpdate,
 
             descriptionFrUpdate: descriptionFrUpdate, setDescriptionFrUpdate: setDescriptionFrUpdate,
             descriptionEnUpdate: descriptionEnUpdate, setDescriptionEnUpdate: setDescriptionEnUpdate,

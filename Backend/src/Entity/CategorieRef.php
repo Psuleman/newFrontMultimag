@@ -11,12 +11,12 @@ use App\Repository\CategorieRefRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-// #[ApiResource(operations: [
-//         new Get(), 
-//         new GetCollection()
-//     ], 
-//     paginationEnabled: false)
-// ]
+#[ApiResource(operations: [
+        new Get(), 
+        new GetCollection()
+    ], 
+    paginationEnabled: false)
+]
 #[ORM\Entity(repositoryClass: CategorieRefRepository::class)]
 class CategorieRef
 {

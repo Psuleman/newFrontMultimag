@@ -2,27 +2,41 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Delete;
-use ApiPlatform\Metadata\Patch;
-use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\ApiProperty;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Metadata\ApiFilter;
-use App\Repository\UserRepository;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
 use Doctrine\DBAL\Types\Types;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Delete;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use App\Repository\UserRepository;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use App\State\UserStateProcessor;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-#[ApiResource(paginationEnabled: false, denormalizationContext: ['groups' => ['user', 'user:write']], normalizationContext: ['groups' => ['user', 'user:read']])]
+#[ApiResource(
+    operations: [new GetCollection(), new Get()],
+    paginationEnabled: false, 
+    denormalizationContext: ['groups' => ['user', 'user:write']], 
+    normalizationContext: ['groups' => ['user', 'user:read']])
+]
+#[POST(
+    processor: UserStateProcessor::class
+)]
+#[PATCH(
+    processor: UserStateProcessor::class
+)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['email' => 'exact', 'tokenMail' => 'exact', 'tokenPassword' => 'exact'])]
+#[UniqueEntity('email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[Groups(["user"])]
@@ -30,43 +44,58 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+
     #[Groups("user")]
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private $email;
+
     #[ORM\Column(type: 'json')]
     private $roles = [];
+
     #[ORM\Column(type: 'string')]
     private $password;
+
     #[Groups("user")]
     #[ORM\Column(type: 'string', length: 255)]
     private $nom;
+
     #[Groups("user")]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $prenom;
+
     #[Groups("user:write")]
     #[SerializedName("password")]
     private ?string $plainPassword = null;
+
     #[Groups("user:write")]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $tokenMail = null;
+
     #[Groups("user:write")]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $tokenPassword = null;
+
     #[Groups("user:read")]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateTokenMail = null;
+
     #[Groups("user:read")]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateTokenPassword = null;
+
     #[Groups("user:write")]
     private ?bool $activeMail = null;
+
     #[Groups("user:write")]
     private ?bool $activePassword = null;
+
     #[Groups("user:write")]
     private ?bool $newMailActiveCompte = null;
+
     #[Groups("user")]
     #[ORM\Column(length: 255)]
     private ?string $service = null;
+
     public function getId() : ?int
     {
         return $this->id;

@@ -1,8 +1,11 @@
-let url = "http://localhost:8001/api/filtre_refs"
+let url = "http://212.129.3.31:8080/api/filtre_refs"
+// let url = "http://localhost:8001/api/filtre_refs"
+
+
 const headerGET = {
     method: 'GET',
     headers: {
-        accept: 'application/json',
+        accept: 'application/ld+json',
         //Authorization : `Bearer ${token}` 			
     },
     cache: "default",

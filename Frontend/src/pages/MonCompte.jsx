@@ -53,8 +53,6 @@ const MonCompte = () => {
 						prenom: prenom, setPrenom: setPrenom,
 						email: email, setEmail: setEmail,
 						password: password, setPassword: setPassword,
-						email: email, setEmail: setEmail,
-						password: password, setPassword: setPassword,
 						confPassword: confPassword, setConfPassword: setConfPassword,
 						role:role, setRole: setRole,
 					}}>

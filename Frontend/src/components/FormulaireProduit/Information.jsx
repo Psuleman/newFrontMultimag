@@ -24,6 +24,7 @@ const Information = () => {
         else 
             setIndicationDone(false)
     }, [])
+
     // console.log("reference couleur", infoSku.reference_fournisseur)
     //render
     return (

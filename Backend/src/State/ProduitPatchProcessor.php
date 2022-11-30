@@ -75,23 +75,59 @@ class ProduitPatchProcessor implements ProcessorInterface
          * Catégorie, sous catégorie, filtre
          */
           if($data->getFiltre()){
+            /***
+             * Categorie
+             */
+            $filtre = $data->getFiltre();
+            $sousCategorie = $filtre->getSousCategorieRef();
+            $categorie = $sousCategorie->getCategorieRef();
 
-            $findFiltre = $this->_filtreRepository->find($data->getFiltre());
+            $categorieFind = $this->_categorieRepository->findOneBy([
+                "categorie_ref" => $categorie->getCategorieRef(),
+                "categorie_ref_en" => $categorie->getCategorieRefEn()
+            ]);
+            if($categorie){
+                $categorie = $categorieFind;
+            }
+
+            $sousCategorie->setCategorieRef($categorie);// Sous categorie
+            $sousCategorieFind = $this->_sousCategorieRepository->findOneBy([
+                "sous_categorie_ref" => $sousCategorie->getSousCategorieRef(),
+                "sous_categorie_ref_en" => $sousCategorie->getSousCategorieRefEn(),
+                "categorie_ref" => $categorie
+            ]);
+
+            if($sousCategorieFind){
+                $sousCategorie = $sousCategorieFind;
+            }
+
+            $filtre->setSousCategorieRef($sousCategorie);
+
+            $findFiltre = $this->_filtreRepository->findOneBy([
+                "filtre" => $filtre->getFiltre(),
+                "filtre_ref_en" => $filtre->getFiltreRefEn(),
+                "sous_categorie_ref" => $sousCategorie
+            ]);
+            
             if($findFiltre){
-                $data->setFiltre($findFiltre);
+                $filtre = $findFiltre;
             }
-            else{
-                $findSousCategorie = $this->_sousCategorieRepository->find($data->getFiltre()->getSousCategorieRef());
-                if($findSousCategorie){
-                    $data->getFiltre()->setSousCategorieRef($findSousCategorie);
-                }
-                else{
-                    $findCategorie = $this->_categorieRepository->find($data->getFiltre()->getSousCategorieRef());
-                    if($findCategorie){
-                        $data->getFiltre()->getSousCategorieRef()->setCategorieRef($findCategorie);
-                    }
-                }
-            }
+            $data->setFiltre($filtre);
+            // if($findFiltre){
+            //     $data->setFiltre($findFiltre);
+            // }
+            // else{
+            //     $findSousCategorie = $this->_sousCategorieRepository->find($data->getFiltre()->getSousCategorieRef());
+            //     if($findSousCategorie){
+            //         $data->getFiltre()->setSousCategorieRef($findSousCategorie);
+            //     }
+            //     else{
+            //         $findCategorie = $this->_categorieRepository->find($data->getFiltre()->getSousCategorieRef());
+            //         if($findCategorie){
+            //             $data->getFiltre()->getSousCategorieRef()->setCategorieRef($findCategorie);
+            //         }
+            //     }
+            // }
         }
 
         /**
@@ -159,19 +195,27 @@ class ProduitPatchProcessor implements ProcessorInterface
 
                     if($isVariant && $tailleRefItem!=""){
                         $grilleTailleRef = new GrilleTailleRef(["grilleTailleRef" => $data->getGrilleTailleRef()]);
-                        $findGrilleTailleRef = $this->_grilleTailleRefRepository->findOneBy(
+                        $findGrilleTailleRef = $this->_grilleTailleRefRepository->findBy(
                             ["grilleTailleRef" => $grilleTailleRef->getGrilleTailleRef()]
                         );
 
-                        if($findGrilleTailleRef){
-                            $grilleTailleRef = $findGrilleTailleRef;
+                        foreach ($findGrilleTailleRef as $key => $valueGrilleTaille) {
+                            # code...
+                            if($valueGrilleTaille->getGrilleTailleRef() === $data->getGrilleTailleRef()){
+                                $grilleTailleRef = $valueGrilleTaille;
+                            }
                         }
+                        // if($findGrilleTailleRef){
+                        //     $grilleTailleRef = $findGrilleTailleRef;
+                        // }
+
                         $tailleRef = (new TailleRef())
                         ->setTailleRef($tailleRefItem)
                         ->setStockId($grilleTailleRef->getGrilleTailleRef().'_'.$tailleRefItem)
                         ->setStockCode($value->getTailleFnr())
                         ->setGrilleTailleRef($grilleTailleRef)
                         ;
+
                         $findTailleRef = $this->_tailleRefRepository->findOneBy(
                             ["taille_ref" => $tailleRef->getTailleRef()]
                         );

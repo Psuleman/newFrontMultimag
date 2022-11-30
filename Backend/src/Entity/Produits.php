@@ -27,12 +27,16 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
-    operations: [new GetCollection()]
+    // operations: [new GetCollection()]
+    paginationItemsPerPage: 10
 )]
 #[POST(
     processor: ProduitPostProcessor::class
 )]
 #[Get(
+    normalizationContext: ['groups' => ['produit']],
+)]
+#[GetCollection(
     normalizationContext: ['groups' => ['produit']],
 )]
 #[Patch(

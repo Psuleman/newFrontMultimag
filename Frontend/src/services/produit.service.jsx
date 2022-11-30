@@ -1,5 +1,5 @@
-//let url = "http://212.129.3.31:8080/api/produits/"
-let url = "http://localhost:8001/api/produits"
+let url = "http://212.129.3.31:8080/api/produits"
+// let url = "http://localhost:8001/api/produits"
 const headerGET = {
     method: 'GET',
     headers: {

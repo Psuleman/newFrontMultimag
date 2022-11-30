@@ -8,8 +8,10 @@ export const ListeContext = React.createContext({})
 const ListeContextProvider = ({children}) => {
     const [skus, setSkus] = useState([])
     const [totalSkus, setTotalSkus] = useState()
-    const [nextPage, setnewPage] = useState()
+    const [nextPage, setNextPage] = useState()
     const [lastPage, setLastPage] = useState()
+    const [currentPage, setCurrentPage] = useState()
+    const [searchSkus, setSearchSkus] = useState()
     const [categorieFiltre, setCategorieFiltre] = useState()
     const [universFiltre, setUniversFiltre] = useState()
     const [marqueFiltre, setMarqueFiltre] = useState()
@@ -100,6 +102,20 @@ const ListeContextProvider = ({children}) => {
                         /**
                          * Pagination
                          */
+                        for(let itemPage in valeur){
+                            let page = valeur[itemPage].replace("/api/produits?page=", "")
+                            page = parseInt(page)
+
+                            if(itemPage == "hydra:first"){
+                                setCurrentPage(page)
+                            }
+                            if(itemPage == "hydra:last"){
+                                setLastPage(page)
+                            }                            
+                            if(itemPage == "hydra:next"){
+                                setNextPage(page)
+                            }                        
+                        }
                     }
                 }       
                 
@@ -120,6 +136,10 @@ const ListeContextProvider = ({children}) => {
             marqueFiltreTab: marqueFiltreTab, setMarqueFiltreTab: setMarqueFiltreTab,
             tagFiltre: tagFiltre, setTagFiltre: setTagFiltre,
             tagFiltreTab: tagFiltreTab, setTagFiltreTab: setTagFiltreTab,
+
+            currentPage: currentPage, setCurrentPage: setCurrentPage,
+            nextPage: nextPage, setNextPage: setNextPage,
+            lastPage: lastPage, setLastPage: setLastPage,
             
         }}>
             {children}

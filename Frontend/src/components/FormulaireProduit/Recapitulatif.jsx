@@ -1,9 +1,32 @@
+import { useEffect } from "react"
 import { useContext } from "react"
 import { FormulaireContext } from "./Context/FormulaireContext"
 
 const Recapitulatif = () => {
     //variable
     const {infoSku, marqueUpdate, paysOrigineUpdate, universUpdate, universEnUpdate, categorieUpdate, filtreUpdate, couleurUpdate, couleurEnUpdate, dimensionFrUpdate, matiereUpdate, tarifUpdate, attributUpdate } = useContext(FormulaireContext)
+    
+    // let image = ""
+    // let images = infoSku.pictures
+    // images = images.split(";")
+
+    // image = images[0];
+
+    // useEffect(()=>{
+    //     // fetch(item.pictures)
+    //     fetch(image)
+    //     .then(function(response) {
+    //         if(response.status == 404){
+    //             image="https://fakeimg.pl/300/"
+    //         }       
+    //     })
+    //     .then(function(myBlob) {
+    //     }).catch((err)=>{});
+        
+    // })
+    
+
+    console.log("infoSku", infoSku)
     //render
     return (
         <aside className="col-xxl-2 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12 pe-xxl-3 pe-xl-3 pe-lg-3 pe-md-3 pe-sm-0 pe-0">
@@ -43,7 +66,7 @@ const Recapitulatif = () => {
                         <p className="card-text"><em>Matière : </em>
                             {
                                 matiereUpdate.map((item, index)=>(
-                                <span>
+                                <span key={"matiere_recap_" + {index}}>
                                     {
                                         item.pourcentageMatiere>0 &&
                                         <span>
@@ -73,7 +96,7 @@ const Recapitulatif = () => {
                         attributUpdate[0] &&
                         attributUpdate[0].taille_ref && 
                         <p className="card-text"><em>Tailles : </em>
-                        {attributUpdate.map((item, index)=>( <span>{index>0 && ", "} {item.taille_ref.taille_ref}</span> ))}
+                        {attributUpdate.map((item, index)=>( <span key={"attribut_recap_" + index}>{index>0 && ", "} {item.taille_ref.taille_ref}</span> ))}
                         </p>
                     }
 

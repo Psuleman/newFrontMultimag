@@ -15,27 +15,32 @@ const ValueExport = ({item}) => {
     const [title, setTitle] = useState()
     const [description, setDescription] = useState()
     const [imgAltText, setImgAltText] = useState()
-
     let navigate = useNavigate()
 
     const {liste} = useContext(ListeContext)
 
+    // let image = ""
+    // let images = item.pictures
+    // images = images.split(";")
+
+    // image = images[0];
     //fonction
     useEffect(()=>{
 		//image
-		fetch(item.pictures)
-		.then(function(response) {
-			if(response.status != 404){
-				setImgExist(true)
-			}
-			else{
-				setImgExist(false)
-			}
+		// fetch(item.pictures)
+		// fetch(image)
+		// .then(function(response) {
+		// 	if(response.status != 404){
+		// 		setImgExist(true)
+		// 	}
+		// 	else{
+		// 		setImgExist(false)
+		// 	}
 		  
-		})
-		.then(function(myBlob) {
+		// })
+		// .then(function(myBlob) {
 
-		}).catch((err)=>{});
+		// }).catch((err)=>{});
 
         /**
          * Title, description, img_alt_text
@@ -47,8 +52,8 @@ const ValueExport = ({item}) => {
          * Categorie
          */
         if(item.filtre){
-            let categorieItem = item.filtre ? item.filtre.sousCategorieRef.categorieRef.categorieRef : item.categorie_univers
-            categorieItem += " > " + (item.filtre ? item.filtre.filtre : item.sous_categorie_fnr)
+            let categorieItem = (item.filtre_produit) ? item.categorie : item.categorie_univers
+            categorieItem += " > " + (item.filtre_produit ? item.filtre_produit : item.sous_categorie_fnr)
             setCategorie(categorieItem)
         }
     }, [item])
@@ -70,7 +75,7 @@ const ValueExport = ({item}) => {
     return (
         <tbody>
             <tr>
-                <td className="px-2 detailSku"><a href={item.lien} target="black">{item.sku}</a></td>
+                <td className="px-2 detailSku">{item.sku}</td>
                 <td className="px-2">{item.command}</td>              
                 <td className="px-2">{item.title}</td>              
                 <td className="px-2">{item.descriptionFr}</td>              

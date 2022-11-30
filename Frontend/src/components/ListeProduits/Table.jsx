@@ -9,6 +9,7 @@ import ValueListe from './Value/ValueListe'
 import ValueReferencement from './Value/ValueReferencement'
 import ValueExport from './Value/ValueExport'
 import { ListeExportContext } from './Context/ListeExportContext'
+import Pagination from './Pagination'
 
 const Table = () => {
     const {skus, totalSkus, liste} = useContext(ListeContext)
@@ -26,14 +27,15 @@ const Table = () => {
                         let prixRemise = element.tarifs[0].prix_vente * (element.tarifs[0].remise / 100)
                         let marque = element.marque ? element.marque.marque : element.nom_produit_fr
                         let imgAltText = (marque + " " + element.nom_produit_fr + " " + marque)
+                        let nom_produit_fr = element.nom_produit_fr.replace(" ", "_")
                         let itemtab = {
                             lien: element.lien,
-                            sku : element.sku,
+                            sku : marque + "_" + nom_produit_fr + "_" + element.sku,
                             command : "MERGE",
                             title : item==0 ?  marque + " " + element.nom_produit_fr : null,
                             descriptionFr : item==0 ?  element.description_fr : null,//Body html
                             marque : item==0 ?  marque : null, //Vendor
-                            categorie : item==0 ?  element.filtre.sousCategorieRef.categorieRef.categorieRef : null, //Type
+                            categorie : item==0 ?  element.categorie : null, //Type
                             tags : item==0 ?  element.tags_ref : null, // A revoir
                             tags_command : "REPLACE",
                             published : "FALSE",
@@ -44,7 +46,7 @@ const Table = () => {
                             variant_command :"REPLACE",
 
                             taille : "Taille" ,
-                            attribut : variantItem.taille_ref.taille_ref , // à revoir
+                            attribut : variantItem.taille_ref ? variantItem.taille_ref.taille_ref : null, // à revoir
                             option_2_name : null,
                             option_2_value : null,
                             option_3_name : null,
@@ -116,9 +118,15 @@ const Table = () => {
             //     tabExport.push(item)
             // });
             for(let item in tab){
-                let title = tab[item].title ? tab[item].title.replace(`"`, `""`) : null
-                let descriptionFr = tab[item].descriptionFr ? tab[item].descriptionFr.replace(`"`, `""`) : null
-                let img_alt_text = tab[item].img_alt_text ? tab[item].img_alt_text.replace(`"`, `""`) : null  
+                let title = tab[item].title ? tab[item].title.replace(`"`, `"`) : null
+                
+                let str = `Bonjour "test" "lunette"`
+                let test = tab[item].descriptionFr ? tab[item].descriptionFr.split('"') : str.split('"')
+
+                console.log('test', test)
+
+                let descriptionFr = tab[item].descriptionFr ? tab[item].descriptionFr.replace(`"`, `"`) : null
+                let img_alt_text = tab[item].img_alt_text ? tab[item].img_alt_text.replace(`"`, `"`) : null  
                 
                 tabExport[item] = tab[item]
 
@@ -129,11 +137,11 @@ const Table = () => {
 
             }
             setListesProduitExport(tabExport)
-            console.log("tabExport", tabExport)
+            // console.log("tabExport", tabExport)
         }
     }, [skus])
 
-    console.log("tab table", listesProduit)
+    // console.log("tab table", listesProduit)
     //render
     return (
         <section>
@@ -172,6 +180,9 @@ const Table = () => {
                     }   
                 </table>
             </div>
+            <footer className='footerTable'>
+                <Pagination />
+            </footer>
             </ListeExportContext.Provider>
 
         </section>
