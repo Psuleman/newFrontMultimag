@@ -78,10 +78,95 @@ class ProduitPatchProcessor implements ProcessorInterface
             /***
              * Categorie
              */
-            $filtre = $data->getFiltre();
-            $sousCategorie = $filtre->getSousCategorieRef();
-            $categorie = $sousCategorie->getCategorieRef();
+            /**
+             * Les données Json
+             */
+            /**
+             * Initialisation
+             */
+            $categorie = new CategorieRef([
+                "categorie_ref"=> $data->getCategorie(),
+                "categorie_ref_en"=> $data->getCategorieEn()
+            ]);
 
+            $sousCategorie = new SousCategorieRef([
+                "sous_categorie_ref" => $data->getSousCategorie(),
+                "sous_categorie_ref_en" => $data->getSousCategorieEn(),
+            ]);
+            $filtre = new FiltreRef([
+                "filtre" => $data->getFiltreProduit(),
+                "filtre_ref_en" => $data->getFiltreProduitEn()
+            ]);     
+            
+            /**
+             * Recherche
+             */
+            //Catégorie
+            // $categorieFind = $this->_categorieRepository->findOneBy([
+            //         "categorie_ref" => $categorie->getCategorieRef(),
+            //         "categorie_ref_en" => $categorie->getCategorieRefEn()
+            //     ]);
+            // if($categorieFind){
+            //     $categorie = $categorieFind;
+            // }
+            // //$this->_entityManager->persist($categorie);
+
+            // //Sous catégorie
+            // $sousCategorie->setCategorieRef($categorie);
+            // $sousCategorieFind = $this->_sousCategorieRepository->findOneBy([
+            //         "sous_categorie_ref" => $sousCategorie->getSousCategorieRef(),
+            //         "sous_categorie_ref_en" => $sousCategorie->getSousCategorieRefEn(),
+            //         "categorie_ref" => $categorie
+            //     ]);
+            // if($sousCategorieFind){
+            //     $sousCategorie = $sousCategorieFind;
+            // }
+            // // $this->_entityManager->persist($sousCategorie);
+
+            // //filtre
+            // $filtre->setSousCategorieRef($sousCategorie);
+            // $filtreFind = $this->_filtreRepository->findOneBy([
+            //         "filtre" => $filtre->getFiltre(),
+            //         "filtre_ref_en" => $filtre->getFiltreRefEn(),
+            //         "sous_categorie_ref" => $sousCategorie
+            //     ]);
+            // if($filtreFind){
+            //     $filtre = $filtreFind;
+            // }
+            // // $this->_entityManager->persist($filtre);
+
+
+            // $data->setFiltre($filtre);
+            
+            
+            
+            
+            
+            $filtreData = $data->getFiltre();
+            $sousCategorieData = $filtreData->getSousCategorieRef();
+            $categorieData = $sousCategorieData->getCategorieRef();
+
+            /**
+             * Initialisation
+             */
+            $categorie = new CategorieRef([
+                "categorie_ref"=> $categorieData->getCategorieRef(),
+                "categorie_ref_en"=> $categorieData->getCategorieRefEn()
+            ]);
+
+            $sousCategorie = new SousCategorieRef([
+                "sous_categorie_ref" => $sousCategorieData->getSousCategorieRef(),
+                "sous_categorie_ref_en" => $sousCategorieData->getSousCategorieRefEn(),
+            ]);
+
+            $filtre = new FiltreRef([
+                "filtre" => $filtreData->getFiltre(),
+                "filtre_ref_en" => $filtreData->getFiltreRefEn()
+            ]);
+
+            /**
+             * Recherche Categorie, sous catégorie, filtre
+             */
             $categorieFind = $this->_categorieRepository->findOneBy([
                 "categorie_ref" => $categorie->getCategorieRef(),
                 "categorie_ref_en" => $categorie->getCategorieRefEn()
@@ -89,30 +174,46 @@ class ProduitPatchProcessor implements ProcessorInterface
             if($categorie){
                 $categorie = $categorieFind;
             }
-
-            $sousCategorie->setCategorieRef($categorie);// Sous categorie
+            $this->_entityManager->persist($categorie);
+            
+            //sous catégorie
             $sousCategorieFind = $this->_sousCategorieRepository->findOneBy([
                 "sous_categorie_ref" => $sousCategorie->getSousCategorieRef(),
                 "sous_categorie_ref_en" => $sousCategorie->getSousCategorieRefEn(),
                 "categorie_ref" => $categorie
             ]);
-
-            if($sousCategorieFind){
+            if($sousCategorieFind && 
+            ($sousCategorieFind->getCategorieRef()->getCategorieRef() == $categorie->getCategorieRef()) &&
+            ($sousCategorieFind->getCategorieRef()->getCategorieRefEn() == $categorie->getCategorieRefEn())                
+            ){
                 $sousCategorie = $sousCategorieFind;
             }
+            else{
+                $sousCategorie->setCategorieRef($categorie);// Sous categorie
+            }
+            $this->_entityManager->persist($sousCategorie);
 
-            $filtre->setSousCategorieRef($sousCategorie);
-
+            //filtre
             $findFiltre = $this->_filtreRepository->findOneBy([
                 "filtre" => $filtre->getFiltre(),
                 "filtre_ref_en" => $filtre->getFiltreRefEn(),
                 "sous_categorie_ref" => $sousCategorie
             ]);
             
-            if($findFiltre){
+            if($findFiltre &&
+                ($findFiltre->getSousCategorieRef()->getSousCategorieRef() == $sousCategorie->getSousCategorieRef()) &&
+                ($findFiltre->getSousCategorieRef()->getSousCategorieRefEn() == $sousCategorie->getSousCategorieRefEn())
+            ){
                 $filtre = $findFiltre;
             }
+
             $data->setFiltre($filtre);
+            // else{
+            //     $filtre->setSousCategorieRef($sousCategorie);
+            // }
+            // $this->_entityManager->persist($filtre);
+
+            // $data->setFiltre($filtre);
             // if($findFiltre){
             //     $data->setFiltre($findFiltre);
             // }

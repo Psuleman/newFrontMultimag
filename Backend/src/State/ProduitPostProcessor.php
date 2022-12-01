@@ -70,15 +70,18 @@ class ProduitPostProcessor implements ProcessorInterface
         * si oui : enregistrer sa variants + stock
         * si non : enregistrer tout
         */
-        $findProduit = $this->_entityManager->getRepository(Produits::class)->findOneBy([
-        "sku" => $data->getSku(),
-        "date_arrivee" => $data->getDateArrivee(),
-        "reference_fournisseur" => $data->getReferenceFournisseur(),
-        "code_fournisseur" => $data->getCodeFournisseur(),
-        "nom_fournisseur" => $data->getNomFournisseur(),
 
-        ]);
-        if(!$findProduit){
+        $nom_fournisseur = trim($data->getNomFournisseur());
+        $sku = intval($data->getSku());
+        // $findProduit = $this->_entityManager->getRepository(Produits::class)->findOneBy([
+        // // "sku" => $sku,
+        // "date_arrivee" => $data->getDateArrivee(),
+        // "reference_fournisseur" => $data->getReferenceFournisseur(),
+        // "code_fournisseur" => $data->getCodeFournisseur(),
+        // // "nom_fournisseur" => $nom_fournisseur,
+
+        // ]);
+        // if(!$findProduit){
             //Nouveau produit
             $data->setNewProduit(true);
             $data->setReferencer(false);
@@ -330,8 +333,19 @@ class ProduitPostProcessor implements ProcessorInterface
             }
             $this->_entityManager->persist($data);
             $this->_entityManager->flush();
-        }
-        else{
+        // }
+
+
+        $findProduit = $this->_entityManager->getRepository(Produits::class)->findOneBy([
+        // "sku" => $sku,
+        "date_arrivee" => $data->getDateArrivee(),
+        "reference_fournisseur" => $data->getReferenceFournisseur(),
+        "code_fournisseur" => $data->getCodeFournisseur(),
+        // "nom_fournisseur" => $nom_fournisseur,
+
+        ]);
+        if($findProduit){
+
             $findProduit->setTaille($data->getTaille());
             $findProduit->setStockMag0($data->getStockMag0());
             $findProduit->setStockMag3($data->getStockMag3());

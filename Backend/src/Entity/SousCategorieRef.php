@@ -37,6 +37,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
 //     ],
 //     operations: [ new GetCollection() ]
 // )]
+// #[ApiResource(
+//     normalizationContext:
+// )]
+#[Get(
+    normalizationContext: ['groups' => ['produit']],
+)]
+#[GetCollection(
+    normalizationContext: ['groups' => ['produit']],
+)]
 #[ORM\Entity(repositoryClass: SousCategorieRefRepository::class)]
 class SousCategorieRef
 {
@@ -47,16 +56,16 @@ class SousCategorieRef
     private $id;
 
     #[Link(toProperty: 'sous_categorie_ref')]
-    #[ORM\Column(type: 'string', length: 255)]
     #[Groups(['produit'])]
+    #[ORM\Column(type: 'string', length: 255)]
     private $sous_categorie_ref;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Groups(['produit'])]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $sous_categorie_ref_en;
 
-    #[ORM\ManyToOne(targetEntity: CategorieRef::class, cascade: ['persist'])]
     #[Groups(['produit'])]
+    #[ORM\ManyToOne(targetEntity: CategorieRef::class, cascade: ['persist'])]
     private $categorie_ref;
 
     public function __construct($tab = [])

@@ -19,7 +19,7 @@ const ValueListe = ({item}) => {
     image = images[0];
     //fonction
     useEffect(()=>{
-        console.log("item variants", item.variants)
+        //console.log("item variants", item.variants)
         //image
 
 

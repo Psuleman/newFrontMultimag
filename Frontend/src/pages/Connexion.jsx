@@ -47,7 +47,7 @@ const Connexion = () => {
                     }
                     setLoading(false)
                     
-                    console.log("token", value)
+                    //////console.log("token", value)
 
                 }
             })
@@ -85,7 +85,7 @@ const Connexion = () => {
                             <input type="password" id="typePasswordX" className="form-control form-control-lg" value={password} onChange={(e)=>{setPassword(e.target.value)}}  />
                         </div>
 
-                        <p className="small mb-5 pb-lg-2"><a className="text-blue-50" href="#!">Forgot password?</a></p>
+                        <p className="small mb-5 pb-lg-2"><a className="text-blue-50" href="#!">Mot de passe oublié?</a></p>
                         
                         <button className="btn btn-outline-dark btn-lg px-5" type="submit" onClick={()=>{setLoading(true)}}>Login</button>
 

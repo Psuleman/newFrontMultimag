@@ -1,8 +1,25 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TemplateContext } from "./Context/TemplateContext";
 
 const Navbar = () => {
+    const [user, setUser] = useState()
     const {showsidebar, setShowsidebar, handleClickLogout} = useContext(TemplateContext)
+
+    useEffect(()=>{
+        if(localStorage.getItem("user_multimag")){
+			let userStorage = JSON.parse(localStorage.getItem("user_multimag")) 
+            if(userStorage.nom){
+                let promise = Promise.resolve(getUser(userStorage.email))
+				promise.then((value)=>{
+					if(value){
+                        let nom = value[0].prenom + " " + value[0].nom.toUpperCase()
+                        setUser(nom)					
+					}
+				})
+            }
+
+        }
+    }, [])
     //render
     return (
     <nav className="navbar navbar-light bg-white position-fixed top-0 start-0 end-0">
@@ -19,7 +36,7 @@ const Navbar = () => {
 
             <div className="dropdown mx-3">
             <div className="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Utilisateur
+                { user ? user : "Utilisateur"}
             </div>
 
             <ul style={{cursor:"pointer"}} className="dropdown-menu">

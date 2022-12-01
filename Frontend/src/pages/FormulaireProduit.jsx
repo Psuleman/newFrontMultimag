@@ -106,7 +106,7 @@ const FormulaireProduit = () => {
                 navigate('/')
             }
             else{
-                // console.log("sku", sku)
+                // //console.log("sku", sku)
                 let promise = Promise.resolve(getProduit(sku));
                 promise.then((value) => {
                     if(value){
@@ -114,7 +114,7 @@ const FormulaireProduit = () => {
                             let valeur = value[item]
                             if(item == "hydra:member"){
                                 setInfoSku(valeur[0])
-                                console.log("valeur[0] : ",valeur[0])
+                                //console.log("valeur[0] : ",valeur[0])
                                 //Information
                                 let univers = valeur[0].univers!= null ? valeur[0].univers : ""
                                 let universEn = valeur[0].univers_en!= null ? valeur[0].univers_en : ""
@@ -144,7 +144,7 @@ const FormulaireProduit = () => {
                                 let entretien = (valeur[0].entretien != null) ? valeur[0].entretien : ""
 
                                 //tailles
-                                // console.log(valeur[0]);
+                                // //console.log(valeur[0]);
                                 let variant = []
                                 let grilleTaille = ""
                                 for(let i in valeur[0].variants){
@@ -293,11 +293,11 @@ const FormulaireProduit = () => {
         }  
     }, [])
 
-    console.log("info ", infoSku)
+    //console.log("info ", infoSku)
 
     
     const handleClickSave = (e, section) => {
-        // // console.log("section", section)
+        // // //console.log("section", section)
         e.preventDefault()
         setSectionUpdate(section)
         let token =  JSON.parse(localStorage.getItem('user_multimag')).token
@@ -330,13 +330,13 @@ const FormulaireProduit = () => {
 
             let filtre = {
                 filtre: filtreUpdate? filtreUpdate:"",
-                filtre_ref_en: filtreEnUpdate? filtreEnUpdate:"",
+                filtreRefEn: filtreEnUpdate? filtreEnUpdate:"",
                 sousCategorieRef: {
-                    sous_categorie_ref: sousCategorieUpdate?sousCategorieUpdate:infoSku.sousCategorie,
-                    sous_categorie_ref_en: sousCategorieEnUpdate?sousCategorieEnUpdate:infoSku.sousCategorieEn,
+                    sousCategorieRef: sousCategorieUpdate?sousCategorieUpdate:infoSku.sousCategorie,
+                    sousCategorieRefEn: sousCategorieEnUpdate?sousCategorieEnUpdate:infoSku.sousCategorieEn,
                     categorie_ref: {
-                        categorie_ref: categorieUpdate?categorieUpdate:infoSku.categorie,
-                        categorie_ref_en: categorieEnUpdate?categorieEnUpdate:infoSku.categorieEn,
+                        categorieRef: categorieUpdate?categorieUpdate:infoSku.categorie,
+                        categorieRefEn: categorieEnUpdate?categorieEnUpdate:infoSku.categorieEn,
                     }
                 }
             }
@@ -416,6 +416,14 @@ const FormulaireProduit = () => {
                 universEn: universEnUpdate? universEnUpdate : infoSku.universEn,
               
                 filtre: filtre,
+                // categorie: filtre.sousCategorieRef.categorieRef.categorieRef,
+                // categorieEn: filtre.sousCategorieRef.categorieRef.categorieRefEn,
+
+                // sousCategorie: filtre.sousCategorieRef.sousCategorieRef,
+                // sousCategorieEn: filtre.sousCategorieRef.sousCategorieRefEn,
+
+                // filtreProduit: filtre.filtre,
+                // filtreProduitEn: filtre.filtreRefEn,
 
                 couleur: couleurUpdate?couleurUpdate:"",
                 couleurEn: couleurEnUpdate?couleurEnUpdate:"",
@@ -445,12 +453,12 @@ const FormulaireProduit = () => {
               }
               
              console.log("data", JSON.stringify(data))
-            // console.log("id : ", infoSku.id)
-            console.log(infoSku)
+            // //console.log("id : ", infoSku.id)
+            //console.log(infoSku)
             console.log(setProduit(infoSku.id, data))
         }
     }
-// console.log(infoSku)
+// //console.log(infoSku)
     //render
     return (
         <Template>

@@ -14,7 +14,7 @@ export const getAllFiltre = () => {
     let urlRequestTotal = url
     let tab = fetch(urlRequestTotal, headerGET)
     .then(function(res) {
-        //console.log(res.json())
+        ////console.log(res.json())
         return res.json();
     })
     .then(function(value) {
@@ -30,7 +30,7 @@ export const getFiltre = (filtre) => {
     let urlRequestTotal = url + "?filtre=" + filtre
     let tab = fetch(urlRequestTotal, headerGET)
     .then(function(res) {
-        //console.log(res.json())
+        ////console.log(res.json())
         return res.json();
     })
     .then(function(value) {

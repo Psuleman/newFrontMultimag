@@ -20,7 +20,7 @@ const SelectMatiere = ({label, value, id, indexMatiere}) => {
                     let newList = []
                     let regex = new RegExp(search, "i")
                     if(search && search != ""){
-                        oldList.forEach(element => {
+                        Matieres.forEach(element => {
                             let item = eval('element.matiere')
                             if(item.match(regex))
                                 newList.push(element)
@@ -34,6 +34,18 @@ const SelectMatiere = ({label, value, id, indexMatiere}) => {
 
 
     }, [search, Matieres])
+
+    const handleClick = () => {
+        let tab = [...arrayList]
+        tab.push(search)
+
+        setMatiereUpdate(oldState=>{
+            let newState = [...oldState]
+            newState[indexMatiere].matiere.matiere = search
+            return newState
+        })
+        setSearch("")
+    }
     //render
     return (
     <div className="col-md-3">
@@ -45,6 +57,9 @@ const SelectMatiere = ({label, value, id, indexMatiere}) => {
                 <div className="input-group">
                     <span className="input-group-text rounded-0 border border-0" id="basic-addon1"><i className="fas fa-search"></i></span>
                     <input type="text" className="form-control rounded-0 border border-0" placeholder="Matiere" aria-label={label} aria-describedby="basic-addon1" value={search} onChange={(e)=>setSearch(e.target.value)} />
+
+                    <button className="input-group-text rounded-0 border border-0" type="button" onClick={handleClick}>Ajouter</button>
+
                 </div>
                 </div>
                 <div className="height-select border border-1">

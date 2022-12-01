@@ -9,8 +9,12 @@ const headerGET = {
     cache: "default",
 }
 
-export const getAllProduit = (listeProduit="", filtre="") => {
-    let urlRequestTotal = url + "?page=1"
+export const getAllProduit = (listeProduit="", filtre="", page) => {
+
+    let pageListe = page>0 ? page : 1
+
+    let urlRequestTotal = url + "?page=" + pageListe
+
     if(listeProduit=="referencement"){
         urlRequestTotal += `&newProduit=1&referencer=0`
     }
@@ -28,7 +32,7 @@ export const getAllProduit = (listeProduit="", filtre="") => {
     }
     let tab = fetch(urlRequestTotal, headerGET)
     .then(function(res) {
-        //console.log(res.json())
+        ////console.log(res.json())
         return res.json();
     })
     .then(function(value) {
@@ -65,7 +69,7 @@ export const setProduit = (id, data) => {
         body: JSON.stringify(data)
     }
     let urlPatch = url + "/" + id
-    console.log("urlPatch", urlPatch)
+    //console.log("urlPatch", urlPatch)
 
     let result = fetch(urlPatch, headerPATCH)
     .then(res => {
@@ -95,7 +99,7 @@ export const setNewProduit = (data) => {
     })
     //.then(data => return data)
     .catch(err=>{
-        //console.log(err)
+        ////console.log(err)
     });	
 
     return result;

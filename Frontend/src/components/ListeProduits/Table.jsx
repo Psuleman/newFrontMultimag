@@ -118,16 +118,15 @@ const Table = () => {
             //     tabExport.push(item)
             // });
             for(let item in tab){
-                let title = tab[item].title ? tab[item].title.replace(`"`, `"`) : null
-                
-                let str = `Bonjour "test" "lunette"`
-                let test = tab[item].descriptionFr ? tab[item].descriptionFr.split('"') : str.split('"')
+                // let title = tab[item].title ? tab[item].title.replace(`"`, `"`) : null
+                let title = tab[item].title ? splitText(tab[item].title): null
 
-                console.log('test', test)
+                // let descriptionFr = tab[item].descriptionFr ? tab[item].descriptionFr.replace(`"`, `"`) : null
+                let descriptionFr = tab[item].descriptionFr ? splitText(tab[item].descriptionFr) : null
 
-                let descriptionFr = tab[item].descriptionFr ? tab[item].descriptionFr.replace(`"`, `"`) : null
-                let img_alt_text = tab[item].img_alt_text ? tab[item].img_alt_text.replace(`"`, `"`) : null  
-                
+                // let img_alt_text = tab[item].img_alt_text ? tab[item].img_alt_text.replace(`"`, `"`) : null  
+                let img_alt_text = tab[item].img_alt_text ? splitText(tab[item].img_alt_text) : null
+
                 tabExport[item] = tab[item]
 
                 tabExport[item].title = tabExport[item].title ? `"${title}"`: null,
@@ -140,6 +139,24 @@ const Table = () => {
             // console.log("tabExport", tabExport)
         }
     }, [skus])
+
+
+    const splitText = (texte) => {
+
+        let result = ""
+        for (let item in texte) {
+            if(texte[item]==`\"`){
+                result += `\"\"`
+            }
+            else{
+                result += texte[item]
+            }
+        }
+
+        return result
+
+    }
+
 
     // console.log("tab table", listesProduit)
     //render

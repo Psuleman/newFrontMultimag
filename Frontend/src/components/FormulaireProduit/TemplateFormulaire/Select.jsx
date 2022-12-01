@@ -85,6 +85,7 @@ import { useEffect } from "react"
         let tab = [...arrayList]
         tab.push(search)
         setValue(search)
+        setSearch("")
     }
     //Render
     return (

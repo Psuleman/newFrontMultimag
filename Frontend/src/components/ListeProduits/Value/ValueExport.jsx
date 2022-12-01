@@ -64,7 +64,7 @@ const ValueExport = ({item}) => {
 
         text = text.replace('@', '"' )
 
-        console.log(text)
+        //console.log(text)
     }
     const handleClick = () => {
         let path = `/produit/` + item.sku + ``;

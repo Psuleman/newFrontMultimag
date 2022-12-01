@@ -11,7 +11,7 @@ const ListeContextProvider = ({children}) => {
     const [nextPage, setNextPage] = useState()
     const [lastPage, setLastPage] = useState()
     const [currentPage, setCurrentPage] = useState()
-    const [searchSkus, setSearchSkus] = useState()
+    const [searchSkus, setSearchSkus] = useState("")
     const [categorieFiltre, setCategorieFiltre] = useState()
     const [universFiltre, setUniversFiltre] = useState()
     const [marqueFiltre, setMarqueFiltre] = useState()
@@ -20,6 +20,7 @@ const ListeContextProvider = ({children}) => {
     const [universFiltreTab, setUniversFiltreTab] = useState()
     const [marqueFiltreTab, setMarqueFiltreTab] = useState()
     const [tagFiltreTab, setTagFiltreTab] = useState()
+    const [validateSearchSkus, setValidateSearchSkus] = useState(false)
 
     const {liste} = useParams()
 
@@ -34,27 +35,42 @@ const ListeContextProvider = ({children}) => {
         }
         //les filtre: categorie, univers, tag,
         let filtre = "" 
-        if(categorieFiltre)
-            filtre = "&filtre.sous_categorie_ref.categorie_ref.categorie_ref=" + categorieFiltre
-        
-        if(universFiltre)
-            filtre = "&univers=" + universFiltre
+        let pageActuelle = currentPage ? currentPage : 1
 
-        if(marqueFiltre)
-            filtre = "&marque.marque=" + marqueFiltre
+        if(searchSkus!=""){
+            filtre = "&sku=" + parseInt(searchSkus)
+            pageActuelle = 1
+        }
+        else{
+            filtre = ""
+            setSearchSkus("")
+            if(categorieFiltre)
+                filtre += "&filtre.sous_categorie_ref.categorie_ref.categorie_ref=" + categorieFiltre
+            
+            if(universFiltre)
+                filtre += "&univers=" + universFiltre
+
+            if(marqueFiltre)
+                filtre += "&marque.marque=" + marqueFiltre
+            
+            if(tagFiltre)
+                filtre += "&code_tag=" + tagFiltre
+        }
+
+
         
-        if(tagFiltre)
-            filtre = "&code_tag=" + tagFiltre
         
-        const promise = Promise.resolve(getAllProduit(liste, filtre));
+        const promise = Promise.resolve(getAllProduit(liste, filtre, pageActuelle))
+
         promise.then((value) => {
             console.log(value)
-            if(value){        
+            if(value){ 
+                let totalListe = 0    
                 for(let item in value){
                     let valeur = value[item]
                     if(item == "hydra:member"){
                         setSkus(valeur)
-                        if(!categorieFiltre && !universFiltre && !marqueFiltre && !tagFiltre){
+                        if(!categorieFiltre && !universFiltre && !marqueFiltre && !tagFiltre && !searchSkus){
 
                             let tabCategory = []
                             let tabUnivers = []
@@ -96,6 +112,7 @@ const ListeContextProvider = ({children}) => {
                     
                     if(item == "hydra:totalItems"){
                         setTotalSkus(valeur)
+                        totalListe = valeur
                     }
                     if(item == "hydra:view")
                     {
@@ -107,21 +124,42 @@ const ListeContextProvider = ({children}) => {
                             page = parseInt(page)
 
                             if(itemPage == "hydra:first"){
-                                setCurrentPage(page)
+                                let pageActuelle = currentPage>1 ? currentPage : 1
+                                setCurrentPage(pageActuelle)
                             }
                             if(itemPage == "hydra:last"){
                                 setLastPage(page)
                             }                            
                             if(itemPage == "hydra:next"){
                                 setNextPage(page)
-                            }                        
+                            } 
+
+                            let lastpageListe = totalListe/10
+                            lastpageListe = parseInt(lastpageListe)
+
+                            console.log("lastpageListe", lastpageListe)
+                            console.log("exact value last page", totalListe/10)
+                            lastpageListe = ((totalListe/10)!=lastpageListe) ? (lastpageListe+1) : lastpageListe
+                            
+                            let lastpageListeInt = lastpageListe<1 ? 1 : parseInt(lastpageListe)
+
+                            if(lastpageListe != lastPage){
+                                setLastPage(lastpageListe)
+                            }
+                            // if(itemPage = "@type=hydra:PartialCollectionView")){
+                            //     setCurrentPage(1)
+                            //     setNextPage(2)
+                            //     let lastpageListe = totalListe/10
+                            //     lastpageListe = lastpageListe<1 ? 1 : lastpageListe
+                            //     setLastPage(lastpageListe)
+                            // }                     
                         }
                     }
                 }       
                 
             }
         })
-    }, [categorieFiltre, universFiltre, marqueFiltre, tagFiltre, liste])
+    }, [categorieFiltre, universFiltre, marqueFiltre, tagFiltre, validateSearchSkus, currentPage, liste])
     // render
     return (
         <ListeContext.Provider value={{
@@ -136,6 +174,8 @@ const ListeContextProvider = ({children}) => {
             marqueFiltreTab: marqueFiltreTab, setMarqueFiltreTab: setMarqueFiltreTab,
             tagFiltre: tagFiltre, setTagFiltre: setTagFiltre,
             tagFiltreTab: tagFiltreTab, setTagFiltreTab: setTagFiltreTab,
+            searchSkus: searchSkus, setSearchSkus: setSearchSkus,
+            validateSearchSkus: validateSearchSkus, setValidateSearchSkus: setValidateSearchSkus,
 
             currentPage: currentPage, setCurrentPage: setCurrentPage,
             nextPage: nextPage, setNextPage: setNextPage,

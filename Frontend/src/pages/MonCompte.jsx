@@ -26,7 +26,7 @@ const MonCompte = () => {
 				let promise = Promise.resolve(getUser(userStorage.email))
 				promise.then((value)=>{
 					if(value){
-						console.log(value)
+						//console.log(value)
 						setEmail(value[0].email)
 						setNom(value[0].nom)
 						setPrenom(value[0].prenom)
@@ -39,7 +39,7 @@ const MonCompte = () => {
 		
 	}, [])
 
-	console.log("nom", nom)
+	//console.log("nom", nom)
 	return (
 		<Template>
             <header className="d-flex justify-content-between">

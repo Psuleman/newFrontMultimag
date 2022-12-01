@@ -1,0 +1,14 @@
+/**
+* Pagination
+*/
+.isSelectedPage, .isSelectedPage:hover{
+    background-color: rgb(34, 34, 34);
+    color: rgb(255, 255, 255);
+}
+.paginationItem, .paginationItem:hover{
+    background-color: rgb(245, 245, 245);
+    color: black;
+}
+.color-black, .color-black:hover, .color-black:active{
+    color: black;
+}

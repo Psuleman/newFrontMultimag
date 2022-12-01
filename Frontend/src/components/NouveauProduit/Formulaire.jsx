@@ -19,7 +19,7 @@ const Formulaire = () => {
             }
             else{
                 if(data && data.length>0){
-                    //console.log(data.length)
+                    ////console.log(data.length)
                     let dateNow = Moment().format('YY')
                     dateNow = parseInt(dateNow)
                     
@@ -82,14 +82,14 @@ const Formulaire = () => {
                                     compteurNewProduct++
                                 }
                                 i = i==0 ? 1 : i
-                                // console.log("value", i, ": ", value)
-                                // console.log("data.length : ", data.length)
+                                // //console.log("value", i, ": ", value)
+                                // //console.log("data.length : ", data.length)
                                 setProgressBar((i*100) / data.length)
                                 i++
 
-                                // console.log((i*100) / data.length)
+                                // //console.log((i*100) / data.length)
 
-                                // console.log("progressbar", progressBar)
+                                // //console.log("progressbar", progressBar)
                                 localStorage.setItem("totalData", progressBar)
                                 if(i == data.length){
                                     setFinImport(true)
@@ -99,7 +99,7 @@ const Formulaire = () => {
 
                             })
 
-                            // console.log(setNewProduit(donnesJson))				      
+                            // //console.log(setNewProduit(donnesJson))				      
                             // let token = JSON.parse(localStorage.getItem('user_multimag')).token
                             
                             // const requestOptions = {
@@ -133,7 +133,7 @@ const Formulaire = () => {
                             // })
                             // //.then(data => return data)
                             // .catch(err=>{
-                            //     //console.log(err)
+                            //     ////console.log(err)
                             // });	
 
                         }
@@ -184,7 +184,7 @@ const Formulaire = () => {
                     for(let i in donnees){
                         let dateProduit = Moment(donnees[i][1], 'DD/MM/YYYY').format("YYYY-MM-DD")
                         if(Moment(dateProduit).isAfter(dateAnterieur)){
-                            //console.log(dateAnterieur)
+                            ////console.log(dateAnterieur)
                             tabTemporaire.push(donnees[i])
                         }
                     }
@@ -212,15 +212,15 @@ const Formulaire = () => {
                             && 
                             (Moment(dateProduit).isBefore(datefin))
                             ){
-                            console.log("test")
+                            //console.log("test")
                             tabTemporaire.push(donnees[i])
                             }
                             else{
-                            //console.log(dateProduit)
+                            ////console.log(dateProduit)
                             }
                 }
                     setData(tabTemporaire)
-                    console.log(tabTemporaire)*/
+                    //console.log(tabTemporaire)*/
                 }})
 
             }
