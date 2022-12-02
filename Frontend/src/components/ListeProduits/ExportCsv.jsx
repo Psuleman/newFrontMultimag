@@ -2,6 +2,7 @@ import {CSVLink } from 'react-csv'
 import Moment from 'moment'
 import { useContext } from 'react'
 import { ListeExportContext } from './Context/ListeExportContext'
+import moment from 'moment'
 
 
 
@@ -33,7 +34,7 @@ const header = [
 	{"label" : "Variant Compare At Price", "key" : "prixVenteRemise"},
 	{"label" : "Variant Requires Shipping", "key" : "shipping"},
 	{"label" : "Variant Taxable", "key" : "taxable"},
-	{"label" : "Variant Barcode", "key" : "referenceFournisseur"},
+	{"label" : "Variant Barcode", "key" : "reference_fournisseur"},
 	{"label" : "Variant Inventory Tracker", "key" : "inventory_tracker"},
 	{"label" : "Variant Inventory Policy", "key" : "inventory_policy"},
 	{"label" : "Variant Fulfillment Service", "key" : "fulfillment_service"},
@@ -67,6 +68,7 @@ const header = [
 	{"label" : "Metafield: mm-google-shopping.custom_product [single_line_text_field]", "key" : "custom_product"}
 	]
 	
+
 	
 const ExportCsv = () => {
     const {listesProduitExport} = useContext(ListeExportContext)
@@ -76,7 +78,8 @@ const ExportCsv = () => {
     const csvReport = ({
         data: data,
         headers: header,
-        filename: 'Export.csv'
+        filename: `Export_${moment().format('YYYY-MM-DD_HHmmss')}`
+
     })    
 
     return (

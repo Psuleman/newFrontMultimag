@@ -94,8 +94,8 @@ const Taille = () => {
             <div className="card-body">
                 <section className="row g-3 mb-3"><small>Tous les champs sont obligatoire</small></section>
                 <section className="row g-3 mb-3">
-                <InputDesabled label="Catégorie dans le fichier multimag" value={infoSku.categorie_univers} />
-                <InputDesabled label="Grille Taille Fournisseur" value={infoSku.grille_taille_fournisseur} />
+                <InputDesabled labelInput="Catégorie dans le fichier multimag" valeur={infoSku.categorie_univers} />
+                <InputDesabled labelInput="Grille Taille Fournisseur" valeur={infoSku.grille_taille_fournisseur} />
                 </section>
                 <section className="row g-3">
                     <Select id="selectTaille" label="Grille taille" value={grilleTailleUpdate} setValue={setGrilleTailleUpdate} list={listGrilleTaille} itemValue="grilleTaille" />                   

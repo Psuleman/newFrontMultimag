@@ -5,6 +5,7 @@ import DescriptionProduit from "./Description/DescriptionProduit";
 import NomProduit from "./Description/NomProduit";
 import FooterForm from "./TemplateFormulaire/FooterForm";
 import HeaderForm from "./TemplateFormulaire/HeaderForm";
+import InputDesabled from "./TemplateFormulaire/InputDesabled";
 
 const Description = () => {
     //variable
@@ -27,7 +28,9 @@ const Description = () => {
             <form onSubmit={(e)=>{handleClickSave(e, "entretienCoupe")}}>        
             <div className="card-body">
                 <section className="row g-3 mb-3"><small>Tous les champs sont obligatoire</small></section>
-
+                <section className="row g-3 mb-3">
+                    <InputDesabled labelInput="Référence dans multimag" valeur={infoSku.reference_couleur} />
+                </section>
                 <NomProduit />
                 <DescriptionProduit />
             </div>

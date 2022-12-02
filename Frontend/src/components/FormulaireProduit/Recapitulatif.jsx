@@ -26,7 +26,7 @@ const Recapitulatif = () => {
     // })
     
 
-    console.log("infoSku", infoSku)
+    // console.log("infoSku", infoSku)
     //render
     return (
         <aside className="col-xxl-2 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12 pe-xxl-3 pe-xl-3 pe-lg-3 pe-md-3 pe-sm-0 pe-0">

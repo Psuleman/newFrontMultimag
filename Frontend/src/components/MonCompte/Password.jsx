@@ -2,12 +2,19 @@ import { useContext } from "react"
 import { UserContext } from "./Context/UserContext"
 
 const Password = () => {
-    const {password, setPassword} = useContext(UserContext)
+    const {password, setPassword, erreurPassword} = useContext(UserContext)
     //render
     return (
-        <div class="mb-3 col-md-3">
-            <label for="passwordInput" class="form-label">Password</label>
-            <input type="password" class="form-control" id="passwordInput" placeholder="password" value={password} onChange={((e)=>{setPassword(e.target.value)})} />
+        <div className="form-outline form-blue mb-4 col-md-3">
+            <label htmlFor="passwordInput" className="form-label" >Password</label>
+            <input type="password" className="form-control form-control-lg" id="passwordInput" required placeholder="password" value={password} onChange={((e)=>{setPassword(e.target.value)})} />
+            {
+                erreurPassword && 
+                <div className="valid-feedback">
+                    Minimum 8 caractères
+              </div>
+          
+            }
         </div>
 
     )

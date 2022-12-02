@@ -2,12 +2,19 @@ import { useContext } from "react"
 import { UserContext } from "./Context/UserContext"
 
 const Nom = () => {
-    const {nom, setNom} = useContext(UserContext)
+    const {nom, setNom, erreurNom} = useContext(UserContext)
     //render
     return (
-        <div class="mb-3 col-md-3">
-            <label for="nomInput" class="form-label">Nom</label>
-            <input type="text" class="form-control" id="nomInput" placeholder="nom" value={nom} onChange={(e)=>{setNom(e.target.value)}} />
+        <div className="mb-3 col-md-3">
+            <label htmlFor="nomInput" className="form-label">Nom</label>
+            <input type="text" className="form-control" id="nomInput" placeholder="nom" value={nom} onChange={(e)=>{setNom(e.target.value)}} required />
+            {
+                erreurNom && 
+                <div className="valid-feedback">
+                    Minimum 2 caractère
+                </div>
+            }
+
         </div>
 
     )

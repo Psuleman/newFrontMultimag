@@ -36,8 +36,8 @@ const Information = () => {
                 <div className="card-body">
                 <section className="row g-3 mb-3"><small>Tous les champs sont obligatoire</small></section>
                 <section className="row g-3">
-                    <InputDesabled id="inputSku" label="SKU" value={infoSku.sku} type="text" />
-                    <InputDesabled id="inputRefFournisseur" label="Référence Fournisseur" value={infoSku.reference_fournisseur} type="text" />
+                    <InputDesabled idInput="inputSku" labelInput="SKU" valeur={infoSku.sku} typeInput="text" />
+                    <InputDesabled idInput="inputRefFournisseur" labelInput="Référence Fournisseur" valeur={infoSku.reference_fournisseur} typeInput="text" />
                 
                     <Marque />
                     <Select id="selectPaysOrigine" label="Pays origine" value={paysOrigineUpdate} setValue={setPaysOrigineUpdate} list={Pays} itemValue="pays" />

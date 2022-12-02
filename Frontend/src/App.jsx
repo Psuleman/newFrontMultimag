@@ -9,6 +9,7 @@ import Modification from './pages/Modification'
 import MonCompte from './pages/MonCompte'
 import NouveauProduit from './pages/NouveauProduit'
 import Referencement from './pages/Referencement'
+import ResetPassword from './pages/ResetPassword'
 import TestTableau from './pages/testTableau'
 
 
@@ -20,6 +21,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Connexion />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/produits/:liste" element={<ListeProduit />} />
           <Route path="/referencement" element={<Referencement />} />
           <Route path="/modification" element={<Modification />} />

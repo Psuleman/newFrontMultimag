@@ -1,10 +1,7 @@
-const InputDesabled = ({id, type, value, label }) => {
-    let valeur = value
-    let typeInput = type
-    let idInput = id
+const InputDesabled = ({idInput, typeInput, valeur, labelInput }) => {
     return (
     <div className="col-md-3">
-        <label htmlFor={idInput} className="form-label">{label}</label>
+        <label htmlFor={idInput} className="form-label">{labelInput}</label>
         <input type={typeInput} className="form-control" id={idInput} value={valeur} disabled />
     </div>   
     )

@@ -10,7 +10,7 @@ const Marque = () => {
     const [marques, setMarques] = useState([])
 
 
-    console.log("marque update", marqueUpdate)
+    // console.log("marque update", marqueUpdate)
     //Fonction
     useEffect(()=>{
         let arrayMarque = [...Marques]

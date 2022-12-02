@@ -72,7 +72,7 @@ const Pagination = () => {
 
     }, [currentPage, lastPage])
 
-    console.log("lastPage", lastPage)
+    // console.log("lastPage", lastPage)
 
     const handleClick = (index, item) => {
         let newPage = 0

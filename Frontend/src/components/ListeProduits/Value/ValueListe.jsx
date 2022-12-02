@@ -137,7 +137,7 @@ const ValueListe = ({item}) => {
         {
             showVariant &&
             item.variants.map((i, index)=>(
-            <tr key={index}>
+            <tr key={"variant_" + i + "_" + index}>
                 <td className="px-2 sku" colSpan="2" >{i.variant_sku}</td>
                 <td className="px-2" colSpan="10"></td>
                 <td className="px-2">{i.taille_fnr}</td>

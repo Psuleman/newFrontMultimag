@@ -452,10 +452,10 @@ const FormulaireProduit = () => {
                 referencer: referencer,
               }
               
-             console.log("data", JSON.stringify(data))
+            //console.log("data", JSON.stringify(data))
             // //console.log("id : ", infoSku.id)
             //console.log(infoSku)
-            console.log(setProduit(infoSku.id, data))
+            setProduit(infoSku.id, data)
         }
     }
 // //console.log(infoSku)

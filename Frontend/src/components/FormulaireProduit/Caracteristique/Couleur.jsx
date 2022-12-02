@@ -33,7 +33,7 @@ const Couleur = () => {
     //render
     return (
         <section className="row g-3 mt-1">
-            <InputDesabled id="inputCouleurFnr" type="text" value={infoSku.reference_couleur} label="Reference couleur" />
+            <InputDesabled idInput="inputCouleurFnr" typeInput="text" valeur={infoSku.reference_couleur} labelInput="Reference couleur" />
             <Select id="selectCouleur" label="Couleur" value={couleurUpdate} setValue={setCouleurUpdate} list={Couleurs} itemValue="couleur_ref" />  
             <Input id="inputCouleurFnr" label="Couleur En" value={couleurEnUpdate} setValue={setCouleurEnUpdate}   />      
         </section>

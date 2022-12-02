@@ -63,7 +63,7 @@ const ListeContextProvider = ({children}) => {
         const promise = Promise.resolve(getAllProduit(liste, filtre, pageActuelle))
 
         promise.then((value) => {
-            console.log(value)
+            // console.log(value)
             if(value){ 
                 let totalListe = 0    
                 for(let item in value){
@@ -137,8 +137,8 @@ const ListeContextProvider = ({children}) => {
                             let lastpageListe = totalListe/10
                             lastpageListe = parseInt(lastpageListe)
 
-                            console.log("lastpageListe", lastpageListe)
-                            console.log("exact value last page", totalListe/10)
+                            // console.log("lastpageListe", lastpageListe)
+                            // console.log("exact value last page", totalListe/10)
                             lastpageListe = ((totalListe/10)!=lastpageListe) ? (lastpageListe+1) : lastpageListe
                             
                             let lastpageListeInt = lastpageListe<1 ? 1 : parseInt(lastpageListe)

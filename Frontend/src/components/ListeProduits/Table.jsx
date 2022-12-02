@@ -57,7 +57,7 @@ const Table = () => {
                             prixVenteRemise : element.tarifs[0].remise>0 ?  parseFloat(prixRemise) : null,
                             shipping : "TRUE", // A revoir sinon TRUE
                             taxable : "TRUE", // A revoir sinon TRUE
-                            referenceFournisseur : item == 0 ? element.referenceFournisseur : null, //Variant barcode
+                            reference_fournisseur : item == 0 ? element.reference_fournisseur : null, //Variant barcode
                             inventory_tracker : "Shopify",
                             inventory_policy : "deny", // a revoir sinon deny
                             fulfillment_service : "manual", // a revoir sinon manual
@@ -157,7 +157,7 @@ const Table = () => {
 
     }
 
-
+	
     // console.log("tab table", listesProduit)
     //render
     return (
@@ -181,19 +181,19 @@ const Table = () => {
                     } 
                     {
                         totalSkus>0 && liste == "listes" && 
-                        skus.map((item, index)=>( <ValueListe item={item} />))
+                        skus.map((item, index)=>( <ValueListe item={item} key={"sku_"+ index} />))
                     }
                     {
                         totalSkus>0 && liste == "referencement" && 
-                        skus.map((item, index)=>( <ValueReferencement item={item} />))
+                        skus.map((item, index)=>( <ValueReferencement item={item} key={"sku_"+ index} />))
                     }
                     {
                         totalSkus>0 && liste == "modification" && 
-                        skus.map((item, index)=>( <ValueReferencement item={item} />))
+                        skus.map((item, index)=>( <ValueReferencement item={item} key={"sku_"+ index} />))
                     }    
                                         {
                         totalSkus>0 && liste == "export" && 
-                        listesProduit.map((item, index)=>( <ValueExport item={item} />))
+                        listesProduit.map((item, index)=>( <ValueExport item={item} key={"sku_"+ index} />))
                     }   
                 </table>
             </div>

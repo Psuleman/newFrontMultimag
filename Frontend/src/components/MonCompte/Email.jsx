@@ -5,9 +5,9 @@ const Email = () => {
     const {email, setEmail} = useContext(UserContext)
     //render
     return (
-        <div class="mb-3 col-md-3">
-            <label for="emailInput" class="form-label">Email</label>
-            <input type="email" class="form-control" id="emailInput" placeholder="email" value={email} disabled/>
+        <div className="mb-3 col-md-3">
+            <label htmlFor="emailInput" className="form-label">Email</label>
+            <input type="email" className="form-control" id="emailInput" placeholder="email" value={email} disabled/>
         </div>
 
     )

@@ -64,7 +64,7 @@ const TailleVariant = () => {
 
     }, [grilleTailleUpdate])
 
-    console.log("attributUpdate[index].taille_ref.taille_ref", attributUpdate[0].taille_ref.taille_ref)
+
     //render
     return (
         <div>
@@ -74,7 +74,7 @@ const TailleVariant = () => {
             (tailles && attributUpdate) &&
             attributUpdate.map((i, index)=>
             <section  className="row g-3 mt-1">
-                <InputDesabled id={"inputVariant" + i.variant_sku} label="Taille fournisseur" value={i.taille_fnr} />
+                <InputDesabled idInput={"inputVariant" + i.variant_sku} labelInput="Taille fournisseur" valeur={i.taille_fnr} />
                 <div className="col-md-3">
                     <label  htmlFor="selectTaille" className="form-label">Taille {attributUpdate[index].tailleRef}</label>
                     {

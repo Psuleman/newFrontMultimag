@@ -37,8 +37,8 @@ const Caracteristique = () => {
                 <section className="row g-3 mb-3"><small>Tous les champs sont obligatoire</small></section>
 
                 <section className="row g-3">
-                    <InputDesabled id="inputCatUnivers2" type="text" value={infoSku.categorie_univers} label="Catégorie dans le fichier multimag" />
-                    <InputDesabled id="inputSousCategorieFnr" type="text" value={infoSku.sous_categorie_fnr} label="Sous catégorie dans le fichier multimag" />
+                    <InputDesabled idInput="inputCatUnivers2" typeInput="text" valeur={infoSku.categorie_univers} labelInput="Catégorie dans le fichier multimag" />
+                    <InputDesabled idInput="inputSousCategorieFnr" typeInput="text" valeur={infoSku.sous_categorie_fnr} labelInput="Sous catégorie dans le fichier multimag" />
                 </section>
 
                 <CategorieContextProvider>

@@ -5,10 +5,11 @@ import FooterForm from "./TemplateFormulaire/FooterForm";
 import Dimension from "./Caracteristique/Dimension";
 import InputDesabled from "./TemplateFormulaire/InputDesabled";
 import { useEffect } from "react";
+import Input from "./TemplateFormulaire/Input";
 
 const Dimensions = () => {
     //variable
-    const {infoSku, dimensionDone, longueurUpdate, largeurUpdate, poidsUpdate, hauteurUpdate, setDimensionDone, sectionUpdate, setSectionUpdate, handleClickSave} = useContext(FormulaireContext)
+    const {infoSku, dimensionDone, longueurUpdate, largeurUpdate, poidsUpdate, setPoidsUpdate, hauteurUpdate, setDimensionDone, sectionUpdate, setSectionUpdate, handleClickSave} = useContext(FormulaireContext)
     //fonction
     useEffect(()=>{
         if(longueurUpdate!=null && largeurUpdate!=null && poidsUpdate!=null && hauteurUpdate!=null){
@@ -29,8 +30,13 @@ const Dimensions = () => {
         <form onSubmit={(e)=>{handleClickSave(e, "dimensions")}}>        
         <div className="card-body">
             <section className="row g-3">
-                <InputDesabled label="Référence dans multimag" value={infoSku.reference_couleur} />
+                <InputDesabled labelInput="Référence dans multimag" valeur={infoSku.reference_couleur} />
             </section>
+            <section className="row g-3mt-3">
+                <Input id="inputDimensionPoids" type="number" label="Poids" value={poidsUpdate} setValue={setPoidsUpdate} />
+
+            </section>
+
             <Dimension />
         </div>
 

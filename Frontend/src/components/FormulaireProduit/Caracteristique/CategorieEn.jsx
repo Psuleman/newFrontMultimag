@@ -11,7 +11,7 @@ const CategorieEn = () => {
     useEffect(()=>{
         setSousCategorieEnUpdate(infoSku.sous_categorie_en)
     }, [])
-    console.log(sousCategorieEnUpdate)
+    // console.log(sousCategorieEnUpdate)
     return (
         <section className="row g-3 mt-1">
             <Input id="inputEnCategorie" label="Catégorie En" value={categorieEnUpdate} setValue={setCategorieEnUpdate} />

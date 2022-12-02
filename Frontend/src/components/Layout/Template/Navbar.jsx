@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { getUser } from "../../../services/user.service";
 import { TemplateContext } from "./Context/TemplateContext";
 
 const Navbar = () => {
@@ -8,7 +9,7 @@ const Navbar = () => {
     useEffect(()=>{
         if(localStorage.getItem("user_multimag")){
 			let userStorage = JSON.parse(localStorage.getItem("user_multimag")) 
-            if(userStorage.nom){
+            if(userStorage.email){
                 let promise = Promise.resolve(getUser(userStorage.email))
 				promise.then((value)=>{
 					if(value){
@@ -20,6 +21,7 @@ const Navbar = () => {
 
         }
     }, [])
+
     //render
     return (
     <nav className="navbar navbar-light bg-white position-fixed top-0 start-0 end-0">
@@ -31,7 +33,7 @@ const Navbar = () => {
                     }} id="togglerbutton">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <div className="navbar-brand text-uppercase fs-4 fw-bold mx-4">MULTIMAG</div>                    
+                <div className="navbar-brand text-uppercase fs-4 fw-bold mx-4 ">MULTIMAG</div>                    
             </div>
 
             <div className="dropdown mx-3">
@@ -40,7 +42,7 @@ const Navbar = () => {
             </div>
 
             <ul style={{cursor:"pointer"}} className="dropdown-menu">
-                <li style={{cursor:"pointer"}}><a className="dropdown-item" href="#" onClick={handleClickLogout}>Déconnexion</a></li>
+                <li style={{cursor:"pointer"}}><span className="dropdown-item" onClick={handleClickLogout}>Déconnexion</span></li>
             </ul>
             </div>
         </div>

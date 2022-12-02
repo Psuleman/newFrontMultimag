@@ -99,7 +99,7 @@ const ValueExport = ({item}) => {
                 <td className="px-2">{item.prixVente}</td>              
                 <td className="px-2">{item.shipping}</td>              
                 <td className="px-2">{item.taxable}</td>              
-                <td className="px-2">{item.referenceFournisseur}</td>              
+                <td className="px-2">{item.reference_fournisseur}</td>              
                 <td className="px-2">{item.inventory_tracker}</td>                          
                 <td className="px-2">{item.inventory_policy}</td>              
                 <td className="px-2">{item.fulfillment_service}</td>              

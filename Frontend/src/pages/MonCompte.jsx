@@ -8,8 +8,9 @@ import Email from "../components/MonCompte/Email"
 import Password from "../components/MonCompte/Password"
 import ConfPassword from "../components/MonCompte/ConfPassword"
 import { useEffect } from "react"
-import { getUser } from "../services/user.service"
+import { getUser, setUser } from "../services/user.service"
 import Role from "../components/MonCompte/Role"
+import { useNavigate } from "react-router-dom"
 
 const MonCompte = () => {
 	const [nom, setNom] = useState()
@@ -18,7 +19,17 @@ const MonCompte = () => {
 	const [password, setPassword] = useState()
 	const [confPassword, setConfPassword] = useState()
 	const [role, setRole] = useState()
+    const [nouveauPassword, setNouveauPassword] = useState()
+	const [message, setMessage] = useState()
+	const [erreur, setErreur] = useState()
+	const [typeErreur, setTypeErreur] = useState()
 
+	const [erreurNom, setErreurNom] = useState()
+	const [erreurPrenom, setErreurPrenom] = useState()
+	const [erreurPassword, setErreurPassword] = useState()
+	const [erreurConfPassword, setErreurConfPassword] = useState()
+
+	let navigate = useNavigate()
 	useEffect(()=>{
 		if(localStorage.getItem("user_multimag")){
 			let userStorage = JSON.parse(localStorage.getItem("user_multimag")) 
@@ -39,6 +50,113 @@ const MonCompte = () => {
 		
 	}, [])
 
+	const handleSubmit = (e) => {
+		e.preventDefault()
+
+		/**
+		 * Réinitialisation
+		 */
+		let msg= ""
+		setErreur(false)
+		setTypeErreur(null)
+		setMessage("")
+
+		setErreurNom(false)
+		setErreurPrenom(false)
+		setErreurPassword(false)
+		setErreurConfPassword(false)
+		
+		/**
+		 * Vérification des données
+		 */
+
+		//nom
+		if(nom.length<2)
+		{
+			msg += "Nom incorrect, minimum 2 lettre. "
+			setErreur(true)
+			setTypeErreur("echec")
+			setErreurNom(true)
+		}
+
+		if(prenom.length<2)
+		{
+			msg += "Prénom incorrect, minimum 2 lettre. "
+			setErreur(true)
+			setTypeErreur("echec")
+			setErreurPrenom(true)
+		}
+		//password
+		if((password && confPassword )&& (confPassword != password || password.length<8)){
+
+			if(confPassword!=password){
+				setErreurConfPassword(true)
+			}
+			if(password.length<8){
+				setErreurPassword(true)
+			}
+
+			msg += "Mot de passe incorrect."
+			setErreur(true)
+			setTypeErreur("echec")
+
+
+		}
+
+		if(msg==""){
+			let data = {
+				email: email,
+				nom: nom,
+				prenom: prenom,
+			}
+			let id=0
+			if(password){
+				data={
+					email: email,
+					nom: nom,
+					prenom: prenom,
+					password: password	
+				} 
+			}
+			let promise = Promise.resolve(getUser(email,password))
+			promise.then((value) => {
+				if(value){
+					id = value[0].id
+				}
+				else{
+					navigate(`/`);
+				}
+			})
+
+			if(id!=0){
+				console.log(JSON.stringify(data))
+				let promise2 = Promise.resolve(setUser(data,id))				
+			}
+
+
+			msg = "Modification réussi"
+				
+			setErreurNom(false)
+			setErreurPrenom(false)
+			setErreurPassword(false)
+			setErreurConfPassword(false)
+		
+			setErreur(true)
+			setTypeErreur("success")
+
+
+		console.log(data)
+		}
+		//
+
+
+		setMessage(msg)
+
+
+
+	}
+
+	console.log(erreurNom)
 	//console.log("nom", nom)
 	return (
 		<Template>
@@ -46,7 +164,19 @@ const MonCompte = () => {
                 <div className="fs-3 fw-bolder">Mon compte</div>
             </header>			
 			<section  className="row g-3 mt-1">
-				<form className="pt-3 px-3 pb-4">
+				{
+					erreur && message!="" && typeErreur=="echec" &&
+					<div class="alert alert-danger col-md-3" role="alert">
+						{message}
+					</div>
+				}
+				{
+					erreur && message!="" && typeErreur=="success" &&
+					<div class="alert alert-success  col-md-3" role="alert">
+						{message}
+					</div>
+				}
+				<form className="pt-3 px-3 pb-4" onSubmit={handleSubmit}>
 					{/* <small>Tous les champs sont obligatoires.</small> */}
 					<UserContext.Provider value={{
 						nom: nom, setNom:setNom,
@@ -55,11 +185,31 @@ const MonCompte = () => {
 						password: password, setPassword: setPassword,
 						confPassword: confPassword, setConfPassword: setConfPassword,
 						role:role, setRole: setRole,
+
+						erreurNom: erreurNom, 
+						erreurPrenom: erreurPrenom,
+						erreurPassword: erreurPassword,
+						erreurConfPassword: erreurConfPassword,
 					}}>
 						<Nom />
 						<Prenom />
 						<Email />
 						<Role />
+						{/* <div id="newPassword" className="mb-3 col-md-3">
+							<label>Modifier votre mot de passe</label>
+							<div>
+								<div><input type="radio" value="true"name="newPassword" onChange={()=>{setNouveauPassword(true)}}/> <label>Oui</label></div>
+								<div><input type="radio" value="False" name="newPassword"  onChange={()=>{setNouveauPassword(false)}} /> <label>Non</label></div>
+							</div>
+						</div>
+						{
+							nouveauPassword && nouveauPassword==true && <Password />
+						}
+						{
+							nouveauPassword && nouveauPassword==true && <ConfPassword />
+						}						 */}
+						{/* <button  className="btn btn-outline-dark btn-lg px-5">Modifier</button> */}
+
 						{/* <Password />
 						<ConfPassword />
 						<button className="btn btn-outline-dark">Valider</button> */}

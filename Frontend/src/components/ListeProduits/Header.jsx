@@ -46,8 +46,8 @@ const Header = () => {
         {
             (totalSkus!=0 && !totalSkus) && 
             <div className="d-flex justify-content-center pt-2 pb-2 action">
-            <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
+            <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
             </div>                
             </div>
 
@@ -63,8 +63,8 @@ const Header = () => {
             <div className="p-2">Action {totalSkus}</div>
             {
                 (totalSkus!=0 && !totalSkus) && 
-                <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
+                <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
               </div>
             }
             <div className="p-2">Configuration des actions</div>

@@ -26,3 +26,25 @@ export const getUser = (email) => {
 
     return result;
 }
+
+export const setUser = (data, id) => {
+    const headerPATCH = {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/merge-patch+json',
+        accept: 'application/ld+json',
+        //Authorization : 'Bearer ' + token
+        },					
+        body: JSON.stringify(data)
+    }
+    let urlPatch = url + "/" + id
+    //console.log("urlPatch", urlPatch)
+
+    let result = fetch(urlPatch, headerPATCH)
+    .then(res => {
+        return res;
+    })
+    .then(value => {return value;})
+    .catch(err => setEchecUpdates(true));
+    
+    return result
+}
