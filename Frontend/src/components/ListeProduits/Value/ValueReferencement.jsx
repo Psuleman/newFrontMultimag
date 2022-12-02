@@ -19,6 +19,8 @@ const ValueReferencement = ({item}) => {
     let image = ""
     let images = item.pictures
     images = images.split(";")
+
+    image = images[0];
     
     //fonction
     useEffect(()=>{
@@ -99,7 +101,7 @@ const ValueReferencement = ({item}) => {
                 <td className="px-2">
                 {
                     imgExist ? 
-                    <img src={image} alt="non disponible"  className="imgListTab"/> 
+                    <img src={image} alt="non disponible" className="imgListTab"  /> 
                     :
                     <img src={Ceintre} alt="non disponible" className="imgListTab" />
                 }

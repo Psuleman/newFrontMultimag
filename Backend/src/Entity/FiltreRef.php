@@ -18,7 +18,8 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Patch;
 
 // #[ApiResource(
-//     operations: [ new Post() ]
+//     normalizationContext: ['groups' => ['produit', 'filtre']],
+//     denormalizationContext:  ['groups' => ['produit', 'filtre']],
 // )]
 // #[ApiResource(
 //     uriTemplate: '/sous_categories/{sousCategorieId}/filtre_refs/{id}',
@@ -44,15 +45,15 @@ class FiltreRef
     #[Groups(['produit'])]
     private $id;
 
-    #[Groups(['produit'])]
+    #[Groups(['produit', 'filtre'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $filtre;
 
-    #[Groups(['produit'])]
+    #[Groups(['produit', 'filtre'])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $filtre_ref_en;
 
-    #[Groups(['produit'])]
+    #[Groups(['produit', 'filtre'])]
     #[ORM\ManyToOne( cascade: ['persist'])]
     private ?SousCategorieRef $sous_categorie_ref = null;
 

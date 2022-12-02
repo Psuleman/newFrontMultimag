@@ -28,116 +28,125 @@ const Formulaire = () => {
                     let compteur = 0
                     let compteurNewProduct = 0
 
-                    
-                    for(let item in data)
-                    {
-                        if(parseInt(data[item][0])>0)
+                    console.log(data)
+                    let donnees = []
+
+                    for(let i = 0; i<data.length; i++){
+                        if(parseInt(data[i][0])>0)
                         {
-                            let dateArr = Moment(data[item][1], 'DD/MM/YYYY').format()
-                            let donnesJson = {
-                                sku: parseInt(data[item][0]),
-                                taille: data[item][23],
+                            let dataExist = false
+                            let dateArr = Moment(data[i][1], 'DD/MM/YYYY').format()
+
+                            let itemData = {
+                                sku: parseInt(data[i][0]),
                                 dateArrivee:  "" + Moment(dateArr).format("YYYY-MM-DD"),
-                                codeFournisseur: ""+ data[item][2],
-                                nomFournisseur: ""+ data[item][3],
-                                referenceFournisseur : ""+data[item][4],
-                                codeCouleur: ""+ data[item][5],
-                                referenceCouleur1 : ""+ data[item][6],
-                                referenceCouleur2 : ""+ (data[item][7]?data[item][7]:""),                            
-                                codeSaison: data[item][8]?parseInt(data[item][8]):0,
-                                codeCategorieUnivers: data[item][10] ?parseInt(data[item][10]):0,//famille1
-                                categorieUnivers: ""+ (data[item][11]?data[item][11]: ""),
-                                codeModeAquisition: data[item][12]?parseInt(data[item][12]):0, //famille 2  
-                                modeAcquisition: ""+ (data[item][13]?data[item][13]: ""),
-                                codeSousCategorieFnr: data[item][14] ?parseInt(data[item][14]):0,//famille 3
-                                sousCategorieFnr: ""+ (data[item][15]?data[item][15]:""),
-                                codeTag: data[item][16] ?parseInt(data[item][16]):0, //famille 4
-                                tag: ""+ (data[item][17]?data[item][17]:""),
-                                codeFamille5: data[item][18] ?parseInt(data[item][18]):0,
-                                famille5: ""+ (data[item][19]?data[item][19]:""),
-                                codeFamille6: data[item][20] ?parseInt(data[item][20]):0,
-                                famille6: ""+ (data[item][21]?data[item][21]:""),
-                                stockMag0 : data[item][26] ?parseInt(data[item][26]):0,
-                                stockMag3 : data[item][28] ?parseInt(data[item][28]):0,
-                                stockMag7 : data[item][30] ?parseInt(data[item][30]):0,
-                                stockMag9 : data[item][32] ?parseInt(data[item][32]):0,
-                                stockMag11 : data[item][34] ?parseInt(data[item][34]):0,
-                                stockMag12 : data[item][36] ?parseInt(data[item][36]):0,
-                                stockMag14 : data[item][38] ?parseInt(data[item][38]):0,
-                                stockMag18 : data[item][40] ?parseInt(data[item][40]):0,
-                                stockMag20 : data[item][42] ?parseInt(data[item][42]):0,
-                                stockMag60 : data[item][44] ?parseInt(data[item][44]):0,
-                                grilleTailleFournisseur: ""+(data[item][22]?data[item][22]:""),
-                                prixVente : data[item][24]?parseFloat(data[item][24]):0,
-                                anneeSortie: data[item][9]?parseInt(data[item][9]):0
-
+                                codeFournisseur: ""+ data[i][2],
+                                nomFournisseur: ""+ data[i][3],
+                                referenceFournisseur : ""+data[i][4],
+                                codeCouleur: ""+ data[i][5],
+                                referenceCouleur1 : ""+ data[i][6],
+                                referenceCouleur2 : ""+ (data[i][7]?data[i][7]:""),                            
+                                codeSaison: data[i][8]?parseInt(data[i][8]):0,
+                                codeCategorieUnivers: data[i][10] ?parseInt(data[i][10]):0,//famille1
+                                categorieUnivers: ""+ (data[i][11]?data[i][11]: ""),
+                                codeModeAquisition: data[i][12]?parseInt(data[i][12]):0, //famille 2  
+                                modeAcquisition: ""+ (data[i][13]?data[i][13]: ""),
+                                codeSousCategorieFnr: data[i][14] ?parseInt(data[i][14]):0,//famille 3
+                                sousCategorieFnr: ""+ (data[i][15]?data[i][15]:""),
+                                codeTag: data[i][16] ?parseInt(data[i][16]):0, //famille 4
+                                tag: ""+ (data[i][17]?data[i][17]:""),
+                                codeFamille5: data[i][18] ?parseInt(data[i][18]):0,
+                                famille5: ""+ (data[i][19]?data[i][19]:""),
+                                codeFamille6: data[i][20] ?parseInt(data[i][20]):0,
+                                famille6: ""+ (data[i][21]?data[i][21]:""),
+                                grilleTailleFournisseur: ""+(data[i][22]?data[i][22]:""),
+                                prixVente : data[i][24]?parseFloat(data[i][24]):0,
+                                anneeSortie: data[i][9]?parseInt(data[i][9]):0,
+                                variantProduits: []
                             }
-                            //request post
-                            console.log(JSON.stringify(donnesJson))
 
-                            const promise = Promise.resolve(setNewProduit(donnesJson));
+                            let dataItem = data[i]
 
-                            promise.then((value) => {
-                                if(value && value.ok){
-                                    compteurNewProduct++
+                            if(i>0){
+                                for(let j=0; j<donnees.length; j++){
+                                    if(donnees[j].sku == dataItem[0]){
+                                        //données existe déja
+                                        dataExist = true
+                                        donnees[j].variantProduits.push({
+                                            taille: data[i][23],
+                                            stockMag0 : data[i][26] ?parseInt(data[i][26]):0,
+                                            stockMag3 : data[i][28] ?parseInt(data[i][28]):0,
+                                            stockMag7 : data[i][30] ?parseInt(data[i][30]):0,
+                                            stockMag9 : data[i][32] ?parseInt(data[i][32]):0,
+                                            stockMag11 : data[i][34] ?parseInt(data[i][34]):0,
+                                            stockMag12 : data[i][36] ?parseInt(data[i][36]):0,
+                                            stockMag14 : data[i][38] ?parseInt(data[i][38]):0,
+                                            stockMag18 : data[i][40] ?parseInt(data[i][40]):0,
+                                            stockMag20 : data[i][42] ?parseInt(data[i][42]):0,
+                                            stockMag60 : data[i][44] ?parseInt(data[i][44]):0
+                                        })
+                                        break;
+                                    }
                                 }
-                                i = i==0 ? 1 : i
-                                // //console.log("value", i, ": ", value)
-                                // //console.log("data.length : ", data.length)
-                                setProgressBar((i*100) / data.length)
-                                i++
-
-                                // //console.log((i*100) / data.length)
-
-                                // //console.log("progressbar", progressBar)
-                                localStorage.setItem("totalData", progressBar)
-                                if(i == data.length){
-                                    setFinImport(true)
-                                    setTotalNewProduct(compteurNewProduct)
-                                    setPatienceImport(false)
-                                }
-
-                            })
-
-                            // //console.log(setNewProduit(donnesJson))				      
-                            // let token = JSON.parse(localStorage.getItem('user_multimag')).token
+                            }
+                            else{
+                                dataExist = false
+                            }  
                             
-                            // const requestOptions = {
-                            //     method: 'POST',
-                            //     headers: { 
-                            //     'Content-Type': 'application/json',
-                            //     accept: 'application/json',
-                            //     //Authorization : `Bearer ${token}`
-                            //     },
-                            //     body: JSON.stringify(donnesJson)
-                            // };
+                            if(dataExist == false){
+                                /**
+                                 * Nouveau données
+                                 */
+                                 itemData.variantProduits.push({
+                                    taille: data[i][23],
+                                    stockMag0 : data[i][26] ?parseInt(data[i][26]):0,
+                                    stockMag3 : data[i][28] ?parseInt(data[i][28]):0,
+                                    stockMag7 : data[i][30] ?parseInt(data[i][30]):0,
+                                    stockMag9 : data[i][32] ?parseInt(data[i][32]):0,
+                                    stockMag11 : data[i][34] ?parseInt(data[i][34]):0,
+                                    stockMag12 : data[i][36] ?parseInt(data[i][36]):0,
+                                    stockMag14 : data[i][38] ?parseInt(data[i][38]):0,
+                                    stockMag18 : data[i][40] ?parseInt(data[i][40]):0,
+                                    stockMag20 : data[i][42] ?parseInt(data[i][42]):0,
+                                    stockMag60 : data[i][44] ?parseInt(data[i][44]):0
+                                 })
 
-                            // fetch('http://212.129.3.31:8080/api/produits', requestOptions)
-                            // fetch('http://localhost:8001/api/produits', requestOptions)
-                            // .then(response => {
-                            //     //response.json()
-                                
-                            //     if(response.ok){
-                            //         compteurNewProduct++	
-                                                                
-                            //     }
-                            //     compteur++
-                            //     i++
-                            //     let progessbar = (i * 100) / data.length
-                            //     if(compteur == data.length){
-                            //         setFinImport(true)
-                            //         setTotalNewProduct(compteurNewProduct)
-                            //         setPatienceImport(false)
-
-                            //     }
-                            // })
-                            // //.then(data => return data)
-                            // .catch(err=>{
-                            //     ////console.log(err)
-                            // });	
-
+                                 donnees.push(itemData)
+                            }
                         }
+
                     }
+
+                    console.log(donnees)
+
+
+                    donnees.forEach(element => {
+                        console.log(JSON.stringify(element))
+                        const promise = Promise.resolve(setNewProduit(element));
+
+                        promise.then((value) => {
+                            if(value && value.ok){
+                                compteurNewProduct++
+                            }
+                            i = i==0 ? 1 : i
+                            // //console.log("value", i, ": ", value)
+                            // //console.log("data.length : ", data.length)
+                            setProgressBar((i*100) / donnees.length)
+                            i++
+
+                            // //console.log((i*100) / data.length)
+
+                            // //console.log("progressbar", progressBar)
+                            localStorage.setItem("totalData", progressBar)
+                            if(i == donnees.length){
+                            setFinImport(true)
+                            setTotalNewProduct(compteurNewProduct)
+                            setPatienceImport(false)
+                        }
+
+                    })
+                    });
+
                 }
                 else{
                     /**

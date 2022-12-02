@@ -243,10 +243,6 @@ class Produits
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $newListAttente;
 
-    
-    //variable sans ajouter dans la base de données
-    #[Groups('produit')]
-    private ?string $taille;
 
     #[Groups('produit')]
     private ?string $reference_couleur_1;
@@ -256,37 +252,6 @@ class Produits
 
     #[Groups('produit')]
     private ?float $prix_vente;
-
-    //Stock
-    #[Groups(['produit:write'])]
-    private ?int $stock_mag_0;
-
-    #[Groups(['produit:write'])]
-    private ?int $stock_mag_3;
-
-    #[Groups(['produit:write'])]
-    private ?int $stock_mag_7;
-
-    #[Groups(['produit:write'])]
-    private ?int $stock_mag_9;
-
-    #[Groups(['produit:write'])]
-    private ?int $stock_mag_11;
-
-    #[Groups(['produit:write'])]
-    private ?int $stock_mag_12;
-
-    #[Groups(['produit:write'])]
-    private ?int $stock_mag_14;
-
-    #[Groups(['produit:write'])]
-    private ?int $stock_mag_18;
-
-    #[Groups(['produit:write'])]
-    private ?int $stock_mag_20;
-    
-    #[Groups(['produit:write'])]
-    private ?int $stock_mag_60;
 
     #[Groups('produit')]
     private ?string $categorie = null;
@@ -888,15 +853,7 @@ class Produits
         $this->reference_couleur_2 = $reference_couleur_2;
         return $this;
     }
-    public function getTaille() : ?string
-    {
-        return $this->taille;
-    }
-    public function setTaille(string $taille) : self
-    {
-        $this->taille = $taille;
-        return $this;
-    }
+
     public function getPrixVente() : ?float
     {
         return $this->prix_vente;
@@ -906,96 +863,7 @@ class Produits
         $this->prix_vente = $prix_vente;
         return $this;
     }
-    public function getStockMag0() : ?int
-    {
-        return $this->stock_mag_0;
-    }
-    public function setStockMag0(int $stock_mag_0) : self
-    {
-        $this->stock_mag_0 = $stock_mag_0;
-        return $this;
-    }
-    public function getStockMag3() : ?int
-    {
-        return $this->stock_mag_3;
-    }
-    public function setStockMag3(?int $stock_mag_3) : self
-    {
-        $this->stock_mag_3 = $stock_mag_3;
-        return $this;
-    }
-    public function getStockMag7() : ?int
-    {
-        return $this->stock_mag_7;
-    }
-    public function setStockMag7(?int $stock_mag_7) : self
-    {
-        $this->stock_mag_7 = $stock_mag_7;
-        return $this;
-    }
-    public function getStockMag9() : ?int
-    {
-        return $this->stock_mag_9;
-    }
-    public function setStockMag9(?int $stock_mag_9) : self
-    {
-        $this->stock_mag_9 = $stock_mag_9;
-        return $this;
-    }
-    public function getStockMag11() : ?int
-    {
-        return $this->stock_mag_11;
-    }
-    public function setStockMag11(int $stock_mag_11) : self
-    {
-        $this->stock_mag_11 = $stock_mag_11;
-        return $this;
-    }
-    public function getStockMag12() : ?int
-    {
-        return $this->stock_mag_12;
-    }
-    public function setStockMag12(?int $stock_mag_12) : self
-    {
-        $this->stock_mag_12 = $stock_mag_12;
-        return $this;
-    }
-    public function getStockMag14() : ?int
-    {
-        return $this->stock_mag_14;
-    }
-    public function setStockMag14(?int $stock_mag_14) : self
-    {
-        $this->stock_mag_14 = $stock_mag_14;
-        return $this;
-    }
-    public function getStockMag18() : ?int
-    {
-        return $this->stock_mag_18;
-    }
-    public function setStockMag18(?int $stock_mag_18) : self
-    {
-        $this->stock_mag_18 = $stock_mag_18;
-        return $this;
-    }
-    public function getStockMag20() : ?int
-    {
-        return $this->stock_mag_20;
-    }
-    public function setStockMag20(?int $stock_mag_20) : self
-    {
-        $this->stock_mag_20 = $stock_mag_20;
-        return $this;
-    }
-    public function getStockMag60() : ?int
-    {
-        return $this->stock_mag_60;
-    }
-    public function setStockMag60(?int $stock_mag_60) : self
-    {
-        $this->stock_mag_60 = $stock_mag_60;
-        return $this;
-    }
+
 
     public function getNewProduit() : ?bool
     {
@@ -1027,8 +895,8 @@ class Produits
 
     public function getCategorie() : ?string
     {
-        if ($this->filtre) {
-            $this->categorie = $this->filtre->getSousCategorieRef()->getCategorieRef()->getCategorieRef();
+        if ($this->filtre && !$this->categorie) {
+                $this->categorie = $this->filtre->getSousCategorieRef()->getCategorieRef()->getCategorieRef();
         }
         return $this->categorie;
     }
@@ -1039,7 +907,7 @@ class Produits
     }
     public function getCategorieEn() : ?string
     {
-        if ($this->filtre) {
+        if ($this->filtre && !$this->categorie_en) {
             $this->categorie_en = $this->filtre->getSousCategorieRef()->getCategorieRef()->getCategorieRefEn();
         }
         return $this->categorie_en;
@@ -1051,7 +919,7 @@ class Produits
     }
     public function getSousCategorie() : ?string
     {
-        if ($this->filtre) {
+        if ($this->filtre && !$this->sous_categorie) {
             $this->sous_categorie = $this->filtre->getSousCategorieRef()->getSousCategorieRef();
         }
         return $this->sous_categorie;
@@ -1063,7 +931,7 @@ class Produits
     }
     public function getSousCategorieEn() : ?string
     {
-        if ($this->filtre) {
+        if ($this->filtre && !$this->sous_categorie_en) {
             $this->sous_categorie_en = $this->filtre->getSousCategorieRef()->getSousCategorieRefEn();
         }
         return $this->sous_categorie_en;
@@ -1075,7 +943,7 @@ class Produits
     }
     public function getFiltreProduit() : ?string
     {
-        if ($this->filtre) {
+        if ($this->filtre && !$this->filtre_produit) {
             $this->filtre_produit = $this->filtre->getFiltre();
         }
         return $this->filtre_produit;
@@ -1087,7 +955,7 @@ class Produits
     }
     public function getFiltreProduitEn() : ?string
     {
-        if ($this->filtre) {
+        if ($this->filtre && !$this->filtre_produit_en) {
             $this->filtre_produit_en = $this->filtre->getFiltreRefEn();
         }
         return $this->filtre_produit_en;

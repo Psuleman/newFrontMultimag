@@ -67,7 +67,7 @@ const SelectMatiere = ({label, value, id, indexMatiere}) => {
                     Matieres && arrayList.map((item, index)=>{
                         item = eval('item.matiere')
                         return (
-                            <div className="dropdown-item">
+                            <div className="dropdown-item" key={"matiere_"+ index}>
                                 <div className="p-1 cursor-pointer" id={label+"_"+index} key={label+"_"+index} onClick={() => {
                                     setMatiereUpdate(oldState=>{
                                         let newState = [...oldState]

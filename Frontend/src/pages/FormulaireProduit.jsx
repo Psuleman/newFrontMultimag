@@ -415,15 +415,15 @@ const FormulaireProduit = () => {
                 univers: universUpdate? universUpdate : infoSku.univers,
                 universEn: universEnUpdate? universEnUpdate : infoSku.universEn,
               
-                filtre: filtre,
-                // categorie: filtre.sousCategorieRef.categorieRef.categorieRef,
-                // categorieEn: filtre.sousCategorieRef.categorieRef.categorieRefEn,
+                // filtre: filtre,
+                categorie: filtre.sousCategorieRef.categorie_ref.categorieRef,
+                categorieEn: filtre.sousCategorieRef.categorie_ref.categorieRefEn,
 
-                // sousCategorie: filtre.sousCategorieRef.sousCategorieRef,
-                // sousCategorieEn: filtre.sousCategorieRef.sousCategorieRefEn,
+                sousCategorie: filtre.sousCategorieRef.sousCategorieRef,
+                sousCategorieEn: filtre.sousCategorieRef.sousCategorieRefEn,
 
-                // filtreProduit: filtre.filtre,
-                // filtreProduitEn: filtre.filtreRefEn,
+                filtreProduit: filtre.filtre,
+                filtreProduitEn: filtre.filtreRefEn,
 
                 couleur: couleurUpdate?couleurUpdate:"",
                 couleurEn: couleurEnUpdate?couleurEnUpdate:"",

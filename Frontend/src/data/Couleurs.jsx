@@ -1,7 +1,7 @@
 export const Couleurs = [
     {couleur_ref: "Argenté", couleur_ref_en: "Silver"}, 
     {couleur_ref: "Beige", couleur_ref_en: "Beige"}, 
-    {couleur_ref: "Blanc", couleur_ref_en: "White}"}, 
+    {couleur_ref: "Blanc", couleur_ref_en: "White"}, 
     {couleur_ref: "Bleu", couleur_ref_en: "Blue"}, 
     {couleur_ref: "Bleu Marine", couleur_ref_en: "Navy blue"}, 
     {couleur_ref: "Bordeaux", couleur_ref_en: "Burgundy"}, 

@@ -70,32 +70,36 @@ class ProduitPostProcessor implements ProcessorInterface
         * si oui : enregistrer sa variants + stock
         * si non : enregistrer tout
         */
-
+        $this->_entityManager->persist($data);
         $nom_fournisseur = trim($data->getNomFournisseur());
         $sku = intval($data->getSku());
-        // $findProduit = $this->_entityManager->getRepository(Produits::class)->findOneBy([
-        // // "sku" => $sku,
-        // "date_arrivee" => $data->getDateArrivee(),
-        // "reference_fournisseur" => $data->getReferenceFournisseur(),
-        // "code_fournisseur" => $data->getCodeFournisseur(),
-        // // "nom_fournisseur" => $nom_fournisseur,
+        
+        $findProduit = $this->_entityManager->getRepository(Produits::class)->findOneBy([
+        "sku" => $sku,
+        "date_arrivee" => $data->getDateArrivee(),
+        "reference_fournisseur" => $data->getReferenceFournisseur(),
+        "code_fournisseur" => $data->getCodeFournisseur(),
+        "nom_fournisseur" => $nom_fournisseur,
+        ]);
 
-        // ]);
-        // if(!$findProduit){
+        if(!$findProduit){
+            /**
+             * Produits n'existe pas dans la base de données
+             */
             //Nouveau produit
             $data->setNewProduit(true);
             $data->setReferencer(false);
             $data->setNewListAttente(false);
+
             //sous categorie
             $sous_categorie = $this->minuscule($data->getSousCategorieFnr());
             $data->setSousCategorieFnr($sous_categorie);
-            
             //tag
             $data->setTag($this->minuscule($data->getTag()));
 
             //marque
             $marque = $this->minuscule($data->getNomFournisseur());
-            $marque = strtolower($marque);
+            $marque = strtolower($marque);  
 
             $tab = explode(" ", $marque);
             $marqueUpdate = "";
@@ -115,7 +119,7 @@ class ProduitPostProcessor implements ProcessorInterface
                 $data->setMarque($marquefind);
             else{
                 $marqueRef = new MarqueRef($marque);
-            }
+            }  
 
             //pays
             $pays = new Pays(["pays"=>"France", "continent"=>""]);
@@ -134,7 +138,8 @@ class ProduitPostProcessor implements ProcessorInterface
                 
             else
                 $data->setSaison("FW" . $data->getAnneeSortie());
-
+            
+            
             // //Couleurs
             $code_couleur = $data->getCodeCouleur();
             $reference_couleur_1 = $data->getReferenceCouleur1() ? $data->getReferenceCouleur1() : "";
@@ -164,6 +169,8 @@ class ProduitPostProcessor implements ProcessorInterface
                 }
 
             }
+
+
             //$reference_couleur_2 = $data->getReferenceCouleur2();
             $reference_couleur_1 = str_replace("#", '', $reference_couleur_1);
             $reference_couleur_2 = str_replace("#", "", $reference_couleur_2);    
@@ -243,14 +250,22 @@ class ProduitPostProcessor implements ProcessorInterface
             $filtreRefTab = $this->_entityManager->getRepository(FiltreRef::class)->findAll();
             foreach ($filtreRefTab as $key => $value) {
                 // code...
-                $motCle = '#^'. $FiltreRefObjet->getFiltre() . "#i";
-                $filtreOriginale = $this->majuscule($value->getFiltre());
-                $rechercheFiltreRef = preg_match($motCle, $filtreOriginale);
-                if($rechercheFiltreRef){
-                    $FiltreRefObjet = $value; //objet filtre
-                    $data->setFiltre($FiltreRefObjet);
-                    break;
-                }    
+                $tabMotcle = explode("_", $FiltreRefObjet->getFiltre());
+                foreach ($tabMotcle as $valuemotcle) {
+                    # code...
+                    if($valuemotcle != ""){
+                        $motCle = '#^'. $valuemotcle . "#i";
+                        $filtreOriginale = $this->majuscule($value->getFiltre());
+                        $rechercheFiltreRef = preg_match($motCle, $filtreOriginale);
+                        if($rechercheFiltreRef){
+                            $FiltreRefObjet = $value; //objet filtre
+                            $data->setFiltre($FiltreRefObjet);
+                            break;
+                        }    
+                    }
+                }
+
+
             }
             if(!$data->getFiltre()){
                 //On instancie CategorieRef
@@ -331,70 +346,85 @@ class ProduitPostProcessor implements ProcessorInterface
 
                 $this->_entityManager->persist($tarifs);
             }
-            $this->_entityManager->persist($data);
-            $this->_entityManager->flush();
-        // }
 
 
-        $findProduit = $this->_entityManager->getRepository(Produits::class)->findOneBy([
-        // "sku" => $sku,
-        "date_arrivee" => $data->getDateArrivee(),
-        "reference_fournisseur" => $data->getReferenceFournisseur(),
-        "code_fournisseur" => $data->getCodeFournisseur(),
-        // "nom_fournisseur" => $nom_fournisseur,
 
-        ]);
-        if($findProduit){
-
-            $findProduit->setTaille($data->getTaille());
-            $findProduit->setStockMag0($data->getStockMag0());
-            $findProduit->setStockMag3($data->getStockMag3());
-            $findProduit->setStockMag7($data->getStockMag7());
-            $findProduit->setStockMag9($data->getStockMag9());
-            $findProduit->setStockMag11($data->getStockMag11());
-            $findProduit->setStockMag12($data->getStockMag12());
-            $findProduit->setStockMag14($data->getStockMag14());
-            $findProduit->setStockMag18($data->getStockMag18());
-            $findProduit->setStockMag20($data->getStockMag20());
-            $findProduit->setStockMag60($data->getStockMag60());
-
+        }
+        else{
+            /**
+             * Produit exist déjà dans la base de données
+             */
             $data = $findProduit;
         }
-        // $this->_entityManager->persist($data);
 
-        /**
-         * Variantes
-         */
-        $variants = (new Variants())
-        ->setSku($data)
-        ->setTailleFnr($data->getTaille())
-        ->setVariantSku($data->getSku() ."_" . $data->getTaille())
-        ->setStock0($data->getStockMag0())
-        ->setStock3($data->getStockMag3())
-        ->setStock7($data->getStockMag7())
-        ->setStock9($data->getStockMag9())
-        ->setStock11($data->getStockMag11())
-        ->setStock12($data->getStockMag12())
-        ->setStock14($data->getStockMag14())
-        ->setStock18($data->getStockMag18())
-        ->setStock20($data->getStockMag20())
-        ->setStock60($data->getStockMag60())
-        ;
-        $findVariants = $this->_entityManager->getRepository(Variants::class)->findOneBy([
-            "sku" => $variants->getSku(),
-            "taille_fnr" => $variants->getTailleFnr()
-        ]);
+        $variantProduit = $data->getVariantProduits();
 
-        if(!$findVariants){
-            /**
-             * Stockage
-            */
-            $this->_entityManager->persist($variants); 
-            $data->addVariant($variants);         
+        if(count($variantProduit)>0){
+            for($i=0; $i<count($variantProduit); $i++){
+                $variants = (new Variants())
+                ->setSku($data);
+
+                foreach ($variantProduit[$i] as $key => $value) {
+                    # code...
+                    /**
+                     * 0,3,7,9,11,12,14,18,20,60,
+                     */
+                    if($key == "taille"){
+                        $variants
+                        ->setTailleFnr($value)
+                        ->setVariantSku($data->getSku() ."_" . $value);
+
+                    }
+
+                    if($key == "stockMag0")
+                        $variants->setStock0($value);
+
+                    if($key == "stockMag3")
+                        $variants->setStock3($value);
+
+                    if($key == "stockMag7")
+                        $variants->setStock7($value);
+
+                    if($key == "stockMag9")
+                        $variants->setStock9($value);
+
+                    if($key == "stockMag11")
+                        $variants->setStock11($value);
+
+                    if($key == "stockMag12")
+                        $variants->setStock12($value);
+
+                    if($key == "stockMag14")
+                        $variants->setStock14($value);
+
+                    if($key == "stockMag18")
+                        $variants->setStock18($value);
+
+                    if($key == "stockMag20")
+                        $variants->setStock20($value);
+
+                    if($key == "stockMag60")
+                        $variants->setStock60($value);
+
+                }
+
+                $findVariants = $this->_entityManager->getRepository(Variants::class)->findOneBy([
+                    "sku" => $variants->getSku(),
+                    "taille_fnr" => $variants->getTailleFnr()
+                ]);
+                if(!$findVariants){
+                    /**
+                     * Stockage
+                    */
+                    $this->_entityManager->persist($variants); 
+                    $data->addVariant($variants);         
+                }
+            }
         }
 
-            $this->_entityManager->persist($data);  
-            $this->_entityManager->flush();      
-            return $data;
-        }
+
+        $this->_entityManager->persist($data);  
+        $this->_entityManager->flush();      
+        return $data;
+    }
 }

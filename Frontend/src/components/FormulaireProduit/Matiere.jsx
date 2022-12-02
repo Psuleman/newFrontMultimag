@@ -63,7 +63,7 @@ const Matiere = () => {
                 {
                     matiereUpdate &&
                     matiereUpdate.map((i, index)=>(
-                        <section className="row g-3">
+                        <section className="row g-3" key={"matiere_" + i + "_" + index}>
                             {
                                 parseInt(index) == 0 ?
                                 <SelectMatiere label={"* Matière " + (index + 1)} value={matiereUpdate[index].matiere.matiere} id={"selectMatiere" + (index + 1)} indexMatiere={index} />

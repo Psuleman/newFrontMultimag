@@ -22,12 +22,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 //     normalizationContext: ['groups' => ['produit']],    
 //     paginationEnabled: false)
 // ]
-#[Get(
-    normalizationContext: ['groups' => ['produit']],
-)]
-#[GetCollection(
-    normalizationContext: ['groups' => ['produit']],
-)]
+// #[Get(
+//     normalizationContext: ['groups' => ['produit']],
+// )]
+// #[GetCollection(
+//     normalizationContext: ['groups' => ['produit']],
+// )]
 #[ORM\Entity(repositoryClass: CategorieRefRepository::class)]
 class CategorieRef
 {

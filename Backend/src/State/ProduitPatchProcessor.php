@@ -102,112 +102,111 @@ class ProduitPatchProcessor implements ProcessorInterface
              * Recherche
              */
             //Catégorie
-            // $categorieFind = $this->_categorieRepository->findOneBy([
-            //         "categorie_ref" => $categorie->getCategorieRef(),
-            //         "categorie_ref_en" => $categorie->getCategorieRefEn()
-            //     ]);
-            // if($categorieFind){
-            //     $categorie = $categorieFind;
-            // }
-            // //$this->_entityManager->persist($categorie);
-
-            // //Sous catégorie
-            // $sousCategorie->setCategorieRef($categorie);
-            // $sousCategorieFind = $this->_sousCategorieRepository->findOneBy([
-            //         "sous_categorie_ref" => $sousCategorie->getSousCategorieRef(),
-            //         "sous_categorie_ref_en" => $sousCategorie->getSousCategorieRefEn(),
-            //         "categorie_ref" => $categorie
-            //     ]);
-            // if($sousCategorieFind){
-            //     $sousCategorie = $sousCategorieFind;
-            // }
-            // // $this->_entityManager->persist($sousCategorie);
-
-            // //filtre
-            // $filtre->setSousCategorieRef($sousCategorie);
-            // $filtreFind = $this->_filtreRepository->findOneBy([
-            //         "filtre" => $filtre->getFiltre(),
-            //         "filtre_ref_en" => $filtre->getFiltreRefEn(),
-            //         "sous_categorie_ref" => $sousCategorie
-            //     ]);
-            // if($filtreFind){
-            //     $filtre = $filtreFind;
-            // }
-            // // $this->_entityManager->persist($filtre);
-
-
-            // $data->setFiltre($filtre);
-            
-            
-            
-            
-            
-            $filtreData = $data->getFiltre();
-            $sousCategorieData = $filtreData->getSousCategorieRef();
-            $categorieData = $sousCategorieData->getCategorieRef();
-
-            /**
-             * Initialisation
-             */
-            $categorie = new CategorieRef([
-                "categorie_ref"=> $categorieData->getCategorieRef(),
-                "categorie_ref_en"=> $categorieData->getCategorieRefEn()
-            ]);
-
-            $sousCategorie = new SousCategorieRef([
-                "sous_categorie_ref" => $sousCategorieData->getSousCategorieRef(),
-                "sous_categorie_ref_en" => $sousCategorieData->getSousCategorieRefEn(),
-            ]);
-
-            $filtre = new FiltreRef([
-                "filtre" => $filtreData->getFiltre(),
-                "filtre_ref_en" => $filtreData->getFiltreRefEn()
-            ]);
-
-            /**
-             * Recherche Categorie, sous catégorie, filtre
-             */
             $categorieFind = $this->_categorieRepository->findOneBy([
-                "categorie_ref" => $categorie->getCategorieRef(),
-                "categorie_ref_en" => $categorie->getCategorieRefEn()
-            ]);
-            if($categorie){
+                    "categorie_ref" => $categorie->getCategorieRef(),
+                    "categorie_ref_en" => $categorie->getCategorieRefEn()
+                ]);
+            if($categorieFind){
                 $categorie = $categorieFind;
             }
-            $this->_entityManager->persist($categorie);
-            
-            //sous catégorie
+            //$this->_entityManager->persist($categorie);
+
+            //Sous catégorie
+            $sousCategorie->setCategorieRef($categorie);
             $sousCategorieFind = $this->_sousCategorieRepository->findOneBy([
-                "sous_categorie_ref" => $sousCategorie->getSousCategorieRef(),
-                "sous_categorie_ref_en" => $sousCategorie->getSousCategorieRefEn(),
-                "categorie_ref" => $categorie
-            ]);
-            if($sousCategorieFind && 
-            ($sousCategorieFind->getCategorieRef()->getCategorieRef() == $categorie->getCategorieRef()) &&
-            ($sousCategorieFind->getCategorieRef()->getCategorieRefEn() == $categorie->getCategorieRefEn())                
-            ){
+                    "sous_categorie_ref" => $sousCategorie->getSousCategorieRef(),
+                    "sous_categorie_ref_en" => $sousCategorie->getSousCategorieRefEn(),
+                    "categorie_ref" => $categorie
+                ]);
+            if($sousCategorieFind){
                 $sousCategorie = $sousCategorieFind;
             }
-            else{
-                $sousCategorie->setCategorieRef($categorie);// Sous categorie
-            }
-            $this->_entityManager->persist($sousCategorie);
+            // $this->_entityManager->persist($sousCategorie);
 
             //filtre
-            $findFiltre = $this->_filtreRepository->findOneBy([
-                "filtre" => $filtre->getFiltre(),
-                "filtre_ref_en" => $filtre->getFiltreRefEn(),
-                "sous_categorie_ref" => $sousCategorie
-            ]);
-            
-            if($findFiltre &&
-                ($findFiltre->getSousCategorieRef()->getSousCategorieRef() == $sousCategorie->getSousCategorieRef()) &&
-                ($findFiltre->getSousCategorieRef()->getSousCategorieRefEn() == $sousCategorie->getSousCategorieRefEn())
-            ){
-                $filtre = $findFiltre;
+            $filtre->setSousCategorieRef($sousCategorie);
+            $filtreFind = $this->_filtreRepository->findOneBy([
+                    "filtre" => $filtre->getFiltre(),
+                    "filtre_ref_en" => $filtre->getFiltreRefEn(),
+                    "sous_categorie_ref" => $sousCategorie
+                ]);
+            if($filtreFind){
+                $filtre = $filtreFind;
             }
+            // $this->_entityManager->persist($filtre);
+
 
             $data->setFiltre($filtre);
+            
+            
+            
+            
+            
+            // $filtreData = $data->getFiltre();
+            // $sousCategorieData = $filtreData->getSousCategorieRef();
+            // $categorieData = $sousCategorieData->getCategorieRef();
+
+            // /**
+            //  * Initialisation
+            //  */
+            // $categorie = new CategorieRef([
+            //     "categorie_ref"=> $categorieData->getCategorieRef(),
+            //     "categorie_ref_en"=> $categorieData->getCategorieRefEn()
+            // ]);
+
+            // $sousCategorie = new SousCategorieRef([
+            //     "sous_categorie_ref" => $sousCategorieData->getSousCategorieRef(),
+            //     "sous_categorie_ref_en" => $sousCategorieData->getSousCategorieRefEn(),
+            // ]);
+
+            // $filtre = new FiltreRef([
+            //     "filtre" => $filtreData->getFiltre(),
+            //     "filtre_ref_en" => $filtreData->getFiltreRefEn()
+            // ]);
+
+            // /**
+            //  * Recherche Categorie, sous catégorie, filtre
+            //  */
+            // $categorieFind = $this->_categorieRepository->findOneBy([
+            //     "categorie_ref" => $categorie->getCategorieRef(),
+            //     "categorie_ref_en" => $categorie->getCategorieRefEn()
+            // ]);
+            // if($categorie){
+            //     $categorie = $categorieFind;
+            // }
+            // $this->_entityManager->persist($categorie);
+            
+            // //sous catégorie
+            // $sousCategorieFind = $this->_sousCategorieRepository->findOneBy([
+            //     "sous_categorie_ref" => $sousCategorie->getSousCategorieRef(),
+            //     "sous_categorie_ref_en" => $sousCategorie->getSousCategorieRefEn(),
+            //     "categorie_ref" => $categorie
+            // ]);
+            // if($sousCategorieFind && 
+            // ($sousCategorieFind->getCategorieRef()->getCategorieRef() == $categorie->getCategorieRef()) &&
+            // ($sousCategorieFind->getCategorieRef()->getCategorieRefEn() == $categorie->getCategorieRefEn())                
+            // ){
+            //     $sousCategorie = $sousCategorieFind;
+            // }
+            // else{
+            //     $sousCategorie->setCategorieRef($categorie);// Sous categorie
+            // }
+            // $this->_entityManager->persist($sousCategorie);
+
+            // //filtre
+            // $findFiltre = $this->_filtreRepository->findOneBy([
+            //     "filtre" => $filtre->getFiltre(),
+            //     "filtre_ref_en" => $filtre->getFiltreRefEn(),
+            //     "sous_categorie_ref" => $sousCategorie
+            // ]);
+            
+            // if($findFiltre &&
+            //     ($findFiltre->getSousCategorieRef()->getSousCategorieRef() == $sousCategorie->getSousCategorieRef()) &&
+            //     ($findFiltre->getSousCategorieRef()->getSousCategorieRefEn() == $sousCategorie->getSousCategorieRefEn())
+            // ){
+            //     $filtre = $findFiltre;
+            // }
+            
             // else{
             //     $filtre->setSousCategorieRef($sousCategorie);
             // }
