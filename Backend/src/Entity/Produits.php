@@ -45,7 +45,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     )]
 #[ApiFilter(OrderFilter::class, properties: ['date_arrivee' => 'DESC', 'sku' => 'ASC'])]
 
-#[ApiFilter(SearchFilter::class, properties: ['filtre.sous_categorie_ref.categorie_ref.categorie_ref' => 'exact', 'univers' => 'exact', 'sku' => 'exact', 'marque.marque' => 'exact', 'newProduit' => 'exact', 'referencer' => 'exact', 'newListAttente' => 'exact', 'code_tag' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['filtre.sous_categorie_ref.categorie_ref.categorie_ref' => 'exact', 'univers' => 'exact', 'sku' => 'exact', 'nom_fournisseur' => 'partial', 'newProduit' => 'exact', 'referencer' => 'exact', 'newListAttente' => 'exact', 'code_tag' => 'exact'])]
 #[ORM\Entity(repositoryClass: ProduitsRepository::class)]
 class Produits
 {

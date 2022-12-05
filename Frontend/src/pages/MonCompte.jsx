@@ -28,6 +28,7 @@ const MonCompte = () => {
 	const [erreurPrenom, setErreurPrenom] = useState()
 	const [erreurPassword, setErreurPassword] = useState()
 	const [erreurConfPassword, setErreurConfPassword] = useState()
+	const [loading, setLoading] = useState(false)
 
 	let navigate = useNavigate()
 	useEffect(()=>{
@@ -51,6 +52,7 @@ const MonCompte = () => {
 	}, [])
 
 	const handleSubmit = (e) => {
+		setLoading(true)
 		e.preventDefault()
 
 		/**
@@ -88,7 +90,6 @@ const MonCompte = () => {
 		}
 		//password
 		if((password && confPassword )&& (confPassword != password || password.length<8)){
-
 			if(confPassword!=password){
 				setErreurConfPassword(true)
 			}
@@ -104,14 +105,15 @@ const MonCompte = () => {
 		}
 
 		if(msg==""){
+			let id=0
+
 			let data = {
 				email: email,
 				nom: nom,
 				prenom: prenom,
 			}
-			let id=0
 			if(password){
-				data={
+				data = {
 					email: email,
 					nom: nom,
 					prenom: prenom,
@@ -119,44 +121,54 @@ const MonCompte = () => {
 				} 
 			}
 			let promise = Promise.resolve(getUser(email,password))
+			
 			promise.then((value) => {
 				if(value){
 					id = value[0].id
+					if(id>0){
+						let promise2 = Promise.resolve(setUser(data,id))				
+
+						promise2.then((valueSetUser)=>{
+							if(valueSetUser && valueSetUser.statusText){
+								setErreur(true)
+								setTypeErreur("success")
+								//msg = "Modification réussi"
+								setMessage("Modification réussi")
+							}
+							else{
+								setErreur(true)
+								setTypeErreur("echec")
+								//msg = "Echec de connexion"
+								setMessage("Echec de connexion")
+
+							}
+						})
+
+						setLoading(false)
+					}
 				}
 				else{
 					navigate(`/`);
 				}
 			})
-
-			if(id!=0){
-				console.log(JSON.stringify(data))
-				let promise2 = Promise.resolve(setUser(data,id))				
-			}
-
-
-			msg = "Modification réussi"
 				
 			setErreurNom(false)
 			setErreurPrenom(false)
 			setErreurPassword(false)
 			setErreurConfPassword(false)
 		
-			setErreur(true)
-			setTypeErreur("success")
-
-
-		console.log(data)
+			// setErreur(true)
+			// setTypeErreur("success")
 		}
 		//
+		if(msg != ""){
+			setMessage(msg)
+			setLoading(false)
 
-
-		setMessage(msg)
-
-
+		}
 
 	}
 
-	console.log(erreurNom)
 	//console.log("nom", nom)
 	return (
 		<Template>
@@ -195,11 +207,17 @@ const MonCompte = () => {
 						<Prenom />
 						<Email />
 						<Role />
-						{/* <div id="newPassword" className="mb-3 col-md-3">
+						<div id="newPassword" className="mb-3 col-md-3">
 							<label>Modifier votre mot de passe</label>
 							<div>
-								<div><input type="radio" value="true"name="newPassword" onChange={()=>{setNouveauPassword(true)}}/> <label>Oui</label></div>
-								<div><input type="radio" value="False" name="newPassword"  onChange={()=>{setNouveauPassword(false)}} /> <label>Non</label></div>
+								<div><input type="radio" value="true"name="newPassword" onChange={()=>{
+									setNouveauPassword(true)
+									setErreur(false)
+									}}/> <label>Oui</label></div>
+								<div><input type="radio" value="False" name="newPassword"  onChange={()=>{
+									setNouveauPassword(false)
+									setErreur(false)
+									}} /> <label>Non</label></div>
 							</div>
 						</div>
 						{
@@ -207,9 +225,21 @@ const MonCompte = () => {
 						}
 						{
 							nouveauPassword && nouveauPassword==true && <ConfPassword />
-						}						 */}
-						{/* <button  className="btn btn-outline-dark btn-lg px-5">Modifier</button> */}
-
+						}
+						{ 
+							<div className="mb-3 col-md-3">
+								<center><button  className="btn btn-outline-dark btn-lg px-5">Modifier</button></center>
+							</div>
+						}
+                        {
+                            loading &&
+                            <div className="text-center mb-3 col-md-3">
+                            <div className="spinner-border" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
+                            </div>                       
+                        }
+                        
 						{/* <Password />
 						<ConfPassword />
 						<button className="btn btn-outline-dark">Valider</button> */}

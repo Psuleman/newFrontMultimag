@@ -51,13 +51,24 @@ const ListeContextProvider = ({children}) => {
                 filtre += "&univers=" + universFiltre
 
             if(marqueFiltre)
-                filtre += "&marque.marque=" + marqueFiltre
+                filtre += "&nom_fournisseur=" + marqueFiltre
             
             if(tagFiltre)
                 filtre += "&code_tag=" + tagFiltre
+
+                
         }
 
+        let oldUrl = localStorage.getItem("filtre_multimag") ? localStorage.getItem("filtre_multimag") : ""
+        oldUrl += ""
+        if(filtre!= localStorage.getItem("filtre_multimag")){
+            pageActuelle = 1
+            console.log(localStorage.getItem("filtre_multimag") + " != " + filtre)
+        }
 
+        localStorage.setItem("filtre_multimag", filtre)
+
+        
         
         
         const promise = Promise.resolve(getAllProduit(liste, filtre, pageActuelle))
@@ -69,6 +80,7 @@ const ListeContextProvider = ({children}) => {
                 for(let item in value){
                     let valeur = value[item]
                     if(item == "hydra:member"){
+                        //console.log("value", value)
                         setSkus(valeur)
                         if(!categorieFiltre && !universFiltre && !marqueFiltre && !tagFiltre && !searchSkus){
 
@@ -119,19 +131,29 @@ const ListeContextProvider = ({children}) => {
                         /**
                          * Pagination
                          */
-                        for(let itemPage in valeur){
-                            let page = valeur[itemPage].replace("/api/produits?page=", "")
-                            page = parseInt(page)
 
-                            if(itemPage == "hydra:first"){
-                                let pageActuelle = currentPage>1 ? currentPage : 1
-                                setCurrentPage(pageActuelle)
-                            }
+                        //console.log("pagination")
+                        for(let itemPage in valeur){
+                            //console.log("value pagination ", itemPage, " : ", valeur[itemPage])
+                            //let page = valeur[itemPage].replace("/api/produits?page=", "")//erreur
+                            let page = valeur[itemPage].split("page=")//erreur
+
+                            //console.log(valeur[itemPage].split("page="))
+                            page = parseInt(page[1])
+
+
+                            //console.log("page ", page)
+                            // if(itemPage == "hydra:first"){
+                            //     let pageActuelles = currentPage>1 ? currentPage : page
+                            //     setCurrentPage(pageActuelles)
+                            // }
                             if(itemPage == "hydra:last"){
                                 setLastPage(page)
                             }                            
                             if(itemPage == "hydra:next"){
                                 setNextPage(page)
+                                let pageActuelles = page == 1 ? 1 : (page-1)
+                                setCurrentPage(pageActuelles)
                             } 
 
                             let lastpageListe = totalListe/10
@@ -160,6 +182,8 @@ const ListeContextProvider = ({children}) => {
             }
         })
     }, [categorieFiltre, universFiltre, marqueFiltre, tagFiltre, validateSearchSkus, currentPage, liste])
+
+
     // render
     return (
         <ListeContext.Provider value={{

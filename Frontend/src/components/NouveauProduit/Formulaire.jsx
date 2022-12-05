@@ -117,7 +117,7 @@ const Formulaire = () => {
 
                     }
 
-                    console.log(donnees)
+                    //console.log(donnees)
 
 
                     donnees.forEach(element => {

@@ -70,7 +70,10 @@ const Pagination = () => {
         }
         setValuePage(tab)
 
-    }, [currentPage, lastPage])
+    }, [currentPage, lastPage, totalSkus])
+
+
+
 
     // console.log("lastPage", lastPage)
 
