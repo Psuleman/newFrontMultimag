@@ -32,8 +32,8 @@ const Dimensions = () => {
             <section className="row g-3">
                 <InputDesabled labelInput="Référence dans multimag" valeur={infoSku.reference_couleur} />
             </section>
-            <section className="row g-3mt-3">
-                <Input id="inputDimensionPoids" type="number" label="Poids" value={poidsUpdate} setValue={setPoidsUpdate} />
+            <section className="row g-3 mt-3">
+                <Input id="inputDimensionPoids" type="number" label="Poids (en gramme)" stepValue="0.01" value={poidsUpdate} setValue={setPoidsUpdate} />
 
             </section>
 

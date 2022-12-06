@@ -28,7 +28,7 @@ const Formulaire = () => {
                     let compteur = 0
                     let compteurNewProduct = 0
 
-                    console.log(data)
+                    //console.log(data)
                     let donnees = []
 
                     for(let i = 0; i<data.length; i++){
@@ -121,7 +121,7 @@ const Formulaire = () => {
 
 
                     donnees.forEach(element => {
-                        console.log(JSON.stringify(element))
+                        //console.log(JSON.stringify(element))
                         const promise = Promise.resolve(setNewProduit(element));
 
                         promise.then((value) => {

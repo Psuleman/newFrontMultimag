@@ -75,6 +75,8 @@ const FormulaireProduit = () => {
 
     const [save, setSave] = useState(false)
 
+    const [cliquable, setCliquable] = useState(true)
+
     //Fonction
     useEffect(() => {
         if(localStorage.getItem('user_multimag')){
@@ -307,7 +309,9 @@ const FormulaireProduit = () => {
         else{
             //tags ref
             let tags_text = universUpdate + ',' + universEnUpdate + ',Couleur_'+couleurUpdate + ',Color_'+ couleurEnUpdate+','+filtreUpdate+','+filtreEnUpdate+','+sousCategorieUpdate+','+sousCategorieEnUpdate+',Catégorie_'+sousCategorieUpdate+',Category_'+sousCategorieEnUpdate+',Créateur_'+marqueUpdate+',Designer_'+marqueUpdate+','+infoSku.reference_fournisseur+','+categorieUpdate+','+categorieEnUpdate+','+infoSku.saison
-            setTagsReferencementUpdate(tags_text)
+            if(tagsReferencementUpdate=="" || !tagsReferencementUpdate)
+                setTagsReferencementUpdate(tags_text)
+
 
             let referencer = false
             if((infoSku.sousCategorie!="")
@@ -343,7 +347,7 @@ const FormulaireProduit = () => {
             let matiere = []
             if(matiereUpdate && matiereUpdate.length>0 && matiereUpdate[0].pourcentageMatiere!=0){
                 matiereUpdate.forEach(element => {
-                    if(element.pourcentageMatiere>0){
+                    if(element.pourcentageMatiere>0 && element.matiere && element.matiere.matiere!=""){
                         matiere.push({
                             matieres :  element.matiere.matiere,
                             pourcentageMatiere: parseFloat(element.pourcentageMatiere),
@@ -452,13 +456,13 @@ const FormulaireProduit = () => {
                 referencer: referencer,
               }
               
-            //console.log("data", JSON.stringify(data))
+            console.log("data", JSON.stringify(data))
             // //console.log("id : ", infoSku.id)
             //console.log(infoSku)
             setProduit(infoSku.id, data)
         }
     }
-// //console.log(infoSku)
+ console.log(infoSku)
     //render
     return (
         <Template>
@@ -513,11 +517,12 @@ const FormulaireProduit = () => {
             descriptionDone : descriptionDone, setDescriptionDone : setDescriptionDone, 
             entretienCoupeDone : entretienCoupeDone, setEntretienCoupeDone : setEntretienCoupeDone, 
             dimensionDone : dimensionDone, setDimensionDone : setDimensionDone, 
-
+            cliquable: cliquable, setCliquable: setCliquable,
+            tagsReferencementUpdate: tagsReferencementUpdate, setTagsReferencementUpdate: setTagsReferencementUpdate,
         }}>
             <header>
                 <div><Link to="/produits/listes">Liste des produits > </Link></div>
-                <div className="fs-3 fw-bolder">Modification produit {sku}</div>
+                <div className="fs-3 fw-bolder">Modification produit {parseInt(sku)}</div>
             </header>
             <div className="d-xxl-flex d-xl-flex d-lg-flex d-md-flex mt-4 flex-row flex-xxl-row flex-xl-row flex-lg-row flex-md-row flex-sm-column-reverse justify-content-xxl-between justify-content-xl-start justify-content-lg-start justify-content-md-start "  id="produit">
                 <Recapitulatif />

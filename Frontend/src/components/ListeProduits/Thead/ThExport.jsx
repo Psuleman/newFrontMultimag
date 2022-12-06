@@ -26,6 +26,7 @@ const ThExport = () => {
             <th className="px-2">Variant Position</th>
             <th className="px-2">Variant SKU</th>
             <th className="px-2">Variant Price</th>
+            <th className="px-2">Variant Compare At Price</th>
             <th className="px-2">Variant Requires Shipping</th>
             <th className="px-2">Variant Taxable</th>
             <th className="px-2">Variant Barcode</th>

@@ -28,6 +28,8 @@ const Table = () => {
                         let marque = element.marque ? element.marque.marque : element.nom_produit_fr
                         let imgAltText = (marque + " " + element.nom_produit_fr + " " + marque)
                         let nom_produit_fr = element.nom_produit_fr.replace(" ", "_")
+                        let tarifReduit = (element.tarifs[0].prix_vente && element.tarifs[0].prix_vente) ? (parseFloat(element.tarifs[0].prix_vente) - (parseFloat(element.tarifs[0].prix_vente) * (parseFloat(element.tarifs[0].remise)/100))) : null
+
                         let itemtab = {
                             lien: element.lien,
                             sku : marque + "_" + nom_produit_fr + "_" + element.sku,
@@ -54,7 +56,7 @@ const Table = () => {
                             variant_position : 1 ,// à revoir?????????
                             variant_sku : variantItem.variant_sku , //A revoir
                             prixVente : parseFloat(element.tarifs[0].prix_vente) ,
-                            prixVenteRemise : element.tarifs[0].remise>0 ?  parseFloat(prixRemise) : null,
+                            prixVenteRemise : element.tarifs[0].remise>0 ?  parseFloat(tarifReduit) : null,
                             shipping : "TRUE", // A revoir sinon TRUE
                             taxable : "TRUE", // A revoir sinon TRUE
                             reference_fournisseur : item == 0 ? element.reference_fournisseur : null, //Variant barcode
@@ -139,7 +141,6 @@ const Table = () => {
             // console.log("tabExport", tabExport)
         }
     }, [skus])
-
 
     const splitText = (texte) => {
 

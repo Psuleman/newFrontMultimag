@@ -9,8 +9,10 @@ import CategorieContextProvider from "./Caracteristique/Context/CategorieContext
 import SousCategorie from "./Caracteristique/SousCategorie";
 import Filtre from "./Caracteristique/Filtre";
 import InputDesabled from "./TemplateFormulaire/InputDesabled";
-import Select from "./TemplateFormulaire/Select";
 import CategorieEn from "./Caracteristique/CategorieEn";
+import Tags from "./Caracteristique/Tags";
+
+
 const Caracteristique = () => {
     /**
      * Couleur, Categorie, dimension, tarifs, coupe, entretien
@@ -50,7 +52,7 @@ const Caracteristique = () => {
                 <CategorieEn />
 
                 <Couleur />
-              
+                <Tags />
             </div>
 
             <FooterForm />

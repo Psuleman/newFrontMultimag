@@ -1,5 +1,6 @@
 import Template from "../components/Layout/Template"
 import '../assets/scss/formulaire.scss'
+import '../assets/scss/monCompte.scss'
 import { useState } from "react"
 import { UserContext } from "../components/MonCompte/Context/UserContext"
 import Nom from "../components/MonCompte/Nom"
@@ -188,7 +189,7 @@ const MonCompte = () => {
 						{message}
 					</div>
 				}
-				<form className="pt-3 px-3 pb-4" onSubmit={handleSubmit}>
+				<form className="pt-3 px-3 pb-4 contentMonCompte" onSubmit={handleSubmit}>
 					{/* <small>Tous les champs sont obligatoires.</small> */}
 					<UserContext.Provider value={{
 						nom: nom, setNom:setNom,
@@ -207,17 +208,29 @@ const MonCompte = () => {
 						<Prenom />
 						<Email />
 						<Role />
+
 						<div id="newPassword" className="mb-3 col-md-3">
 							<label>Modifier votre mot de passe</label>
 							<div>
-								<div><input type="radio" value="true"name="newPassword" onChange={()=>{
-									setNouveauPassword(true)
-									setErreur(false)
-									}}/> <label>Oui</label></div>
-								<div><input type="radio" value="False" name="newPassword"  onChange={()=>{
+								<div class="form-check">
+									<input class="form-check-input" type="radio" id="flexRadioDefault1" name="newPassword" value={"true"} onChange={()=>{
+																		setNouveauPassword(true)
+																		setErreur(false)
+																		}} />
+									<label class="form-check-label" for="flexRadioDefault1">
+										Oui
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="radio" id="flexRadioDefault2" name="newPassword" value={"false"}  onChange={()=>{
 									setNouveauPassword(false)
 									setErreur(false)
-									}} /> <label>Non</label></div>
+									}} />
+									<label class="form-check-label" for="flexRadioDefault2">
+										Non
+									</label>
+								</div>
+
 							</div>
 						</div>
 						{

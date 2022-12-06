@@ -65,7 +65,7 @@ class ProduitPatchProcessor implements ProcessorInterface
             ]);
 
             if(!$findMarque){
-                $findMarque = (new MarqueRef())->setMarque("test");
+                $findMarque = (new MarqueRef())->setMarque($data->getMarqueUpdate());
                 $this->_entityManager->persist($findMarque);
             }
             $data->setMarque($findMarque); 

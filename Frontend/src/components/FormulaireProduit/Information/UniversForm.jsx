@@ -22,7 +22,7 @@ const UniversForm = () => {
     //render
     return (
     <section className="row g-3 mt-1">
-        <InputDesabled idInput="inputCatUnivers" typeInput="text" label="Catégorie dans le fichier multimag" valeur={infoSku.categorie_univers} />
+        <InputDesabled idInput="inputCatUnivers" typeInput="text" labelInput="Catégorie dans le fichier multimag" valeur={infoSku.categorie_univers} />
 
         <Select id="selectUnivers" label="Univers" value={universUpdate} setValue={setUniversUpdate} list={Univers} itemValue="univers_ref" />
 

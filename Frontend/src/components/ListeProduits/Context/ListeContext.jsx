@@ -63,7 +63,7 @@ const ListeContextProvider = ({children}) => {
         oldUrl += ""
         if(filtre!= localStorage.getItem("filtre_multimag")){
             pageActuelle = 1
-            console.log(localStorage.getItem("filtre_multimag") + " != " + filtre)
+            //console.log(localStorage.getItem("filtre_multimag") + " != " + filtre)
         }
 
         localStorage.setItem("filtre_multimag", filtre)
