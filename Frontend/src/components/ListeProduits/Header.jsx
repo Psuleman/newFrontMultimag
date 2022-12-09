@@ -6,7 +6,7 @@ import ExportCsv from "./ExportCsv";
 
 const Header = () => {
     //variable
-    const {totalSkus, liste, skus} = useContext(ListeContext)
+    const {totalSkus, liste, skus, serviceUser} = useContext(ListeContext)
     const {listesProduitExport} = useContext(ListeExportContext)
     //fonction
     const handleClick = () => {
@@ -16,33 +16,37 @@ const Header = () => {
     //render
     return (
     <header>
-        <div className="d-flex justify-content-start mt-3 navTable">
-            {
-                liste=="listes" ?
-                <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold bg-white border-bottom-0"><Link className="linkNav" to="/produits/listes">Tous les produits</Link></div>
-                :
-                <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold"><Link className="linkNav" to="/produits/listes">Tous les produits</Link></div>
-            }
-            {
-                liste=="referencement" ?
-                <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold bg-white border-bottom-0"><Link className="linkNav" to="/produits/referencement">Produit à référencer</Link></div>
-                :
-                <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold"><Link className="linkNav" to="/produits/referencement">Produit à référencer</Link></div>
-            }
-            {
-                liste=="modification" ? 
-                <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold bg-white border-bottom-0"><Link className="linkNav" to="/produits/modification">Produit à modifier</Link></div>
-                :
-                <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold"><Link className="linkNav" to="/produits/modification">Produit à modifier</Link></div>
-            }
-            {
-                liste=="export" ? 
-                <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold bg-white border-bottom-0"><Link className="linkNav" to="/produits/export">Produit à exporter</Link></div>
-                :
-                <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold"><Link className="linkNav" to="/produits/export">Produit à exporter</Link></div>
-            }
+        {
+            serviceUser == "admin" && 
+            <div className="d-flex justify-content-start mt-3 navTable">
+                {
+                    liste=="listes" ?
+                    <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold bg-white border-bottom-0"><Link className="linkNav" to="/produits/listes">Tous les produits</Link></div>
+                    :
+                    <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold"><Link className="linkNav" to="/produits/listes">Tous les produits</Link></div>
+                }
+                {
+                    liste=="referencement" ?
+                    <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold bg-white border-bottom-0"><Link className="linkNav" to="/produits/referencement">Produit à référencer</Link></div>
+                    :
+                    <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold"><Link className="linkNav" to="/produits/referencement">Produit à référencer</Link></div>
+                }
+                {
+                    liste=="modification" ? 
+                    <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold bg-white border-bottom-0"><Link className="linkNav" to="/produits/modification">Produit à modifier</Link></div>
+                    :
+                    <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold"><Link className="linkNav" to="/produits/modification">Produit à modifier</Link></div>
+                }
+                {
+                    liste=="export" ? 
+                    <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold bg-white border-bottom-0"><Link className="linkNav" to="/produits/export">Produit à exporter</Link></div>
+                    :
+                    <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold"><Link className="linkNav" to="/produits/export">Produit à exporter</Link></div>
+                }
 
-        </div>
+            </div>
+        }
+
         {
             (totalSkus!=0 && !totalSkus) && 
             <div className="d-flex justify-content-center pt-2 pb-2 action">

@@ -76,6 +76,8 @@ const FormulaireProduit = () => {
     const [save, setSave] = useState(false)
 
     const [cliquable, setCliquable] = useState(true)
+    const [generateTags, setGenerateTags] = useState(true)
+    const [infoGenerateTags, setInfoGenerateTags] = useState(true)
 
     //Fonction
     useEffect(() => {
@@ -86,6 +88,15 @@ const FormulaireProduit = () => {
             }
             else{
                 //si token existe
+                let user = JSON.parse(localStorage.getItem('user_multimag'))
+                let service = (user.service && (user.service == "e-shop & référencement" || user.service == "IT" )) ? "admin" : "user"
+
+                if(service=="user"){
+                    navigate('/produit/detail/' + parseInt(sku))
+                }
+
+
+
                 if(localStorage.getItem('page') == 'liste produit'){
                     setPage(localStorage.getItem('page'))
                 }                
@@ -231,6 +242,8 @@ const FormulaireProduit = () => {
                                 //tags
                                 valeur[0].tags_ref !=null? setTagsReferencementUpdate(valeur[0].tags_ref) : setTagsReferencementUpdate("")
 
+                                valeur[0].tags_ref !=null? setInfoGenerateTags("Générer automatiquement. Vous pouvez apporter une modification.") : setInfoGenerateTags("")
+
                                 /**
                                  * Véririfer si tous les section sont complétés
                                  */
@@ -294,7 +307,6 @@ const FormulaireProduit = () => {
             }            
         }  
     }, [])
-
     //console.log("info ", infoSku)
 
     
@@ -462,7 +474,6 @@ const FormulaireProduit = () => {
             setProduit(infoSku.id, data)
         }
     }
- console.log(infoSku)
     //render
     return (
         <Template>
@@ -519,6 +530,8 @@ const FormulaireProduit = () => {
             dimensionDone : dimensionDone, setDimensionDone : setDimensionDone, 
             cliquable: cliquable, setCliquable: setCliquable,
             tagsReferencementUpdate: tagsReferencementUpdate, setTagsReferencementUpdate: setTagsReferencementUpdate,
+            generateTags : generateTags, setGenerateTags : setGenerateTags,
+            infoGenerateTags : infoGenerateTags, setInfoGenerateTags : setInfoGenerateTags
         }}>
             <header>
                 <div><Link to="/produits/listes">Liste des produits > </Link></div>

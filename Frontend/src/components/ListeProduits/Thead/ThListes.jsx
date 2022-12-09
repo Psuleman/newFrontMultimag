@@ -1,4 +1,9 @@
+import { useContext } from "react";
+import { ListeContext } from "../Context/ListeContext";
+
+
 const ThListes = () => {
+    const {serviceUser} = useContext(ListeContext)
     //Render
     return (
         <thead>
@@ -23,8 +28,9 @@ const ThListes = () => {
             <th className="px-2">STOCK REFERENCE</th>
             <th className="px-2">STOCK TOTAL</th>
             
-            <th className="px-2 status">Statut</th>
+            <th className="px-2 status">STATUS</th>
             <th className="px-2 action" colSpan="2">ACTION</th>
+            
         </tr>
         </thead>
     )

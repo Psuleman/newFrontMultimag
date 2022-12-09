@@ -36,7 +36,7 @@ const Caracteristique = () => {
             infoSku && (sectionUpdate == "caractéristique") &&
             <form onSubmit={(e)=>{handleClickSave(e, "matière")}}>        
             <div className="card-body">
-                <section className="row g-3 mb-3"><small>Tous les champs sont obligatoire</small></section>
+            <section className="row g-3 mb-3"><small>Tous les champs sont obligatoire</small></section>
 
                 <section className="row g-3">
                     <InputDesabled idInput="inputCatUnivers2" typeInput="text" valeur={infoSku.categorie_univers} labelInput="Catégorie dans le fichier multimag" />

@@ -10,7 +10,7 @@ class CreationDataController extends AbstractController
 {    
     public function getData()
     {
-            $filename='fichier_csv/HOMME.csv';
+            $filename='fichier_csv/Grilles_de_taille.csv';
              $delimiter=',';
              echo $filename;
             if(file_exists($filename) || !is_readable($filename))
@@ -39,44 +39,47 @@ class CreationDataController extends AbstractController
     {
         $data = $this->getData();
         $dataclean = [];
-        foreach ($data as $key => $value) {
-            // if($value[0] != "attribute_id")
-            //     $dataclean[] =  $value[0];
-          
-            if(strlen($value[4])>0 && strlen($value[3])>0){
-                $dataclean[] = ["categorie_ref"=>trim($value[2]), "categorie_ref_en"=>trim($value[3])];
-            }
+        $grilleTaille = [];
+        $item = 0;
+
+        foreach ($data as $value) {
+            # code...
+            $grilleTaille[] = $value[0];
         }
 
-        $dataclean =[
-            ["categorie_ref" => "Accessoires", "categorie_ref_en" => "Accessories"],
-            ["categorie_ref" => "Bijoux & Montres", "categorie_ref_en" => "Jewelry & Watches"],
-            ["categorie_ref" => "Chaussures", "categorie_ref_en" => "Shoes"],
-            ["categorie_ref" => "Sacs", "categorie_ref_en" => "Bags"],
-            ["categorie_ref" => "Vêtements", "categorie_ref_en" => "Clothing"],
-            ["categorie_ref" => "Accessoires", "categorie_ref_en" => "Accessories"],
-            ["categorie_ref" => "Bijoux & Montres", "categorie_ref_en" => "Jewelry & Watches"],
-            ["categorie_ref" => "Chaussures", "categorie_ref_en" => "Shoes"],
-            ["categorie_ref" => "Sacs", "categorie_ref_en" => "Bags"],
-            ["categorie_ref" => "Vêtements", "categorie_ref_en" => "Clothing"],
-            ["categorie_ref" => "Art", "categorie_ref_en" => "Art"],
-            ["categorie_ref" => "Arts de la table", "categorie_ref_en" => "Dining"],
-            ["categorie_ref" => "Bougies & Diffuseurs", "categorie_ref_en" => "Candles & Diffusers"],
-            ["categorie_ref" => "Décoration", "categorie_ref_en" => "Decoration"],
-            ["categorie_ref" => "Luminaires", "categorie_ref_en" => "Lighting"],
-            ["categorie_ref" => "Meubles", "categorie_ref_en" => "Furnitures"],
-            ["categorie_ref" => "Accessoires", "categorie_ref_en" => "Accessories"],
-            ["categorie_ref" => "Bijoux & Montres", "categorie_ref_en" => "Jewelry & Watches"],
-            ["categorie_ref" => "Chaussures", "categorie_ref_en" => "Shoes"],
-            ["categorie_ref" => "Sacs", "categorie_ref_en" => "Bags"],
-            ["categorie_ref" => "Vêtements", "categorie_ref_en" => "Clothing"],
-            ["categorie_ref" => "Accessoires", "categorie_ref_en" => "Accessories"],
-            ["categorie_ref" => "Bijoux & Montres", "categorie_ref_en" => "Jewelry & Watches"],
-            ["categorie_ref" => "Chaussures", "categorie_ref_en" => "Shoes"],
-            ["categorie_ref" => "Sacs", "categorie_ref_en" => "Bags"],
-            ["categorie_ref" => "Vêtements", "categorie_ref_en" => "Clothing"],
-            ];
+        sort($grilleTaille);
+        $grilleTaille = array_map('unserialize', array_unique(array_map('serialize', $grilleTaille)));
+  
+        $item = 0;
+        foreach ($grilleTaille as $key => $value) {
+            # code...
+            $dataclean[$item]['grilleTaille'] = $value;
+            $item++;
+        }
 
+        foreach ($data as $key => $value) {
+            # code...
+            for($j=0; $j<count($dataclean); $j++){
+                if($value[0] == $dataclean[$j]['grilleTaille']){
+                    $dataclean[$j]['taille'][] = [
+                        'taille' => $value[1],
+                        'stock_code' => $value[3]
+                    ];
+                }
+            }
+        }
+        print_r($dataclean);
+        // foreach ($data as $key => $value) {
+        //     # code...
+        //     for($j=0; $j<count($grilleTaille); $j++){
+        //         if($value[0] == $grilleTaille[$j]){
+        //             $dataclean[$j]["Taille"] = [
+        //                 "taille"=> $value[1],
+        //                 "stockCode" => $value[3]
+        //             ];
+        //         }
+        //     }
+        // }
 
         sort($dataclean);
         $dataclean = array_map('unserialize', array_unique(array_map('serialize', $dataclean)));
@@ -84,24 +87,43 @@ class CreationDataController extends AbstractController
 
         //print_r($dataclean);
 
-        echo count($dataclean);
+        // echo count($dataclean);
 
-        file_put_contents('categorieRef.txt', '$categorieRef =[');
+        file_put_contents('GrilleTaille.txt', 'export const GrilleTaille =[');
     
         //On récupère le contenu du fichier
-        $texte = file_get_contents('categorieRef.txt');
+        $texte = file_get_contents('GrilleTaille.txt');
 
-        foreach ($dataclean as $key => $value) {
+        foreach ($dataclean as $value) {
             # code...
             if($value){
-                $texte .= "\n[\"categorie_ref\" => \"". $value["categorie_ref"]."\", \"categorie_ref_en\" => \"".$value["categorie_ref_en"]."\"],";
+                $texte .= "
+                {
+                    grilleTaille: \"". $value['grilleTaille'] ."\",
+                    tailles: [";
+
+                foreach ($value["taille"] as $key => $valeur) {
+                    # code...
+                    $texte .="{ tailles : \"".$valeur['taille']."\", stock_code : \"".$valeur['stock_code']."\" },";
+                }
+
+
+                $texte .= "]
+                },";
             }
         }
+
+        // foreach ($dataclean as $key => $value) {
+        //     # code...
+        //     if($value){
+        //         $texte .= "\n[\"categorie_ref\" => \"". $value["categorie_ref"]."\", \"categorie_ref_en\" => \"".$value["categorie_ref_en"]."\"],";
+        //     }
+        // }
         
         //On ajoute notre nouveau texte à l'ancien
         $texte .= "\n];"; 
         //On écrit tout le texte dans notre fichier
-        file_put_contents('categorieRef.txt', $texte); 
+        file_put_contents('GrilleTaille.txt', $texte); 
 
 
 
@@ -124,7 +146,7 @@ class CreationDataController extends AbstractController
 
         return $this->render('createfile/index.html.twig', [
             'controller_name' => 'CreatefileController',
-            'data' => $dataclean
+            'data' => $data
 
         ]);
     }

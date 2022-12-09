@@ -1,31 +1,54 @@
-import { useContext } from "react"
+import { useState } from "react"
+import { useContext, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { TemplateContext } from "./Context/TemplateContext"
+import SidebarAdmin from "./SideBarAdmin"
+import SidebarSuperAdmin from "./SidebarSuperAdmin"
+import SidebarUser from "./SidebarUser"
 
 const Sidebar = () => {
-    const {showsidebar} = useContext(TemplateContext)
+    const {showsidebar, service} = useContext(TemplateContext)
+    const [role, setRole] = useState()
+
+    useEffect(()=>{
+        if(localStorage.getItem('user_multimag')){
+            let token =  JSON.parse(localStorage.getItem('user_multimag')).token
+            if(!token){
+                navigate('/')
+            }
+            else{
+
+                if(service){
+                    if(service && (service == "e-shop & référencement" || service == "IT" )){
+                        setRole("super admin")
+                    }
+                    else if(service.match(/e-shop/g)!= null || service == "Logistique"){
+                        setRole("admin")
+                    }
+                    else{
+                        setRole("user")
+                    }                    
+                }
+               
+            }
+        }
+    }, [service])
+
     //render
     return (
     <div className="collapse sidebar col-xl-2 col-lg-2 col-md-3 col-sm-3 px-4 mt-1" id="navbarToggleExternalContent">
-        <nav className="nav flex-column">
-            <div className="nav-link">
-                Produits
-                <ul className="submenu">
-                    <li><Link to="/produits/listes" className="nav-link">liste des produits</Link></li>
-                    <li><Link to="/nouveau-produit" className="nav-link">Nouveau produit</Link></li>
-                </ul>
-            </div>
-            <Link className="nav-link" to="/produits/referencement">Référencement</Link>
-            <Link className="nav-link" to="/produits/modification">Modification en attente</Link>
-            {/* <Link className="nav-link" to="/utilisateur">Gestion des utilisateurs</Link> */}
-            <div className="nav-link">
-                Compte
-                <ul className="submenu">
-                    <li><Link to="/mon-compte" className="nav-link">Configuration</Link></li>
-                    <li><Link to="/" className="nav-link">Déconnexion</Link></li>
-                </ul>
-            </div>
-        </nav>
+        {
+            role && role == "user" &&
+            <SidebarUser />
+        }
+        {
+            role && role == "admin" &&
+            <SidebarAdmin />
+        }
+        {
+            role && role == "super admin" &&
+            <SidebarSuperAdmin />
+        }
     </div>            
 
     )

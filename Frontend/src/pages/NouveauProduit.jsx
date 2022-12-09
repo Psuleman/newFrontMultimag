@@ -29,6 +29,14 @@ const NouveauProduit = () => {
                 navigate('/')
             }
             else{
+                let user = JSON.parse(localStorage.getItem('user_multimag'))
+                if(user.service){
+                    let regex = user.service.match(/e-shop/g)
+                    let serviceTemp = (user.service && (regex!=null || user.service == "IT" ||  user.service == "Logistique")) ? "admin" : "user"
+                    if(serviceTemp == "user"){
+                        navigate('/produits/listes')
+                    }
+                }
                 if(!data){
                     setData([])                    
                     setPatienceImport(false)

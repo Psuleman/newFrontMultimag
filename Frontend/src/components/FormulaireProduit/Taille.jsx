@@ -25,6 +25,13 @@ const Taille = () => {
                 navigate('/')
             }
             else{
+                /**
+                 * Liste des grilles tailles
+                 */
+                
+
+
+                /********************************************************/
                 let categorie_univers =  infoSku.categorie_univers+""
                 let categorieFnr = categorie_univers.split(/[. ]/i)
 
@@ -36,7 +43,59 @@ const Taille = () => {
                         if(majuscule(element.grilleTaille).match(regex))
                             tab.push(element)
                     });
-                    setListeGrilleTaille(tab)                
+
+                    let tabFiltrer = []
+                    let stockCodeTailleFnr = infoSku.variants[0].taille_fnr
+                    if(infoSku && infoSku.variants[0]){
+                        tab.forEach(elementGrilleTaille => {
+                            let totalTailleMatch = 0
+                            infoSku.variants.forEach(elementVariant => {
+                                elementGrilleTaille.tailles.forEach(elementTaille => {
+                                    if(elementTaille.stock_code == elementVariant.taille_fnr){
+                                        totalTailleMatch += 1
+                                    }
+                                });
+                            })
+
+                            if(totalTailleMatch == infoSku.variants.length){
+                                tabFiltrer.push(elementGrilleTaille)
+                            }
+
+                        });
+
+                        if(tabFiltrer.length == 1){
+                            setGrilleTailleUpdate(tabFiltrer[0].grilleTaille)
+                        }
+
+                        if(tabFiltrer.length == 0){
+                            
+                            GrilleTaille.forEach(elementGrilleTaille => {
+                                elementGrilleTaille.tailles.forEach(elementTaille => {
+                                    if(elementTaille.stock_code == stockCodeTailleFnr){
+                                        tabFiltrer.push(elementGrilleTaille)
+                                    }
+                                });
+                            });
+
+                            let tabTemp = tabFiltrer.concat(tab);
+                            tabFiltrer = tabTemp
+                        }
+                        
+
+                   }
+
+                    // let tabFiltrer = []
+                    // tab.forEach(element => {
+                    //     element.tailles.forEach(elementTaille => {
+                            
+                    //     });
+                    // });
+                    if(tabFiltrer.length == 0){
+                        setListeGrilleTaille(tab)
+                    }  
+                    else{
+                        setListeGrilleTaille(tabFiltrer)                
+                    }                 
                 }
                 else{
                     setListeGrilleTaille(GrilleTaille)
@@ -69,6 +128,7 @@ const Taille = () => {
          
 
     }, [infoSku])
+
 
     const majuscule = (text) => {
         if(text){        

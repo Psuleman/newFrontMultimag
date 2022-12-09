@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from '../services/auth.service'
 import logo from "../assets/image/dalena.png"
 import "../assets/scss/authentification.scss"
+import { getUser } from "../services/user.service";
 const Connexion = () => {
     //variable
     const [email, setEmail] = useState()
@@ -23,12 +24,28 @@ const Connexion = () => {
         e.preventDefault();
         setEchecConnexion(false)
 
+        //Vérirification de l'utilisateur
+        // const promiseUser = Promise.resolve(getUser(email))
+        // promiseUser.then((value)=>{
+        //     if(value){
+        //         let nom = value[0].prenom + " " + value[0].nom.toUpperCase()
+        //         if(localStorage.getItem("user_multimag")){
+        //             let utilisateur = JSON.parse(localStorage.getItem("user_multimag"))
+        //             utilisateur.service = value[0].service
+        //             utilisateur.nom = value[0].prenom + " " + value[0].nom.toUpperCase()
+        //             localStorage.setItem("user", JSON.stringify(utilisateur))
+                    
+        //         }					
+        //     }
+        // })
+
         //login
             let donnesJson = {
                 email: email,
                 password: password,
                 token: "test" //à enlever
             }
+
 
             const promise = Promise.resolve(login(donnesJson));
             promise.then((value) => {
@@ -38,6 +55,9 @@ const Connexion = () => {
                     }
                     else{
                         setEchecConnexion(false)
+
+                        let utilisateur = JSON.parse(localStorage.getItem("user"))
+                        console.log(utilisateur)
                         let donneesUser = {
                             email : email,
                             token : value.token

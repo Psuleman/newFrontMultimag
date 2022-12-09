@@ -1,38 +1,49 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useContext } from "react"
 import { FormulaireContext } from "./Context/FormulaireContext"
+import Ceintre from "../../assets/image/cintre-de-vetements.png"
 
 const Recapitulatif = () => {
     //variable
     const {infoSku, marqueUpdate, paysOrigineUpdate, universUpdate, universEnUpdate, categorieUpdate, filtreUpdate, couleurUpdate, couleurEnUpdate, dimensionFrUpdate, matiereUpdate, tarifUpdate, attributUpdate } = useContext(FormulaireContext)
-    
-    // let image = ""
-    // let images = infoSku.pictures
-    // images = images.split(";")
+    const [image, setImage] = useState()
 
-    // image = images[0];
 
-    // useEffect(()=>{
-    //     // fetch(item.pictures)
-    //     fetch(image)
-    //     .then(function(response) {
-    //         if(response.status == 404){
-    //             image="https://fakeimg.pl/300/"
-    //         }       
-    //     })
-    //     .then(function(myBlob) {
-    //     }).catch((err)=>{});
+
+    useEffect(()=>{
+        if(infoSku && infoSku.pictures){
+            let imgTab = infoSku.pictures.split(";");
+            let img = imgTab[0]
+
+            fetch(img)
+            .then(function(response) {
+                if(response.ok == false){
+                    setImage(Ceintre)
+                }
+                else {
+                    setImage(img)
+                }
+            })
+            .then(function(myBlob) {})
+            
+        }
+        else{
+            setImage(Ceintre)
+        }
         
-    // })
+    }, [infoSku])
     
 
-    // console.log("infoSku", infoSku)
     //render
     return (
         <aside className="col-xxl-2 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12 pe-xxl-3 pe-xl-3 pe-lg-3 pe-md-3 pe-sm-0 pe-0">
             <div className="">
             <div className="card h-100">
-                <img src="https://fakeimg.pl/300/" className="card-img-center" alt="..." />
+                <img src={image} className="card-img-center m-auto mt-3 mb-3" alt="..." style={{
+                    width: "90%",
+                    heigth: "auto"
+                }} />
+
                 <div className="card-body"> 
                     <h5 className="card-title">SKU : {infoSku.sku}</h5>                           
                     <p className="card-text"><em>Saison : </em>{infoSku.saison}</p>

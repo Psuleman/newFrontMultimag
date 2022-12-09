@@ -27,6 +27,22 @@ export const getUser = (email) => {
     return result;
 }
 
+export const getAllUser = () => {
+    let urlRequest = url
+    
+    let result = fetch(urlRequest,headerGET)
+    .then(function(res){ 
+        return res.json() 
+    })
+    .then(function(value){ 
+        return value; 
+    })
+    .catch(function(err){
+    })
+
+    return result;
+}
+
 export const setUser = (data, id) => {
     const headerPATCH = {
         method: 'PATCH',

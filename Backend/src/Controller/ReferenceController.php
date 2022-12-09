@@ -35,10 +35,11 @@ class ReferenceController extends AbstractController
             ["nom"=>"Leclaireur", "prenom"=>"Patrice", "email"=>"patrice@leclaireur.com", "password"=>"uksTK5p7Y59m", "service"=>"Logistique"],
             ["nom"=>"Mallau", "prenom"=>"Thomas", "email"=>"thomas@leclaireur.com", "password"=>"ByDx8RB8TfhJ", "service"=>"Logistique"],
             ["nom"=>"Pereira", "prenom"=>"Jérémie", "email"=>"jeremie@leclaireur.com", "password"=>"RBTvArmAnKgc", "service"=>"Logistique"],
-            ["nom"=>"Poulsen", "prenom"=>"Victor", "email"=>"victor@leclaireur.com", "password"=>"xog64qeAmiDp", "service"=>"e-shop"],
+            ["nom"=>"Poulsen", "prenom"=>"Victor", "email"=>"victor@leclaireur.com", "password"=>"xog64qeAmiDp", "service"=>"e-shop & coordinateur achat"],
             ["nom"=>"Suleman", "prenom"=>"Prisca", "email"=>"prisca@dalena.fr", "password"=>"Ime94Ms5v5OV", "service"=>"IT"],
-            ["nom"=>"Yankioua", "prenom"=>"Bénédicte", "email"=>"benedicte@leclaireur.com", "password"=>"cgb3SLKxJ2xx", "service"=>"e-shop"],
-            ["nom"=>"Leusch", "prenom"=>"Juliette", "email"=>"juliette@dalena.fr", "password"=>"dsfgh54ZMLDT", "service"=>"e-shop"],
+            ["nom"=>"Yankioua", "prenom"=>"Bénédicte", "email"=>"benedicte@leclaireur.com", "password"=>"cgb3SLKxJ2xx", "service"=>"e-shop & référencement"],
+            ["nom"=>"Leusch", "prenom"=>"Juliette", "email"=>"juliette@dalena.fr", "password"=>"dsfgh54ZMLDT", "service"=>"e-shop & référencement"],
+            ["nom"=>"Wizman", "prenom"=>"Ruben", "email"=>"ruben@dalena.fr", "password"=>"egthju52klGE", "service"=>"Designer"],
             ];
 
         foreach ($Users as $key => $value) {

@@ -3,24 +3,29 @@ import { getUser } from "../../../services/user.service";
 import { TemplateContext } from "./Context/TemplateContext";
 
 const Navbar = () => {
-    const [user, setUser] = useState()
-    const {showsidebar, setShowsidebar, handleClickLogout} = useContext(TemplateContext)
-
+    const {showsidebar, setShowsidebar, handleClickLogout, user} = useContext(TemplateContext)
     useEffect(()=>{
-        if(localStorage.getItem("user_multimag")){
-			let userStorage = JSON.parse(localStorage.getItem("user_multimag")) 
-            if(userStorage.email){
-                let promise = Promise.resolve(getUser(userStorage.email))
-				promise.then((value)=>{
-					if(value){
-                        let nom = value[0].prenom + " " + value[0].nom.toUpperCase()
-                        setUser(nom)					
-					}
-				})
-            }
+        // if(localStorage.getItem("user_multimag")){
+		// 	let userStorage = JSON.parse(localStorage.getItem("user_multimag")) 
+        //     if(userStorage.email){
+        //         let promise = Promise.resolve(getUser(userStorage.email))
+		// 		promise.then((value)=>{
+		// 			if(value){
+        //                 let nom = value[0].prenom + " " + value[0].nom.toUpperCase()
+        //                 setUser(nom)
+        //                 if(localStorage.getItem("user_multimag")){
+        //                     let utilisateur = JSON.parse(localStorage.getItem("user_multimag"))
+        //                     utilisateur.service = value[0].service
+        //                     utilisateur.nom = value[0].prenom + " " + value[0].nom.toUpperCase()
+        //                     localStorage.setItem("user_multimag", JSON.stringify(utilisateur))
+                            
+        //                 }					
+		// 			}
+		// 		})
+        //     }
 
-        }
-    }, [])
+        // }
+    }, [user])
 
     //render
     return (

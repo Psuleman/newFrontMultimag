@@ -1,7 +1,10 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Moment from "moment"
 import Ceintre from "../../../assets/image/cintre-de-vetements.png"
+import { ListeContext } from "../Context/ListeContext"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 const ValueListe = ({item}) => {
     //variable
@@ -10,6 +13,7 @@ const ValueListe = ({item}) => {
     const [stock, setStock] = useState([])
     const [imgExist, setImgExist] = useState(false)
     const [tagBackground, setTagBackground] = useState("")
+    const {serviceUser} = useContext(ListeContext)
     let navigate = useNavigate()
 
     let image = ""
@@ -79,6 +83,11 @@ const ValueListe = ({item}) => {
         let path = `/produit/` + item.sku + ``;
         navigate(path)
     }
+
+    const handleClickDetail = () => {
+        let path = `/produit/detail/` + item.sku
+        navigate(path)
+    }
     //Render
     return (
         <tbody>
@@ -126,15 +135,26 @@ const ValueListe = ({item}) => {
                 {item.referencer == 1 && <p className="text-success">Référencer</p>}
                 </td>
             }
+
             <td className="px-2 action">
                 <center>
-                    <div className="modifier text-muted" onClick={handleClick}>
-                        <i className="fa fa-pen"></i>
-                    </div>
+                    {
+                        serviceUser=="admin" ?
+                        <div className="modifier text-muted" onClick={handleClick}>
+                            <i className="fa fa-pen"></i>
+                        </div>
+                        :
+                        <div>
+                           <button type="button" className="btn btn-light" onClick={handleClickDetail}>Détail</button>
+                        </div>
+                    }
+
                 </center>
-            </td>                
+            </td>
+              
         </tr>
         {
+
             showVariant &&
             item.variants.map((i, index)=>(
             <tr key={"variant_" + i + "_" + index}>
@@ -148,7 +168,7 @@ const ValueListe = ({item}) => {
                 <td className="px-2">{i.stock_9}</td>
                 <td className="px-2">{i.stock_3}</td>
                 <td className="px-2 status" />                
-                <td className="px-2 action" />                
+                <td className="px-2 action" />            
             </tr>
             ))
         }  

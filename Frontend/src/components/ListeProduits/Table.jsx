@@ -12,7 +12,7 @@ import { ListeExportContext } from './Context/ListeExportContext'
 import Pagination from './Pagination'
 
 const Table = () => {
-    const {skus, totalSkus, liste} = useContext(ListeContext)
+    const {skus, totalSkus, liste, serviceUser} = useContext(ListeContext)
     const [listesProduit, setListesProduit] = useState([])
     const [listesProduitExport , setListesProduitExport] = useState([])
     useEffect(()=>{
@@ -171,9 +171,9 @@ const Table = () => {
             <div className="table">
                 <table>
                     { liste == "listes" && <ThListes/>}
-                    { liste == "referencement" && <ThReferencement/> }
-                    { liste == "modification" && <ThModification/>}
-                    { liste == "export" && <ThExport/>}
+                    { (liste == "referencement" && serviceUser=="admin") && <ThReferencement/> }
+                    { liste == "modification" && serviceUser=="admin" && <ThModification/>}
+                    { liste == "export" && serviceUser=="admin" && <ThExport/>}
                     {
                         totalSkus==0 && 
                         <tbody>

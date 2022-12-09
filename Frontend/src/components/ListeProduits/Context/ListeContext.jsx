@@ -21,6 +21,7 @@ const ListeContextProvider = ({children}) => {
     const [marqueFiltreTab, setMarqueFiltreTab] = useState()
     const [tagFiltreTab, setTagFiltreTab] = useState()
     const [validateSearchSkus, setValidateSearchSkus] = useState(false)
+    const [serviceUser, setServiceUser] = useState()
 
     const {liste} = useParams()
 
@@ -29,10 +30,18 @@ const ListeContextProvider = ({children}) => {
     //fonction
     useEffect(()=>{
         setTotalSkus()
+        let service = ""
+        if(localStorage.getItem("user_multimag")){
+            let utilisateur = JSON.parse(localStorage.getItem("user_multimag"))
+            service = (utilisateur.service == "e-shop & référencement" || utilisateur.service == "IT") ? "admin" : "user"
+            // service = (utilisateur.service == "e-shop" || utilisateur.service == "IT") ? "user" : "admin"
+            setServiceUser(service)
+        }
 
-        if(liste != "listes" && liste != "referencement" && liste != "modification" &&  liste != "export"){
+        if((service=="user") || (liste != "listes" && liste != "referencement" && liste != "modification" &&  liste != "export")){
             navigate(`/produits/listes`)
         }
+
         //les filtre: categorie, univers, tag,
         let filtre = "" 
         let pageActuelle = currentPage ? currentPage : 1
@@ -204,7 +213,7 @@ const ListeContextProvider = ({children}) => {
             currentPage: currentPage, setCurrentPage: setCurrentPage,
             nextPage: nextPage, setNextPage: setNextPage,
             lastPage: lastPage, setLastPage: setLastPage,
-            
+            serviceUser: serviceUser,
         }}>
             {children}
         </ListeContext.Provider>
