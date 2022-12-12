@@ -2,6 +2,10 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { getAllProduit } from '../../../services/produit.service'
+import { Univers } from '../../../data/Univers'
+import { getCategories } from '../../../services/categorie.service'
+import { getMarques } from '../../../services/marques.services'
+
 
 export const ListeContext = React.createContext({})
 
@@ -29,6 +33,53 @@ const ListeContextProvider = ({children}) => {
 
     //fonction
     useEffect(()=>{
+        /**
+         * FILTRE
+         */
+        let tabUnivers = []
+        Univers.forEach(element => {
+            tabUnivers.push(element.univers_ref)
+        });
+        setUniversFiltreTab(tabUnivers)
+
+        let arrayTag = [
+            {code_tag: 0, tag: "Non tagué"},
+            {code_tag: 1, tag: "Détagué"},
+            {code_tag: 2, tag: "Internet"},
+            {code_tag: 3, tag: "Leclaireur"},
+        ]
+        setTagFiltreTab(arrayTag)
+
+        let tabCategory = []
+        const promiseCategorie = Promise.resolve(getCategories())
+
+        promiseCategorie.then((value)=>{
+
+            for(let item in value) {
+                if(item == "hydra:member"){
+                    value[item].forEach(element => {
+                        tabCategory.push(element.categorieRef)
+                    });
+                }
+                setCategorieFiltreTab(tabCategory)
+            }
+        })
+
+
+        let tabMarque = []
+        const promiseMarque = Promise.resolve(getMarques())
+
+        promiseMarque.then((value)=>{
+            for(let item in value) {
+                if(item == "hydra:member"){
+                    console.log(value[item])
+                }
+            }
+        })
+
+        /***
+         * 
+         */
         setTotalSkus()
         let service = ""
         if(localStorage.getItem("user_multimag")){
@@ -93,41 +144,41 @@ const ListeContextProvider = ({children}) => {
                         setSkus(valeur)
                         if(!categorieFiltre && !universFiltre && !marqueFiltre && !tagFiltre && !searchSkus){
 
-                            let tabCategory = []
-                            let tabUnivers = []
+                            //let tabCategory = []
+                            //let tabUnivers = []
                             let tabMarque = []
-                            let tabTag = []
+                            //let tabTag = []
                             for(let key in valeur)
                             {
-                                tabCategory.push(valeur[key].categorie)
-                                tabUnivers.push(valeur[key].univers)
+                                //tabCategory.push(valeur[key].categorie)
+                                //tabUnivers.push(valeur[key].univers)
                                 let marqueProduit = valeur[key].marque ? valeur[key].marque.marque : valeur[key].nom_fournisseur
                                 tabMarque.push(marqueProduit)
-                                tabTag.push(valeur[key].code_tag ? valeur[key].code_tag : 0)
+                                //tabTag.push(valeur[key].code_tag ? valeur[key].code_tag : 0)
                             }
-                            tabCategory = [... new Set(tabCategory)]
-                            tabUnivers = [... new Set(tabUnivers)]
+                            //tabCategory = [... new Set(tabCategory)]
+                            //tabUnivers = [... new Set(tabUnivers)]
                             tabMarque = [... new Set(tabMarque)]
-                            tabTag = [... new Set(tabTag)]
+                            // tabTag = [... new Set(tabTag)]
     
     
-                            let arrayTag = [
-                                {code_tag: 0, tag: "Non tagué"},
-                                {code_tag: 1, tag: "Détagué"},
-                                {code_tag: 2, tag: "Internet"},
-                                {code_tag: 3, tag: "Leclaireur"},
-                            ]
-                            let tabTemporaire = []
-                            tabTag.forEach(element => {
-                                arrayTag.forEach(item=>{
-                                    if(element == item.code_tag)
-                                    tabTemporaire.push(item)
-                                })
-                            });
-                            setCategorieFiltreTab(tabCategory)
-                            setUniversFiltreTab(tabUnivers)
+                            // let arrayTag = [
+                            //     {code_tag: 0, tag: "Non tagué"},
+                            //     {code_tag: 1, tag: "Détagué"},
+                            //     {code_tag: 2, tag: "Internet"},
+                            //     {code_tag: 3, tag: "Leclaireur"},
+                            // ]
+                            // let tabTemporaire = []
+                            // tabTag.forEach(element => {
+                            //     arrayTag.forEach(item=>{
+                            //         if(element == item.code_tag)
+                            //         tabTemporaire.push(item)
+                            //     })
+                            // });
+                            //setCategorieFiltreTab(tabCategory)
+                            //setUniversFiltreTab(tabUnivers)
                             setMarqueFiltreTab(tabMarque)
-                            setTagFiltreTab(tabTemporaire)
+                            //setTagFiltreTab(tabTemporaire)
                         }
                     }
                     

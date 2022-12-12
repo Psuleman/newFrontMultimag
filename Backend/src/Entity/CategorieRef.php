@@ -28,6 +28,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 // #[GetCollection(
 //     normalizationContext: ['groups' => ['produit']],
 // )]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get()
+    ]
+)]
 #[ORM\Entity(repositoryClass: CategorieRefRepository::class)]
 class CategorieRef
 {

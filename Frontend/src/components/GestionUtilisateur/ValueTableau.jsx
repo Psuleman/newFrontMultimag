@@ -1,14 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { SelectionItemContext } from "./Context/SelectionItemContext";
+import { ValueTableauContext } from "./Context/ValueTableauContext";
 import Droits from "./Droits";
+import Password from "./Password";
 
 const ValueTableau = ({indexUser}) => {
 	//variable
 	const {userSelect, setUserSelect, users} = useContext(SelectionItemContext)
 	const [checked, setChecked] = useState(false)
 	const [role, setRole] = useState("")
-	const [roles, setRoles] = useState()
-	const [droits, setDroits] = useState()
+	const [roles, setRoles] = useState([])
+	const [droits, setDroits] = useState([])
 
 	const [nom, setNom] = useState()
 	const [prenom, setPrenom] = useState()
@@ -27,14 +29,14 @@ const ValueTableau = ({indexUser}) => {
 			setRole(utilisateur.service)
 			setChecked(utilisateur.isChecked)
 		}
-		if(!roles){
+		if(!roles || roles.length==0){
 			let tab = ["Logistique", "Comptabilité", "IT", "e-shop", "e-shop & coordinateur achat", "e-shop & référencement", "Designer"]
 
 			setRoles(tab)
 		}
 
-		if(!droits){
-			let tab = ["Logistique", "Comptabilité", "IT", "e-shop", "e-shop & coordinateur achat", "e-shop & référencement", "Designer"]
+		if(!droits || droits.length == 0){
+			let tab = ["Gérer les utilisateurs", "Référencement", "Modification des prix", "Importer les produits"]
 			setDroits(tab)
 		}
 
@@ -72,8 +74,36 @@ const ValueTableau = ({indexUser}) => {
 
 	}
 	
+	const handleClickUpdate = () => {
+		let user = {
+			nom: nom,
+			prenom: prenom,
+			email: email,
+			role: role
+		}			
+		
+		if(password){
+			user = {
+				nom: nom,
+				prenom: prenom,
+				email: email,
+				password: password,
+				role: role
+			}			
+		}
+
+
+
+
+
+		console.log(user)
+	}
+
 	//return
 	return (
+			<ValueTableauContext.Provider value={{
+				password: password, setPassword: setPassword,
+			}}>
 			<tr>
 				<td className="p-2  detailSku"> 
 				{
@@ -94,7 +124,7 @@ const ValueTableau = ({indexUser}) => {
 					<input type="text" className="form-control" id="exampleFormControlPrenom" placeholder="prénom" value={prenom} onChange={(e)=>{setPrenom(e.target.value)}}/>
 				</td>
 				<td className="p-2 " >
-					<input type="password" className="form-control" id="exampleFormControlPassword" placeholder="" value={password} onChange={(e)=>{setPassword(e.target.value)}}/>
+					<Password />
 				</td>
 
 
@@ -110,13 +140,18 @@ const ValueTableau = ({indexUser}) => {
 				</td>
 
 				<td  className="p-2 " >
-					<Droits value={droits} />
+					{
+						droits && <Droits droits={droits} />
+					}
+					
 				</td>
 				<td  className="p-2 " >
 					<button type="button" className="btn btn-light me-2">Retirer l'utilisateur</button>
-					<button type="button" className="btn btn-light me-2">Modifier</button>
+					<button type="button" className="btn btn-light me-2" onClick={handleClickUpdate}>Modifier</button>
 				</td>
-			</tr>
+			</tr>				
+			</ValueTableauContext.Provider>
+
 		)
 }
 

@@ -1,6 +1,5 @@
 const Droits = ({droits}) => {
 
-    console.log("droits", droits)
     //render
     return (
         <section className="list-group dropdown">
@@ -9,7 +8,14 @@ const Droits = ({droits}) => {
                 <div className="height-select border border-1">
                 {
                     droits && droits.map((item, inde)=>(
-                        <div>Test</div>
+                        <div className="form-check mx-2 py-2">
+                            <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
+                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                                {item}
+                            </label>
+                        </div>
+
+
                     ))
                 }
                 </div>     

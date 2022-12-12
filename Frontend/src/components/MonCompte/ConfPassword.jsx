@@ -15,9 +15,9 @@ const ConfPassword = () => {
     }, [erreurConfPassword])
     //render
     return (
-        <div className="form-outline form-blue mb-4 col-md-3">
+        <div className="mb-3 col-md-3">
             <label htmlFor="confpasswordInput" className="form-label">Confirmation Password</label>
-            <input type="password" className={"form-control form-control-lg" + classname} id="passwordInput" required placeholder="Confirmer votre mot de passe" value={confPassword} onChange={((e)=>{setConfPassword(e.target.value)})} />
+            <input type="password" className={"form-control" + classname} id="passwordInput" required placeholder="Confirmer votre mot de passe" value={confPassword} onChange={((e)=>{setConfPassword(e.target.value)})} />
             {
                 erreurConfPassword && 
                 <div className="invalid-feedback">
