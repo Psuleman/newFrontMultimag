@@ -3,16 +3,22 @@ import { useContext } from "react"
 import { FormulaireContext } from "../Context/FormulaireContext"
 import { setGrilleTailleList } from "../../../services/taille.service"
 import InputDesabled from "../TemplateFormulaire/InputDesabled"
+import Input from "../TemplateFormulaire/Input"
 import { useState } from "react"
 import { TailleContext } from "./Context/TailleContext"
 import Loading from "../../Layout/Loading"
+import InputTaille from "./InputTaille"
 
 const TailleVariant = () => {
+    const [totalInitialUpdate, setTotalInitialUpdate] = useState()
     const {infoSku, grilleTailleUpdate, attributUpdate, setAttributUpdate} = useContext(FormulaireContext)  
-    const {setLoading, loading} = useContext(TailleContext)
+    const {setLoading, loading, nbVariant} = useContext(TailleContext)
 
     const [tailles, setTailles] = useState([]) 
     useEffect(()=>{
+        if(!totalInitialUpdate){
+            setTotalInitialUpdate(attributUpdate.length)
+        }
         if(grilleTailleUpdate && grilleTailleUpdate != ""){
             // console.log("loding true")
             setLoading(true)
@@ -74,7 +80,16 @@ const TailleVariant = () => {
             (tailles && attributUpdate) &&
             attributUpdate.map((i, index)=>
             <section  className="row g-3 mt-1">
-                <InputDesabled idInput={"inputVariant" + i.variant_sku} labelInput="Taille fournisseur" valeur={i.taille_fnr} />
+                {
+                    index < totalInitialUpdate
+                    &&
+                    <InputDesabled idInput={"inputVariant" + i.variant_sku} labelInput="Taille fournisseur" valeur={i.taille_fnr} />
+                }
+                {
+                    index >= totalInitialUpdate
+                    &&
+                    <InputTaille index={index} id={"inputVariant" + i.variant_sku} tailles={tailles} />
+                }
                 <div className="col-md-3">
                     <label  htmlFor="selectTaille" className="form-label">Taille {attributUpdate[index].tailleRef}</label>
                     {

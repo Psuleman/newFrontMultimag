@@ -15,6 +15,7 @@ import {getProduit, setProduit} from "../services/produit.service"
 import Dimension from "../components/FormulaireProduit/Dimension";
 import EntretienCoupe from "../components/FormulaireProduit/EntretienCoupe";
 import { setMatiereProduit } from "../services/matiereproduit.service";
+import { GrilleTailleFnr } from "../data/GrilleTailleFnr";
 
 const FormulaireProduit = () => {
     //variable
@@ -174,6 +175,31 @@ const FormulaireProduit = () => {
                                         variant_sku: item.variant_sku
                                     }
                                 }
+
+                                // if(GrilleTailleFnr){
+                                //     let tabVariants = []
+                                //     GrilleTailleFnr.forEach(element => {
+                                //         console.log(element)
+                                //         console.log(value[0])
+                                //         if(value[0] && value[0].grille_taille_fournisseur && (element.grilleTaille == value[0].grille_taille_fournisseur)){
+                                //             console.log("tailles : ", element.tailles)
+                                //             element.tailles.forEach(elementTaille => {
+                                //                 tab = {
+                                //                     taille_fnr: elementTaille,
+                                //                     tailleRef: {tailleRef: ""},
+                                //                     variant_sku: value[0].sku + "_" + elementTaille
+                                //                 }
+                                //                 tabVariants.push(tab)
+                                //             });
+                                //         }
+                                //     });
+                                //     console.log("tabVariants ", tabVariants)
+                                //     setAttributUpdate(tabVariants)
+                                // }
+
+
+
+
                                 /**
                                  * Dimension: Hauteur, Poids, Largeur, Longueur
                                  */
@@ -284,7 +310,7 @@ const FormulaireProduit = () => {
                                 }
                                 
                     
-                                if(nomProduitFr!="" && nomProduitEn!="" && descriptionFr!="" && descriptionEn!="")
+                                if(nomProduitFr!="" && descriptionFr!="")
                                     setDescriptionDone(true)
                                 else
                                     setDescriptionDone(false)
@@ -334,9 +360,9 @@ const FormulaireProduit = () => {
                 //&& (value[i].coupe!="")
                 //&& (value[i].entretien!="") A REDEMANDER
                 && (descriptionFrUpdate!="")
-                && (descriptionEnUpdate!="")
+                // && (descriptionEnUpdate!="")
                 && (nomProduitFrUpdate!="")
-                && (nomProduitEnUpdate!="")
+                // && (nomProduitEnUpdate!="")
                 && (matiereUpdate!=null)
             ){
                 referencer = true
@@ -405,7 +431,7 @@ const FormulaireProduit = () => {
             else
                 setTailleDone(false)
 
-            if(nomProduitFrUpdate!="" && nomProduitEnUpdate!="" && descriptionFrUpdate!="" && descriptionEnUpdate!="")
+            if(nomProduitFrUpdate!="" && descriptionFrUpdate!="")
                 setDescriptionDone(true)
             else
                 setDescriptionDone(false)

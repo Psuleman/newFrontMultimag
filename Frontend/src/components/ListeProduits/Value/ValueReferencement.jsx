@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Ceintre from "../../../assets/image/cintre-de-vetements.png"
 import Moment from "moment"
 import { useContext } from "react"
@@ -12,6 +12,7 @@ const ValueReferencement = ({item}) => {
     const [stock, setStock] = useState([])
     const [imgExist, setImgExist] = useState(false)
     const [tagBackground, setTagBackground] = useState("")
+    const [lien, setLien] = useState("")
     let navigate = useNavigate()
 
     const {liste} = useContext(ListeContext)
@@ -67,6 +68,12 @@ const ValueReferencement = ({item}) => {
         setStock(tab)
 
         /**
+         * Lien
+         */
+        let path = `/produit/` + item.sku + ``;
+        setLien(path)
+
+        /**
          * Categorie
          */
         if(item.filtre){
@@ -85,7 +92,14 @@ const ValueReferencement = ({item}) => {
     return (
         <tbody>
             <tr>
-                <td className="px-2"><a href={item.lien} target="black">{item.sku}</a></td>
+                <td className="px-2"><Link to={lien} target="black">{item.sku}</Link></td>
+                <td className="px-2">
+                    <center>
+                        <div className="modifier text-muted" onClick={handleClick}>
+                            <i class="fa fa-pen"></i>
+                        </div>
+                    </center>
+                </td>   
                 <td className="px-2">{item.saison}</td>
                 <td className="px-2">{Moment(item.date_arrivee).format("DD-MM-YYYY")}</td>
                 {
@@ -112,13 +126,7 @@ const ValueReferencement = ({item}) => {
                     :
                     <td className="px-2">{item.tag}</td>
                 }
-                <td className="px-2">
-                    <center>
-                        <div className="modifier text-muted" onClick={handleClick}>
-                            <i class="fa fa-pen"></i>
-                        </div>
-                    </center>
-                </td>                
+               
             </tr>            
         </tbody>
 

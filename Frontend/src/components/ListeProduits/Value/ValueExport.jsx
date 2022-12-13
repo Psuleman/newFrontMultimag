@@ -67,7 +67,7 @@ const ValueExport = ({item}) => {
         //console.log(text)
     }
     const handleClick = () => {
-        let path = `/produit/` + item.sku + ``;
+        let path = `/produit/` + parseInt(item.sku_integer) + ``;
         navigate(path)
     }
     

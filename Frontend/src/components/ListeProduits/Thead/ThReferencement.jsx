@@ -4,6 +4,7 @@ const ThReferencement = () => {
         <thead>
         <tr>
             <th className="px-2">SKU</th>
+            <th className="px-2"></th>
             <th className="px-2">SAISON</th>
             <th className="px-2">REÇU LE</th>
             <th className="px-2">MARQUE</th>
@@ -14,7 +15,6 @@ const ThReferencement = () => {
             <th className="px-2">REMISE</th>
             <th className="px-2">PICTURES</th>
             <th className="px-2">STATUS</th>
-            <th className="px-2">ACTION</th>
         </tr>
         </thead>
     )

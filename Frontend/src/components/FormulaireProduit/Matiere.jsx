@@ -138,7 +138,7 @@ const Matiere = () => {
             <div className="card-body">
             <section className="row g-3 mb-3"><small>* Champs obligatoire</small></section>                
             <section className="row g-3 mb-3">          
-                {
+                {/* {
                     totalMatiere <= 100 &&
                     <div class="alert alert-primary" role="alert">
                       <FontAwesomeIcon icon={faCircleInfo} /> Le total des pourcentage des matières doivent être au maximum 100%
@@ -150,7 +150,7 @@ const Matiere = () => {
                      <FontAwesomeIcon icon={faTriangleExclamation} /> Le total des pourcentage des matières doivent être au maximum 100%
                     </div>
                 }
-                
+                 */}
             </section>                
                 <section className="row g-3 mb-3">
                     <InputDesabled labelInput="Référence dans multimag" valeur={infoSku.reference_couleur} />
@@ -193,14 +193,20 @@ const Matiere = () => {
 
                                 }
                                 <input type="number" className="form-control" id={"inputPourcentMatiere" + (index + 1)} value={matiereUpdate[index].pourcentageMatiere} onChange={(e)=>{
-                                    handleChange(e, index)
+                                    // handleChange(e, index)
+                                    { setMatiereUpdate(oldState=>{
+                                        let newState = [...oldState]
+                                        newState[index].pourcentageMatiere = parseInt(e.target.value)
+                                        return newState
+                                    })}
                             }} min="0" max="100" />
                             </div>           
                         </section>
                     ))
                 }
                 {
-                    matiereUpdate.length <10 && totalMatiere<100 &&
+                    // matiereUpdate.length <10 && totalMatiere<100 &&
+                    matiereUpdate.length <10 &&
                     <section className="row g-3 mt-1">
                     <div className="col-md-3">
                         <label htmlFor="inputAddMatiere" className="form-label">Nombre de matière supplementaire</label>

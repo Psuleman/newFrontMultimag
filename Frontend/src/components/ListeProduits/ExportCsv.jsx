@@ -83,8 +83,8 @@ const ExportCsv = () => {
     })    
 
     return (
-        <div>
-            {csvReport && <CSVLink {...csvReport} enclosingCharacter={``} separator={","}><button className='btn btn-outline-dark mx-2'>Exporter en csv</button></CSVLink>}
+        <div className='ms-auto p-2'>
+            {csvReport && <CSVLink {...csvReport} enclosingCharacter={``} separator={","}><button className='btn btn-dark mx-2'>Exporter en csv</button></CSVLink>}
         </div>
 
     )

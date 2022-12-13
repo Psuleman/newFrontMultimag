@@ -9,11 +9,16 @@ import HeaderForm from "./TemplateFormulaire/HeaderForm";
 import TailleVariant from "./Taille/TailleVariant";
 import { TailleContext }  from "./Taille/Context/TailleContext"
 import InputDesabled from "./TemplateFormulaire/InputDesabled";
+import AddVariant from "./Taille/AddVariant";
 
 const Taille = () => {
     //variable
     const [listGrilleTaille, setListeGrilleTaille] = useState([])
     const [loading, setLoading] = useState(false)
+    const [nbVariant, setNbVariant] = useState(0)
+    
+
+
     const {infoSku, tailleDone, setTailleDone, grilleTailleUpdate, setGrilleTailleUpdate, attributUpdate, setAttributUpdate, sectionUpdate, setSectionUpdate, handleClickSave} = useContext(FormulaireContext)    
     // console.log('grilleTailleUpdate', grilleTailleUpdate)
     // const [tailles, setTailles] = useState([])
@@ -162,8 +167,11 @@ const Taille = () => {
                 </section>
                 <TailleContext.Provider value={{
                     loading:loading, setLoading: setLoading,
+                    nbVariant: nbVariant, setNbVariant: setNbVariant,
                 }}>
                     <TailleVariant /> 
+
+                    <AddVariant />
                 </TailleContext.Provider>
             </div>
 

@@ -10,7 +10,7 @@ const DescriptionProduit = () => {
     return (
         <section className="row g-3 mt-1">
             <Textarea id="inputDescriptionFr" label="Description du produit" value={descriptionFrUpdate} setValue={setDescriptionFrUpdate} />
-            <Textarea id="inputDescriptionEn" label="Description du produit EN" value={descriptionEnUpdate} setValue={setDescriptionEnUpdate} />
+            {/* <Textarea id="inputDescriptionEn" label="Description du produit EN" value={descriptionEnUpdate} setValue={setDescriptionEnUpdate} /> */}
         </section>
     )
 }

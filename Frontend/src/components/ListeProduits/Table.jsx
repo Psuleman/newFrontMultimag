@@ -32,6 +32,7 @@ const Table = () => {
 
                         let itemtab = {
                             lien: element.lien,
+                            sku_integer: element.sku,
                             sku : marque + "_" + nom_produit_fr + "_" + element.sku,
                             command : "MERGE",
                             title : item==0 ?  marque + " " + element.nom_produit_fr : null,
