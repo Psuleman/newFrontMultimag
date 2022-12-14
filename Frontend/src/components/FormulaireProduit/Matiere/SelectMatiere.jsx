@@ -18,7 +18,15 @@ const SelectMatiere = ({label, value, id, indexMatiere}) => {
             else{
                 setArrayList(oldList=>{
                     let newList = []
-                    let regex = new RegExp(search, "i")
+                    let recherche = splitText(search, '*', ``)
+                    recherche = splitText(recherche, '(', ``)
+                    recherche = splitText(recherche, ')', ``)
+                    recherche = splitText(recherche, '?', ``)
+                    recherche = splitText(recherche, '+', ``)
+
+
+                    console.log("recherche", recherche)
+                    let regex = new RegExp(recherche, "g")
                     if(search && search != ""){
                         Matieres.forEach(element => {
                             let item = eval('element.matiere')
@@ -46,6 +54,34 @@ const SelectMatiere = ({label, value, id, indexMatiere}) => {
         })
         setSearch("")
     }
+
+    const splitText = (texte, str, replace) => {
+
+        // let result = ""
+        // for (let item in texte) {
+        //     if(texte[item]==`\"`){
+        //         result += `\"\"`
+        //     }
+        //     else{
+        //         result += texte[item]
+        //     }
+        // }
+
+        // return result
+        let result = ""
+        for (let item in texte) {
+            if(texte[item]==`${str}`){
+                result += `${replace}`
+            }
+            else{
+                result += texte[item]
+            }
+        }
+
+        return result
+
+    }
+
     //render
     return (
     <div className="col-md-3">

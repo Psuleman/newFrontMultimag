@@ -13,6 +13,8 @@ const ValueListe = ({item}) => {
     const [stock, setStock] = useState([])
     const [imgExist, setImgExist] = useState(false)
     const [tagBackground, setTagBackground] = useState("")
+    const [variants, setVariants] = useState([])
+
     const {serviceUser} = useContext(ListeContext)
     let navigate = useNavigate()
 
@@ -53,6 +55,9 @@ const ValueListe = ({item}) => {
         if(item.variants){
             let arrayTemp = item.variants
             arrayTemp.forEach(element => {
+                if(element.stock_18 && element.stock_7 && element.stock_14 && element.stock_0 && element.stock_9 && element.stock_3){
+                    
+                }
                 tab = {
                     boissy : tab.boissy + element.stock_18,
                     sevigne : tab.sevigne + element.stock_7,
@@ -77,8 +82,19 @@ const ValueListe = ({item}) => {
             categorieItem += " > " + (item.filtre_produit ? item.filtre_produit : item.sous_categorie_fnr)
             setCategorie(categorieItem)
         }
+
+        let tabVariants = []
+        item.variants.forEach(element => {
+            if(element.stock_18 && element.stock_7 && element.stock_14 && element.stock_0 && element.stock_9 && element.stock_3){
+                tabVariants.push(element)
+            }
+            
+        });
+        setVariants(tabVariants)
+
+
     }, [])
-    
+    console.log("item : ", item)
     const handleClick = () => {
         let path = `/produit/` + item.sku + ``;
         navigate(path)
@@ -155,8 +171,8 @@ const ValueListe = ({item}) => {
         </tr>
         {
 
-            showVariant &&
-            item.variants.map((i, index)=>(
+            showVariant && variants && 
+            variants.map((i, index)=>(
             <tr key={"variant_" + i + "_" + index}>
                 <td className="px-2 sku" colSpan="2" >{i.variant_sku}</td>
                 <td className="px-2" colSpan="10"></td>

@@ -1,14 +1,40 @@
+import { useEffect } from "react";
+import { useState } from "react";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { ListeContext } from "./Context/ListeContext";
 import { ListeExportContext } from "./Context/ListeExportContext";
 import ExportCsv from "./ExportCsv";
+import ToutCocher from "./ToutCocher";
 
 const Header = () => {
     //variable
+    const [infoExport, setInfoExport] = useState()
+
     const {totalSkus, liste, skus, serviceUser} = useContext(ListeContext)
     const {listesProduitExport} = useContext(ListeExportContext)
     //fonction
+
+    useEffect(()=>{
+        if(listesProduitExport){
+            let totalskuExport = 0
+            listesProduitExport.forEach(element => {
+                if(element.title){
+                    totalskuExport+=1
+                }
+            });
+
+
+            if(totalskuExport>0){
+                setInfoExport(totalskuExport + " produits séléctionnées")
+            }
+            else{
+                setInfoExport("0 produit")
+            }
+        }
+    }, [listesProduitExport])
+
+
     const handleClick = () => {
         
     }
@@ -58,7 +84,10 @@ const Header = () => {
         }
         {
             (listesProduitExport && totalSkus>0 && liste=="export") &&
-            <div className="d-flex justify-content-between pt-2 pb-2 action">
+            <div className="d-flex align-items-center p-2 pb-2 action">
+                <ToutCocher />
+                <div className="me-3 badge text-bg-light"> {infoExport} </div>
+
                 <ExportCsv />
             </div>
 

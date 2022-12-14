@@ -15,8 +15,9 @@ const Table = () => {
     const {skus, totalSkus, liste, serviceUser} = useContext(ListeContext)
     const [listesProduit, setListesProduit] = useState([])
     const [listesProduitExport , setListesProduitExport] = useState([])
+    
     useEffect(()=>{
-        if(liste=="export" && skus && totalSkus>0){
+        if(((listesProduit && listesProduit.length==0) || !listesProduit) && liste=="export" && skus && totalSkus>0){
             let tab = []
 
             for(let index in skus){
@@ -27,13 +28,14 @@ const Table = () => {
                         let prixRemise = element.tarifs[0].prix_vente * (element.tarifs[0].remise / 100)
                         let marque = element.marque ? element.marque.marque : element.nom_produit_fr
                         let imgAltText = (marque + " " + element.nom_produit_fr + " " + marque)
-                        let nom_produit_fr = element.nom_produit_fr.replace(" ", "_")
+                        //let nom_produit_fr = element.nom_produit_fr.replace(" ", "_")
+                        let nom_produit_fr = splitText(element.nom_produit_fr, " ", "_")
                         let tarifReduit = (element.tarifs[0].prix_vente && element.tarifs[0].prix_vente) ? (parseFloat(element.tarifs[0].prix_vente) - (parseFloat(element.tarifs[0].prix_vente) * (parseFloat(element.tarifs[0].remise)/100))) : null
 
                         let itemtab = {
                             lien: element.lien,
                             sku_integer: element.sku,
-                            sku : marque + "_" + nom_produit_fr + "_" + element.sku,
+                            sku : splitText(marque, " ", "_") + "_" + nom_produit_fr + "_" + element.sku,
                             command : "MERGE",
                             title : item==0 ?  marque + " " + element.nom_produit_fr : null,
                             descriptionFr : item==0 ?  element.description_fr : null,//Body html
@@ -96,6 +98,7 @@ const Table = () => {
                             matiere10: item == 0 && element.matiereProduits[9]? element.matiereProduits[9].matiere.matiere : null,
                             pourcentageMatiere10: item == 0 && element.matiereProduits[9]? (element.matiereProduits[9].pourcentageMatiere + "%") : null,      
                             custom_product : "TRUE" ,
+                            isChecked: true
                         }
 
                         tab.push(itemtab)
@@ -122,13 +125,13 @@ const Table = () => {
             // });
             for(let item in tab){
                 // let title = tab[item].title ? tab[item].title.replace(`"`, `"`) : null
-                let title = tab[item].title ? splitText(tab[item].title): null
+                let title = tab[item].title ? splitText(tab[item].title, `\"`, `\"\"`): null
 
                 // let descriptionFr = tab[item].descriptionFr ? tab[item].descriptionFr.replace(`"`, `"`) : null
-                let descriptionFr = tab[item].descriptionFr ? splitText(tab[item].descriptionFr) : null
+                let descriptionFr = tab[item].descriptionFr ? splitText(tab[item].descriptionFr, `\"`, `\"\"`) : null
 
                 // let img_alt_text = tab[item].img_alt_text ? tab[item].img_alt_text.replace(`"`, `"`) : null  
-                let img_alt_text = tab[item].img_alt_text ? splitText(tab[item].img_alt_text) : null
+                let img_alt_text = tab[item].img_alt_text ? splitText(tab[item].img_alt_text, `\"`, `\"\"`) : null
 
                 tabExport[item] = tab[item]
 
@@ -141,14 +144,29 @@ const Table = () => {
             setListesProduitExport(tabExport)
             // console.log("tabExport", tabExport)
         }
-    }, [skus])
 
-    const splitText = (texte) => {
+        else{
+            //console.log("reload")
+        }
+    }, [skus, listesProduit, listesProduitExport])
 
+    const splitText = (texte, str, replace) => {
+
+        // let result = ""
+        // for (let item in texte) {
+        //     if(texte[item]==`\"`){
+        //         result += `\"\"`
+        //     }
+        //     else{
+        //         result += texte[item]
+        //     }
+        // }
+
+        // return result
         let result = ""
         for (let item in texte) {
-            if(texte[item]==`\"`){
-                result += `\"\"`
+            if(texte[item]==`${str}`){
+                result += `${replace}`
             }
             else{
                 result += texte[item]
@@ -165,8 +183,8 @@ const Table = () => {
     return (
         <section>
             <ListeExportContext.Provider value={{
-                listesProduit: listesProduit,
-                listesProduitExport: listesProduitExport
+                listesProduit: listesProduit, setListesProduit: setListesProduit,
+                listesProduitExport: listesProduitExport, setListesProduitExport: setListesProduitExport,
             }}>
             <Header/>
             <div className="table">
@@ -194,8 +212,8 @@ const Table = () => {
                         skus.map((item, index)=>( <ValueReferencement item={item} key={"sku_"+ index} />))
                     }    
                                         {
-                        totalSkus>0 && liste == "export" && 
-                        listesProduit.map((item, index)=>( <ValueExport item={item} key={"sku_"+ index} />))
+                        totalSkus>0 && liste == "export" && listesProduit &&
+                        listesProduit.map((item, index)=>( <ValueExport index={index} item={item} key={"sku_"+ index} />))
                     }   
                 </table>
             </div>

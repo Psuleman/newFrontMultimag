@@ -56,6 +56,12 @@ class ProduitPatchProcessor implements ProcessorInterface
          */
         $data->setDateRef(new \DateTime("now"));
 
+
+        /**
+         * Translate
+         */
+
+
         /**
          * marque
          */
@@ -271,30 +277,30 @@ class ProduitPatchProcessor implements ProcessorInterface
          * Variants
          */
         if($data->getVariantProduits()){
-            $totalSkuInitial = count($data->getVariants());
+            // $totalSkuInitial = count($data->getVariants());
 
-            if($totalSkuInitial != count($data->getVariantProduits())){
-                foreach ($data->getVariantProduits() as $key => $value) {
-                    # code...
-                    $exist = 0;
-                    foreach ($data->getVariants() as $cleVariant => $valueVariant) {
-                        # code...
-                        if($value["taille_fnr"]!= "" && $value["taille_fnr"] == $valueVariant->getTailleFnr()){
-                            $exist = 1;
-                        }
-                    }
+            // if($totalSkuInitial != count($data->getVariantProduits())){
+            //     foreach ($data->getVariantProduits() as $key => $value) {
+            //         # code...
+            //         $exist = 0;
+            //         foreach ($data->getVariants() as $cleVariant => $valueVariant) {
+            //             # code...
+            //             if($value["taille_fnr"]!= "" && $value["taille_fnr"] == $valueVariant->getTailleFnr()){
+            //                 $exist = 1;
+            //             }
+            //         }
 
-                    if($exist == 0){
-                        $newVariant = (new Variants)
-                        ->setTailleFnr($value["taille_fnr"])
-                        ->setVariantSku($value["variant_sku"])
-                        ;
+            //         if($exist == 0){
+            //             $newVariant = (new Variants)
+            //             ->setTailleFnr($value["taille_fnr"])
+            //             ->setVariantSku($value["variant_sku"])
+            //             ;
 
-                        $data->addVariant($newVariant);
-                        $this->_entityManager->persist($data);
-                    }
-                }
-            }
+            //             $data->addVariant($newVariant);
+            //             $this->_entityManager->persist($data);
+            //         }
+            //     }
+            // }
 
             $variants = $data->getVariants();
             foreach ($variants as $key => $value) {

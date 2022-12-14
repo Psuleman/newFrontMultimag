@@ -3,7 +3,8 @@ const ThExport = () => {
     return (
         <thead>
         <tr>
-            <th className="px-2 detailSku">Handle</th>
+            <th className="px-2 detailSku"></th>
+            <th className="px-2 sku">Handle</th>
             <th className="px-2">Command</th>
             <th className="px-2">Title</th>
             <th className="px-2">Body HTML</th>

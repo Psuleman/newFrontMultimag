@@ -39,7 +39,7 @@ const Tags = () => {
     return (
     <section className="row g-3 mt-3">
         
-        <div className="col-md-3">
+        <div className="col-md-6">
         <label htmlFor="tagrefTextarea" className="form-label">Tags (séparateur: virgule) <button type="button" class="btn btn-light" onClick={()=>{
             setTagsReferencementUpdate(tags)
             setGenerateTags(true)

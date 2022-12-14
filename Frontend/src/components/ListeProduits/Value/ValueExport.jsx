@@ -4,8 +4,10 @@ import Ceintre from "../../../assets/image/cintre-de-vetements.png"
 import Moment from "moment"
 import { useContext } from "react"
 import { ListeContext } from "../Context/ListeContext"
+import { ListeExportContext } from "../Context/ListeExportContext"
 
-const ValueExport = ({item}) => {
+const ValueExport = ({item, index}) => {
+    const {listesProduit, setListesProduit, setListesProduitExport, listesProduitExport} = useContext(ListeExportContext)
     //variable
     const [showVariant, setShowVariant] = useState(false)
     const [categorie, setCategorie] = useState()
@@ -15,6 +17,7 @@ const ValueExport = ({item}) => {
     const [title, setTitle] = useState()
     const [description, setDescription] = useState()
     const [imgAltText, setImgAltText] = useState()
+
     let navigate = useNavigate()
 
     const {liste} = useContext(ListeContext)
@@ -56,7 +59,7 @@ const ValueExport = ({item}) => {
             categorieItem += " > " + (item.filtre_produit ? item.filtre_produit : item.sous_categorie_fnr)
             setCategorie(categorieItem)
         }
-    }, [item])
+    }, [item, listesProduit])
 
     const subStr = (text) => {
         text=text.replace(`\"\"`, '@')
@@ -71,11 +74,68 @@ const ValueExport = ({item}) => {
         navigate(path)
     }
     
+    const handleChange = () => {
+        let check = !listesProduit[index].isChecked
+        let sku = item.sku_integer;
+
+        console.log(sku)
+
+        setListesProduit(oldState=>{
+            let newState = [...oldState]
+
+            for(let i in newState){
+                if(newState[i].sku_integer == sku){
+                    newState[i].isChecked = check
+                }
+            }
+
+            return newState
+        })
+
+
+        let tab = []
+
+        for(let i in listesProduit){
+            if(check == false){
+                if(listesProduit[i].sku_integer != sku &&  listesProduit[i].isChecked == true){
+                    tab.push(listesProduit[i])
+                    console.log(sku)
+                }
+                else{
+                    //console.log(sku , " décocher ")
+                }                
+            }
+            else{
+                if(listesProduit[i].sku_integer == sku || listesProduit[i].isChecked == true){
+                    tab.push(listesProduit[i])
+                    console.log(sku)
+                }
+                else{
+                    //console.log(sku , " décocher ")
+                }                 
+            }
+
+        }
+        setListesProduitExport(tab)
+        
+        
+    }
+
     //Render
     return (
         <tbody>
             <tr>
-                <td className="px-2 detailSku">{item.sku}</td>
+
+                <td className="px-2 detailSku">
+                {
+                    item.isChecked && item.title &&  <input className="form-check-input" type="checkbox" onChange={handleChange} checked/>
+                }
+                {
+                    (!item.isChecked && item.title) && <input className="form-check-input" onChange={handleChange} type="checkbox"/>
+                }                    
+                    
+                </td>
+                <td className="px-2 sku">{item.sku}</td>
                 <td className="px-2">{item.command}</td>              
                 <td className="px-2">{item.title}</td>              
                 <td className="px-2">{item.descriptionFr}</td>              
@@ -134,9 +194,12 @@ const ValueExport = ({item}) => {
                 <td className="px-2">{item.custom_product}</td>                     
                 <td className="px-2 action">
                     <center>
-                        <div className="modifier text-muted" onClick={handleClick}>
-                            <i class="fa fa-pen"></i>
-                        </div>
+                        {
+                            item.title && 
+                            <div className="modifier text-muted" onClick={handleClick}>
+                                <i class="fa fa-pen"></i>
+                            </div>
+                        }
                     </center>
                 </td>  
             </tr>            
