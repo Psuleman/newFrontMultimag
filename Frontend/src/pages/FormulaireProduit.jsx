@@ -333,9 +333,8 @@ const FormulaireProduit = () => {
             }            
         }  
     }, [])
-    //console.log("info ", infoSku)
+    console.log("info ", infoSku)
 
-    
     const handleClickSave = (e, section) => {
         // // //console.log("section", section)
         e.preventDefault()

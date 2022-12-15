@@ -15,9 +15,30 @@ const Table = () => {
     const {skus, totalSkus, liste, serviceUser} = useContext(ListeContext)
     const [listesProduit, setListesProduit] = useState([])
     const [listesProduitExport , setListesProduitExport] = useState([])
+    const [totalAncienList, setTotalAncienList] = useState([])
     
     useEffect(()=>{
-        if(((listesProduit && listesProduit.length==0) || !listesProduit) && liste=="export" && skus && totalSkus>0){
+
+
+        setTotalAncienList(0)
+        listesProduit.forEach(element => {
+            if(element.title){
+                setTotalAncienList(oldState=>{
+                    let newState = oldState + 1
+                    return newState
+                })
+            }
+        });
+        console.log('listesProduit ', totalAncienList)
+        console.log('skus ', totalSkus)
+        // if(((listesProduit && listesProduit.length==0) || !listesProduit) && liste=="export" && skus && (totalSkus>0 && totalSkus!=totalAncienList) && (totalSkus != listesProduit.length )){
+
+        /**
+         * liste produits n'existe pas
+         * ou quand il existe mais listeProduits et skus ne sont pas les même
+         */
+
+        if(((listesProduit && listesProduit.length==0) || !listesProduit) && liste=="export" && skus && (totalSkus>0 && totalSkus!=totalAncienList) && (totalSkus != listesProduit.length )){
             let tab = []
 
             for(let index in skus){
@@ -148,8 +169,11 @@ const Table = () => {
         else{
             //console.log("reload")
         }
+
     }, [skus, listesProduit, listesProduitExport])
 
+
+    console.log("skus : ", skus)
     const splitText = (texte, str, replace) => {
 
         // let result = ""

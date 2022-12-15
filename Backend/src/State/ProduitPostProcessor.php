@@ -307,7 +307,8 @@ class ProduitPostProcessor implements ProcessorInterface
              * Produits n'existe pas dans la base de données
              */
             //Nouveau produit
-            $data->setNewProduit(true);
+            // $data->setNewProduit(true); A REMETTRE
+            $data->setNewProduit(false);
             $data->setReferencer(false);
             $data->setNewListAttente(false);
 
@@ -635,34 +636,34 @@ class ProduitPostProcessor implements ProcessorInterface
                     }
 
                     if($key == "stockMag0")
-                        $variants->setStock0($value);
+                        $variants->setStock0($value ? $value : 0);
 
                     if($key == "stockMag3")
-                        $variants->setStock3($value);
+                        $variants->setStock3($value ? $value : 0);
 
                     if($key == "stockMag7")
-                        $variants->setStock7($value);
+                        $variants->setStock7($value ? $value : 0);
 
                     if($key == "stockMag9")
-                        $variants->setStock9($value);
+                        $variants->setStock9($value ? $value : 0);
 
                     if($key == "stockMag11")
-                        $variants->setStock11($value);
+                        $variants->setStock11($value ? $value : 0);
 
                     if($key == "stockMag12")
-                        $variants->setStock12($value);
+                        $variants->setStock12($value ? $value : 0);
 
                     if($key == "stockMag14")
-                        $variants->setStock14($value);
+                        $variants->setStock14($value ? $value : 0);
 
                     if($key == "stockMag18")
-                        $variants->setStock18($value);
+                        $variants->setStock18($value ? $value : 0);
 
                     if($key == "stockMag20")
-                        $variants->setStock20($value);
+                        $variants->setStock20($value ? $value : 0);
 
                     if($key == "stockMag60")
-                        $variants->setStock60($value);
+                        $variants->setStock60($value ? $value : 0);
 
                 }
 
@@ -674,19 +675,19 @@ class ProduitPostProcessor implements ProcessorInterface
                     /**
                      * Stockage
                     */
-                    $this->_entityManager->persist($variants); 
+                    //$this->_entityManager->persist($variants); 
                     $data->addVariant($variants);         
                 }
                 else{
-                    $findVariants->setStock0($variants->getStock0() ? $variants->getStock0() : 0);
-                    $findVariants->setStock3($variants->getStock3() ? $variants->getStock3() : 0);
-                    $findVariants->setStock7($variants->getStock7() ? $variants->getStock7() : 0);
-                    $findVariants->setStock9($variants->getStock9() ? $variants->getStock9() : 0);
-                    $findVariants->setStock11($variants->getStock11() ? $variants->getStock11() : 0);
-                    $findVariants->setStock12($variants->getStock12() ? $variants->getStock12() : 0);
-                    $findVariants->setStock14($variants->getStock14() ? $variants->getStock14() : 0);
-                    $findVariants->setStock20($variants->getStock20() ? $variants->getStock20() : 0);
-                    $findVariants->setStock60($variants->getStock60() ? $variants->getStock60() : 0);
+                    $findVariants->setStock0($variants->getStock0());
+                    $findVariants->setStock3($variants->getStock3());
+                    $findVariants->setStock7($variants->getStock7());
+                    $findVariants->setStock9($variants->getStock9());
+                    $findVariants->setStock11($variants->getStock11());
+                    $findVariants->setStock12($variants->getStock12());
+                    $findVariants->setStock14($variants->getStock14());
+                    $findVariants->setStock20($variants->getStock20());
+                    $findVariants->setStock60($variants->getStock60());
                 }
             }
         }

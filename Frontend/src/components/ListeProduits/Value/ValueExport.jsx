@@ -135,7 +135,7 @@ const ValueExport = ({item, index}) => {
                 }                    
                     
                 </td>
-                <td className="px-2 sku">{item.sku}</td>
+                <td className="px-2 sku">{item.sku_integer}</td>
                 <td className="px-2">{item.command}</td>              
                 <td className="px-2">{item.title}</td>              
                 <td className="px-2">{item.descriptionFr}</td>              

@@ -17,6 +17,16 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class ReferenceController extends AbstractController
 {
+
+	#[Route('/remove/produit', name: 'app_reference_remove')]
+    public function removeProduits(EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response
+    {
+		echo "ok";
+        return $this->render('reference/index.html.twig', [
+            'controller_name' => 'ReferenceController',
+        ]);    
+	}
+
     #[Route('/', name: 'app_reference_index')]
     public function index(EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response
     {
@@ -2487,4 +2497,7 @@ class ReferenceController extends AbstractController
             'controller_name' => 'ReferenceController',
         ]);
     }
+
+
+
 }

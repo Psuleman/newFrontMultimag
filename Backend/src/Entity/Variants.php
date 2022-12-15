@@ -26,6 +26,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new GetCollection()
     ]
 )]
+#[Delete()]
 // #[ApiResource(
 //     operations: [
 //         new Get(

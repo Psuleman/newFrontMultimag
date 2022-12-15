@@ -182,44 +182,51 @@ const Formulaire = () => {
                 Papa.parse(file[0],{
                 complete: function(resultat){
                     //setData(resultat.data)
+
+                    /**
+                     * debut 
+                     */
+                    // let donnees = resultat.data
+
+                    // setTotaldata(donnees.length)
+
+                    // let dateAnterieur = Moment().subtract(30,'d').format('YYYY-MM-DD')
+                    // // let dateAnterieur = Moment().subtract(300,'d').format('YYYY-MM-DD')
+
+                    // let tabTemporaire = []
+
+                    // for(let i in donnees){
+                    //     let dateProduit = Moment(donnees[i][1], 'DD/MM/YYYY').format("YYYY-MM-DD")
+                    //     if(Moment(dateProduit).isAfter(dateAnterieur)){
+                    //         ////console.log(dateAnterieur)
+                    //         tabTemporaire.push(donnees[i])
+                    //     }
+                    // }
+
+                    // if((tabTemporaire.length)>0){
+                    //     setData(tabTemporaire) //A REMETTRE
+                    // }
+                    // else{
+                    //  setFinImport(true)
+                    //  setTotalNewProduct(0)
+                    //  setPatienceImport(false)                      
+                    // }
+                    /**
+                     * FIN
+                     */
+
                     let donnees = resultat.data
-
                     setTotaldata(donnees.length)
-
-                    let dateAnterieur = Moment().subtract(30,'d').format('YYYY-MM-DD')
-                    // let dateAnterieur = Moment().subtract(300,'d').format('YYYY-MM-DD')
-
-                    let tabTemporaire = []
-
-                    for(let i in donnees){
-                        let dateProduit = Moment(donnees[i][1], 'DD/MM/YYYY').format("YYYY-MM-DD")
-                        if(Moment(dateProduit).isAfter(dateAnterieur)){
-                            ////console.log(dateAnterieur)
-                            tabTemporaire.push(donnees[i])
-                        }
-                    }
-
-                    if((tabTemporaire.length)>0){
-                        setData(tabTemporaire) //A REMETTRE
-                    }
-                    else{
-                     setFinImport(true)
-                     setTotalNewProduct(0)
-                     setPatienceImport(false)                      
-                    }
-
-                    /*let donnees = resultat.data
-                    setTotaldata(donnees.length)
-                    let datedeb = Moment("2021-12-31").format('YYYY-MM-DD')
-                    let datefin = Moment("2022-08-31").format('YYYY-MM-DD')
+                    let datedeb = Moment("2020-12-01").format('YYYY-MM-DD')
+                    let datefin = Moment("2022-09-01").format('YYYY-MM-DD')
 
                     let tabTemporaire = []
                     for(let i in donnees){
                         let dateProduit = Moment(donnees[i][1], 'DD/MM/YYYY').format("YYYY-MM-DD")
                         
                             if(
-                            (Moment(dateProduit).isAfter(datedeb))
-                            && 
+                            // (Moment(dateProduit).isAfter(datedeb))
+                            // && 
                             (Moment(dateProduit).isBefore(datefin))
                             ){
                             //console.log("test")
@@ -230,7 +237,7 @@ const Formulaire = () => {
                             }
                 }
                     setData(tabTemporaire)
-                    //console.log(tabTemporaire)*/
+                    //console.log(tabTemporaire)
                 }})
 
             }

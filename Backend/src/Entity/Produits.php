@@ -28,7 +28,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
     // operations: [new GetCollection()]
-    paginationItemsPerPage: 10
+    paginationItemsPerPage: 50
 )]
 #[POST(
     processor: ProduitPostProcessor::class

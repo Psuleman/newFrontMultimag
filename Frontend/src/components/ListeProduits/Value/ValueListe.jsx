@@ -55,9 +55,7 @@ const ValueListe = ({item}) => {
         if(item.variants){
             let arrayTemp = item.variants
             arrayTemp.forEach(element => {
-                if(element.stock_18 && element.stock_7 && element.stock_14 && element.stock_0 && element.stock_9 && element.stock_3){
-                    
-                }
+                if(element.stock_18!=null && element.stock_7!=null && element.stock_14!=null && element.stock_0!=null && element.stock_9!=null && element.stock_3!=null){
                 tab = {
                     boissy : tab.boissy + element.stock_18,
                     sevigne : tab.sevigne + element.stock_7,
@@ -66,7 +64,9 @@ const ValueListe = ({item}) => {
                     referencement : tab.referencement + element.stock_9,
                     total : tab.total + element.stock_3,
                     taille : tab.taille + ", " + element.taille_fnr
+                }                    
                 }
+
                 
             });
             tab.taille = tab.taille.substring(1)
@@ -85,7 +85,7 @@ const ValueListe = ({item}) => {
 
         let tabVariants = []
         item.variants.forEach(element => {
-            if(element.stock_18 && element.stock_7 && element.stock_14 && element.stock_0 && element.stock_9 && element.stock_3){
+            if(element.stock_18!=null && element.stock_7!=null && element.stock_14!=null && element.stock_0!=null && element.stock_9!=null && element.stock_3!=null){
                 tabVariants.push(element)
             }
             

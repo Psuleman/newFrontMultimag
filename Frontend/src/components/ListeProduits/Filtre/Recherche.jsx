@@ -21,7 +21,10 @@ const Recherche = () => {
     <div className="form-group">
         <label className="mb-1" htmlFor="rechercheSKUInput">Recherche par SKU</label>
         <div className="input-group mb-3">
-            <input type="search" className="form-control" id="rechercheSKUInput" placeholder="Saisissez le SKU" value={searchSkus} onChange={(e)=>{setSearchSkus(e.target.value)}} />
+            <input type="search" className="form-control" id="rechercheSKUInput" placeholder="Saisissez le SKU" value={searchSkus} onChange={(e)=>{
+                setSearchSkus(e.target.value)
+                setValidateSearchSkus(false)
+                }} />
 
             {
                 validateSearchSkus ? 
