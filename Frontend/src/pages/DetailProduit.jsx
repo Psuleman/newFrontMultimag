@@ -105,7 +105,7 @@ const DetailProduit = () => {
     return (
         <Template>
             <header>
-                <div><Link to="/produits/listes">Liste des produits > </Link></div>
+                <div><Link to="/produits/export">Liste des produits exporter > </Link></div>
                 <div className="fs-3 fw-bolder">Détail produit {parseInt(sku)}</div>
             </header>
             <div className="d-xxl-flex d-xl-flex d-lg-flex d-md-flex mt-4 flex-row flex-xxl-row flex-xl-row flex-lg-row flex-md-row flex-sm-column-reverse justify-content-xxl-between justify-content-xl-start justify-content-lg-start justify-content-md-start "  id="produit">

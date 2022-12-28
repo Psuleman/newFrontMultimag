@@ -62,7 +62,7 @@ const Tarifs = () => {
 
                     <div className="col-md-3">
                         <label htmlFor="inputCouleurFnr" className="form-label">{index == 0 ? " * Prix" : "Prix"}</label>
-                        <input type="number" min="0" className="form-control" id="inputCouleurFnr" value={tarifUpdate[index].prix_vente} onChange={(e)=>{
+                        <input type="number" step="0.01" min="0" className="form-control" id="inputCouleurFnr" value={tarifUpdate[index].prix_vente} onChange={(e)=>{
                             setTarifUpdate(oldState=>{
                                 let newState = [...oldState]
                                 newState[index].prix_vente = e.target.value

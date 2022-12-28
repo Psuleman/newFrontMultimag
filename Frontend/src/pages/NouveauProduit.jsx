@@ -32,7 +32,7 @@ const NouveauProduit = () => {
                 let user = JSON.parse(localStorage.getItem('user_multimag'))
                 if(user.service){
                     let regex = user.service.match(/e-shop/g)
-                    let serviceTemp = (user.service && (regex!=null || user.service == "IT" ||  user.service == "Logistique")) ? "admin" : "user"
+                    let serviceTemp = (user.service && (user.service == "e-shop & référencement" || user.service == "IT")) ? "admin" : "user"
                     if(serviceTemp == "user"){
                         navigate('/produits/listes')
                     }

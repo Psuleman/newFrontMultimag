@@ -7,7 +7,7 @@ const SidebarUser = () => {
         <Link to="/produits/listes" className="nav-link">Liste des produits</Link>
         {/* <Link className="nav-link" to="/utilisateur">Gestion des utilisateurs</Link> */}
         <div className="nav-link">
-            Compte
+            Mon compte
             <ul className="submenu">
                 <li><Link to="/mon-compte" className="nav-link">Configuration</Link></li>
                 <li><Link to="/" className="nav-link">Déconnexion</Link></li>

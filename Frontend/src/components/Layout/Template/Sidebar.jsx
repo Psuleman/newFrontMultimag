@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import { TemplateContext } from "./Context/TemplateContext"
 import SidebarAdmin from "./SideBarAdmin"
 import SidebarSuperAdmin from "./SidebarSuperAdmin"
+import SidebarSuperIdAdmin from "./SidebarSuperIdAdmin"
 import SidebarUser from "./SidebarUser"
 
 const Sidebar = () => {
@@ -19,10 +20,13 @@ const Sidebar = () => {
             else{
 
                 if(service){
-                    if(service && (service == "e-shop & référencement" || service == "IT" )){
+                    if(service && (service == "IT" )){
+                        setRole("super IT admin")
+                    }
+                    else if(service && (service == "e-shop & référencement")){
                         setRole("super admin")
                     }
-                    else if(service.match(/e-shop/g)!= null || service == "Logistique"){
+                    else if(service == "e-shop" || service == "Logistique"){
                         setRole("admin")
                     }
                     else{
@@ -48,6 +52,10 @@ const Sidebar = () => {
         {
             role && role == "super admin" &&
             <SidebarSuperAdmin />
+        }        
+        {
+            role && role == "super IT admin" &&
+            <SidebarSuperIdAdmin />
         }
     </div>            
 

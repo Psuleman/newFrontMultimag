@@ -296,10 +296,10 @@ class ProduitPostProcessor implements ProcessorInterface
         
         $findProduit = $this->_entityManager->getRepository(Produits::class)->findOneBy([
         "sku" => $sku,
-        "date_arrivee" => $data->getDateArrivee(),
+/*        "date_arrivee" => $data->getDateArrivee(),
         "reference_fournisseur" => $data->getReferenceFournisseur(),
         "code_fournisseur" => $data->getCodeFournisseur(),
-        "nom_fournisseur" => $nom_fournisseur,
+        "nom_fournisseur" => $nom_fournisseur,*/
         ]);
 
         if(!$findProduit){
@@ -307,8 +307,8 @@ class ProduitPostProcessor implements ProcessorInterface
              * Produits n'existe pas dans la base de données
              */
             //Nouveau produit
-            // $data->setNewProduit(true); A REMETTRE
-            $data->setNewProduit(false);
+            $data->setNewProduit(true);
+            // $data->setNewProduit(false);
             $data->setReferencer(false);
             $data->setNewListAttente(false);
 
@@ -586,32 +586,32 @@ class ProduitPostProcessor implements ProcessorInterface
         /**
          * debut modif
          */
-        foreach ($this->_grilleTailleFnr as $key => $value) {
-            # code...
-            if($value["grilleTaille"] == $data->getGrilleTailleFournisseur() ){
-                foreach ($value["tailles"] as $keyTaile => $valueTaille) {
-                    # code...
-                    $variant = (new Variants())
-                    ->setSku($data)
-                    ->setVariantSku($data->getSku() ."_" . $valueTaille)
-                    ->setTailleFnr($valueTaille)
-                    ;
+        // foreach ($this->_grilleTailleFnr as $key => $value) {
+        //     # code...
+        //     if($value["grilleTaille"] == $data->getGrilleTailleFournisseur() ){
+        //         foreach ($value["tailles"] as $keyTaile => $valueTaille) {
+        //             # code...
+        //             $variant = (new Variants())
+        //             ->setSku($data)
+        //             ->setVariantSku($data->getSku() ."_" . $valueTaille)
+        //             ->setTailleFnr($valueTaille)
+        //             ;
 
-                    $findVariants = $this->_entityManager->getRepository(Variants::class)->findOneBy([
-                        "sku" => $variant->getSku(),
-                        "taille_fnr" => $variant->getTailleFnr()
-                    ]);
-                    if(!$findVariants){
-                        /**
-                         * Stockage
-                        */
-                        $this->_entityManager->persist($variant); 
-                        $data->addVariant($variant);         
-                    }
-                } //end foreach
+        //             $findVariants = $this->_entityManager->getRepository(Variants::class)->findOneBy([
+        //                 "sku" => $variant->getSku(),
+        //                 "taille_fnr" => $variant->getTailleFnr()
+        //             ]);
+        //             if(!$findVariants){
+        //                 /**
+        //                  * Stockage
+        //                 */
+        //                 //$this->_entityManager->persist($variant); 
+        //                 $data->addVariant($variant);         
+        //             }
+        //         } //end foreach
                 
-            }
-        }
+        //     }
+        // }
 
 
          /**
@@ -636,34 +636,34 @@ class ProduitPostProcessor implements ProcessorInterface
                     }
 
                     if($key == "stockMag0")
-                        $variants->setStock0($value ? $value : 0);
+                        $variants->setStock0($value);
 
                     if($key == "stockMag3")
-                        $variants->setStock3($value ? $value : 0);
+                        $variants->setStock3($value);
 
                     if($key == "stockMag7")
-                        $variants->setStock7($value ? $value : 0);
+                        $variants->setStock7($value);
 
                     if($key == "stockMag9")
-                        $variants->setStock9($value ? $value : 0);
+                        $variants->setStock9($value);
 
                     if($key == "stockMag11")
-                        $variants->setStock11($value ? $value : 0);
+                        $variants->setStock11($value);
 
                     if($key == "stockMag12")
-                        $variants->setStock12($value ? $value : 0);
+                        $variants->setStock12($value);
 
                     if($key == "stockMag14")
-                        $variants->setStock14($value ? $value : 0);
+                        $variants->setStock14($value);
 
                     if($key == "stockMag18")
-                        $variants->setStock18($value ? $value : 0);
+                        $variants->setStock18($value);
 
                     if($key == "stockMag20")
-                        $variants->setStock20($value ? $value : 0);
+                        $variants->setStock20($value);
 
                     if($key == "stockMag60")
-                        $variants->setStock60($value ? $value : 0);
+                        $variants->setStock60($value);
 
                 }
 
@@ -675,19 +675,20 @@ class ProduitPostProcessor implements ProcessorInterface
                     /**
                      * Stockage
                     */
-                    //$this->_entityManager->persist($variants); 
-                    $data->addVariant($variants);         
+                    $data->addVariant($variants);
                 }
                 else{
-                    $findVariants->setStock0($variants->getStock0());
-                    $findVariants->setStock3($variants->getStock3());
-                    $findVariants->setStock7($variants->getStock7());
-                    $findVariants->setStock9($variants->getStock9());
-                    $findVariants->setStock11($variants->getStock11());
-                    $findVariants->setStock12($variants->getStock12());
-                    $findVariants->setStock14($variants->getStock14());
-                    $findVariants->setStock20($variants->getStock20());
-                    $findVariants->setStock60($variants->getStock60());
+                    $findVariants->setStock0($variants->getStock0() ? $variants->getStock0() : 0);
+                    $findVariants->setStock3($variants->getStock3() ? $variants->getStock3() : 0);
+                    $findVariants->setStock7($variants->getStock7() ? $variants->getStock7() : 0);
+                    $findVariants->setStock9($variants->getStock9() ? $variants->getStock9() : 0);
+                    $findVariants->setStock11($variants->getStock11() ? $variants->getStock11() : 0);
+                    $findVariants->setStock12($variants->getStock12() ? $variants->getStock12() : 0);
+                    $findVariants->setStock14($variants->getStock14() ? $variants->getStock14() : 0);
+                    $findVariants->setStock20($variants->getStock20() ? $variants->getStock20() : 0);
+                    $findVariants->setStock60($variants->getStock60() ? $variants->getStock60() : 0);
+
+                    $this->_entityManager->persist($findVariants);
                 }
             }
         }

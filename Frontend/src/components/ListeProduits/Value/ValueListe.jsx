@@ -25,7 +25,7 @@ const ValueListe = ({item}) => {
     image = images[0];
     //fonction
     useEffect(()=>{
-        //console.log("item variants", item.variants)
+        //// console.log("item variants", item.variants)
         //image
 
 
@@ -62,15 +62,16 @@ const ValueListe = ({item}) => {
                     herold : tab.herold + element.stock_14,
                     depot : tab.depot + element.stock_0,
                     referencement : tab.referencement + element.stock_9,
-                    total : tab.total + element.stock_3,
+                    total : 0,
                     taille : tab.taille + ", " + element.taille_fnr
-                }                    
+                }   
                 }
 
                 
             });
             tab.taille = tab.taille.substring(1)
         }
+        tab.total = tab.boissy + tab.sevigne + tab.herold + tab.depot + tab.referencement
         setStock(tab)
 
 
@@ -94,7 +95,7 @@ const ValueListe = ({item}) => {
 
 
     }, [])
-    console.log("item : ", item)
+    // console.log("item : ", item)
     const handleClick = () => {
         let path = `/produit/` + item.sku + ``;
         navigate(path)

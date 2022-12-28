@@ -38,7 +38,7 @@ const FormulaireProduit = () => {
     const [universEnUpdate, setUniversEnUpdate] = useState()
     const [marqueUpdate, setMarqueUpdate] = useState()
     const [paysOrigineUpdate, setPaysOrigineUpdate] = useState()
-
+    const [referenceFournisseurUpdate, setReferenceFournisseurUpdate] = useState()
 
     const [categorieUpdate, setCategorieUpdate] = useState()
 	const [categorieEnUpdate, setCategorieEnUpdate] = useState()
@@ -46,6 +46,7 @@ const FormulaireProduit = () => {
 	const [sousCategorieEnUpdate, setSousCategorieEnUpdate] = useState()
 	const [filtreUpdate, setFiltreUpdate] = useState()
 	const [filtreEnUpdate, setFiltreEnUpdate] = useState()
+    const [referenceCouleurUpdate, setReferenceCouleurUpdate] = useState()
     const [couleurUpdate, setCouleurUpdate] = useState()
 	const [couleurEnUpdate, setCouleurEnUpdate] = useState()
 	const [coupeUpdate, setCoupeUpdate] = useState()
@@ -80,8 +81,15 @@ const FormulaireProduit = () => {
     const [generateTags, setGenerateTags] = useState(true)
     const [infoGenerateTags, setInfoGenerateTags] = useState(true)
 
+    const [messageSave, setMessageSave] = useState()
+    const [isSuccessSave, setIsSuccessSave] = useState()
+    const [sectionSave, setSectionSave] = useState()
+
     //Fonction
     useEffect(() => {
+        setMessageSave()
+        setIsSuccessSave()
+        setSectionSave()
         if(localStorage.getItem('user_multimag')){
             let token =  JSON.parse(localStorage.getItem('user_multimag')).token
             if(!token){
@@ -120,7 +128,7 @@ const FormulaireProduit = () => {
                 navigate('/')
             }
             else{
-                // //console.log("sku", sku)
+                // //// console.log("sku", sku)
                 let promise = Promise.resolve(getProduit(sku));
                 promise.then((value) => {
                     if(value){
@@ -128,7 +136,7 @@ const FormulaireProduit = () => {
                             let valeur = value[item]
                             if(item == "hydra:member"){
                                 setInfoSku(valeur[0])
-                                //console.log("valeur[0] : ",valeur[0])
+                                //// console.log("valeur[0] : ",valeur[0])
                                 //Information
                                 let univers = valeur[0].univers!= null ? valeur[0].univers : ""
                                 let universEn = valeur[0].univers_en!= null ? valeur[0].univers_en : ""
@@ -158,7 +166,7 @@ const FormulaireProduit = () => {
                                 let entretien = (valeur[0].entretien != null) ? valeur[0].entretien : ""
 
                                 //tailles
-                                // //console.log(valeur[0]);
+                                // //// console.log(valeur[0]);
                                 let variant = []
                                 let grilleTaille = ""
                                 for(let i in valeur[0].variants){
@@ -179,10 +187,10 @@ const FormulaireProduit = () => {
                                 // if(GrilleTailleFnr){
                                 //     let tabVariants = []
                                 //     GrilleTailleFnr.forEach(element => {
-                                //         console.log(element)
-                                //         console.log(value[0])
+                                //         // console.log(element)
+                                //         // console.log(value[0])
                                 //         if(value[0] && value[0].grille_taille_fournisseur && (element.grilleTaille == value[0].grille_taille_fournisseur)){
-                                //             console.log("tailles : ", element.tailles)
+                                //             // console.log("tailles : ", element.tailles)
                                 //             element.tailles.forEach(elementTaille => {
                                 //                 tab = {
                                 //                     taille_fnr: elementTaille,
@@ -193,7 +201,7 @@ const FormulaireProduit = () => {
                                 //             });
                                 //         }
                                 //     });
-                                //     console.log("tabVariants ", tabVariants)
+                                //     // console.log("tabVariants ", tabVariants)
                                 //     setAttributUpdate(tabVariants)
                                 // }
 
@@ -240,7 +248,8 @@ const FormulaireProduit = () => {
                                     }
                                 }
                                 setMatiereUpdate(matiere)
-
+                                setReferenceFournisseurUpdate(valeur[0].reference_fournisseur ? valeur[0].reference_fournisseur : "")
+                                setReferenceCouleurUpdate(valeur[0].reference_couleur ? valeur[0].reference_couleur : "")
                                 setGrilleTailleUpdate(grilleTaille)
                                 setAttributUpdate(variant)
                                 setCategorieUpdate(categorie)
@@ -333,10 +342,10 @@ const FormulaireProduit = () => {
             }            
         }  
     }, [])
-    console.log("info ", infoSku)
+    // console.log("info ", infoSku)
 
     const handleClickSave = (e, section) => {
-        // // //console.log("section", section)
+        // // //// console.log("section", section)
         e.preventDefault()
         setSectionUpdate(section)
         let token =  JSON.parse(localStorage.getItem('user_multimag')).token
@@ -455,7 +464,8 @@ const FormulaireProduit = () => {
                 paysOrigine: paysOrigineUpdate?paysOrigineUpdate : "",
                 univers: universUpdate? universUpdate : infoSku.univers,
                 universEn: universEnUpdate? universEnUpdate : infoSku.universEn,
-              
+                referenceFournisseur: referenceFournisseurUpdate ? referenceFournisseurUpdate : infoSku.reference_fournisseur,
+                referenceCouleur: referenceCouleurUpdate ? referenceCouleurUpdate : infoSku.reference_couleur,
                 // filtre: filtre,
                 categorie: filtre.sousCategorieRef.categorie_ref.categorieRef,
                 categorieEn: filtre.sousCategorieRef.categorie_ref.categorieRefEn,
@@ -491,12 +501,38 @@ const FormulaireProduit = () => {
                 tagsRef: tagsReferencementUpdate? tagsReferencementUpdate:"",
                 dateRef: Moment().format("YYYY-MM-DD"),
                 referencer: referencer,
+                export: false
               }
               
-            console.log("data", JSON.stringify(data))
-            // //console.log("id : ", infoSku.id)
-            //console.log(infoSku)
-            setProduit(infoSku.id, data)
+            // console.log("data", JSON.stringify(data))
+            // //// console.log("id : ", infoSku.id)
+            //// console.log(infoSku)
+            let promise = Promise.resolve(setProduit(infoSku.id, data));
+
+            promise.then((value)=>{
+                while(!value.ok){
+                    setProduit(infoSku.id, data)
+                }
+                if(value.ok){
+                    setIsSuccessSave(true)
+                    setMessageSave("Enregistrer avec succès")
+                    setSectionSave(sectionUpdate)
+                    if(sectionUpdate == "dimensions"){
+                        setTimeout(() => {
+                            navigate("/produit/detail/" + infoSku.sku)
+                        }, 1000);
+                        
+                    }
+                    
+                }
+                else{
+                    setIsSuccessSave(false)
+                    setMessageSave("Echec d'enregistrement") 
+                    setSectionSave(sectionUpdate)
+                }
+            })
+
+            
         }
     }
     //render
@@ -510,13 +546,16 @@ const FormulaireProduit = () => {
             paysOrigineUpdate: paysOrigineUpdate, setPaysOrigineUpdate: setPaysOrigineUpdate,
             sectionUpdate: sectionUpdate,
             setSectionUpdate: setSectionUpdate,
+            sectionSave: sectionSave, setSectionSave: setSectionSave,
 
+            referenceFournisseurUpdate: referenceFournisseurUpdate, setReferenceFournisseurUpdate: setReferenceFournisseurUpdate,
             categorieUpdate: categorieUpdate, setCategorieUpdate: setCategorieUpdate,
             categorieEnUpdate: categorieEnUpdate, setCategorieEnUpdate: setCategorieEnUpdate,
             sousCategorieUpdate: sousCategorieUpdate, setSousCategorieUpdate: setSousCategorieUpdate,
             sousCategorieEnUpdate: sousCategorieEnUpdate, setSousCategorieEnUpdate: setSousCategorieEnUpdate,
             filtreUpdate: filtreUpdate,	setFiltreUpdate: setFiltreUpdate,
-            filtreEnUpdate: filtreEnUpdate,	setFiltreEnUpdate: setFiltreEnUpdate,   
+            filtreEnUpdate: filtreEnUpdate,	setFiltreEnUpdate: setFiltreEnUpdate,  
+            referenceCouleurUpdate: referenceCouleurUpdate, setReferenceCouleurUpdate: setReferenceCouleurUpdate, 
             couleurUpdate: couleurUpdate, setCouleurUpdate: setCouleurUpdate,
             couleurEnUpdate: couleurEnUpdate, setCouleurEnUpdate: setCouleurEnUpdate,
             coupeUpdate: coupeUpdate, setCoupeUpdate: setCoupeUpdate,
@@ -545,6 +584,9 @@ const FormulaireProduit = () => {
             matiereUpdate: matiereUpdate, setMatiereUpdate: setMatiereUpdate,
             handleClickSave: handleClickSave,
 
+            messageSave: messageSave, setMessageSave: setMessageSave,
+            isSuccessSave: isSuccessSave, setIsSuccessSave: setIsSuccessSave,
+
             indicationDone : indicationDone, setIndicationDone : setIndicationDone, 
             caracteristiqueDone : caracteristiqueDone, setCaracteristiqueDone : setCaracteristiqueDone, 
             matiereDone : matiereDone, setMatiereDone : setMatiereDone, 
@@ -559,7 +601,7 @@ const FormulaireProduit = () => {
             infoGenerateTags : infoGenerateTags, setInfoGenerateTags : setInfoGenerateTags
         }}>
             <header>
-                <div><Link to="/produits/listes">Liste des produits > </Link></div>
+                <div><Link to="/produits/export">Liste des produits exporter > </Link></div>
                 <div className="fs-3 fw-bolder">Modification produit {parseInt(sku)}</div>
             </header>
             <div className="d-xxl-flex d-xl-flex d-lg-flex d-md-flex mt-4 flex-row flex-xxl-row flex-xl-row flex-lg-row flex-md-row flex-sm-column-reverse justify-content-xxl-between justify-content-xl-start justify-content-lg-start justify-content-md-start "  id="produit">

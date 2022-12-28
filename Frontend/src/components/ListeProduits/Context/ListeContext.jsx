@@ -72,7 +72,7 @@ const ListeContextProvider = ({children}) => {
         promiseMarque.then((value)=>{
             for(let item in value) {
                 if(item == "hydra:member"){
-                    // console.log(value[item])
+                    // // console.log(value[item])
                 }
             }
         })
@@ -89,7 +89,7 @@ const ListeContextProvider = ({children}) => {
             setServiceUser(service)
         }
 
-        if((service=="user") || (liste != "listes" && liste != "referencement" && liste != "modification" &&  liste != "export")){
+        if((service=="user") || (liste != "listes" && liste != "referencement" && liste != "modification" &&  liste != "export" &&  liste != "tableau-de-bord")){
             navigate(`/produits/listes`)
         }
 
@@ -123,7 +123,7 @@ const ListeContextProvider = ({children}) => {
         oldUrl += ""
         if(filtre!= localStorage.getItem("filtre_multimag")){
             pageActuelle = 1
-            //// console.log(localStorage.getItem("filtre_multimag") + " != " + filtre)
+            //// // console.log(localStorage.getItem("filtre_multimag") + " != " + filtre)
         }
 
         localStorage.setItem("filtre_multimag", filtre)
@@ -134,13 +134,13 @@ const ListeContextProvider = ({children}) => {
         const promise = Promise.resolve(getAllProduit(liste, filtre, pageActuelle))
 
         promise.then((value) => {
-            // // console.log(value)
+            // console.log("value ", value)
             if(value){ 
                 let totalListe = 0    
                 for(let item in value){
                     let valeur = value[item]
                     if(item == "hydra:member"){
-                        //// console.log("value", value)
+                        //// // console.log("value", value)
                         setSkus(valeur)
                         if(!categorieFiltre && !universFiltre && !marqueFiltre && !tagFiltre && !searchSkus){
 
@@ -192,17 +192,17 @@ const ListeContextProvider = ({children}) => {
                          * Pagination
                          */
 
-                        //// console.log("pagination")
+                        //// // console.log("pagination")
                         for(let itemPage in valeur){
-                            //// console.log("value pagination ", itemPage, " : ", valeur[itemPage])
+                            //// // console.log("value pagination ", itemPage, " : ", valeur[itemPage])
                             //let page = valeur[itemPage].replace("/api/produits?page=", "")//erreur
                             let page = valeur[itemPage].split("page=")//erreur
 
-                            //// console.log(valeur[itemPage].split("page="))
+                            //// // console.log(valeur[itemPage].split("page="))
                             page = parseInt(page[1])
 
 
-                            //// console.log("page ", page)
+                            //// // console.log("page ", page)
                             // if(itemPage == "hydra:first"){
                             //     let pageActuelles = currentPage>1 ? currentPage : page
                             //     setCurrentPage(pageActuelles)
@@ -219,8 +219,8 @@ const ListeContextProvider = ({children}) => {
                             let lastpageListe = totalListe/10
                             lastpageListe = parseInt(lastpageListe)
 
-                            // // console.log("lastpageListe", lastpageListe)
-                            // // console.log("exact value last page", totalListe/10)
+                            // // // console.log("lastpageListe", lastpageListe)
+                            // // // console.log("exact value last page", totalListe/10)
                             lastpageListe = ((totalListe/10)!=lastpageListe) ? (lastpageListe+1) : lastpageListe
                             
                             let lastpageListeInt = lastpageListe<1 ? 1 : parseInt(lastpageListe)

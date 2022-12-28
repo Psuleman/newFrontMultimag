@@ -9,12 +9,13 @@ import UniversForm from "./Information/UniversForm";
 import InputDesabled from "./TemplateFormulaire/InputDesabled";
 import Select from "./TemplateFormulaire/Select";
 import Marque from "./Information/Marque"
+import Input from "./TemplateFormulaire/Input";
 const Information = () => {
     /**
      * sku, marque, univers, univers en, Reference fournisseur, Pays Origine
      */
     //variable
-    const {infoSku, marqueUpdate, setMarqueUpdate, universUpdate, setUniversUpdate, universEnUpdate, setUniversEnUpdate, paysOrigineUpdate, setPaysOrigineUpdate,sectionUpdate,
+    const {infoSku, referenceFournisseurUpdate, setReferenceFournisseurUpdate, marqueUpdate, setMarqueUpdate, universUpdate, setUniversUpdate, universEnUpdate, setUniversEnUpdate, paysOrigineUpdate, setPaysOrigineUpdate,sectionUpdate,
         setSectionUpdate, handleClickSave, indicationDone, setIndicationDone} = useContext(FormulaireContext)
     const [marques, setMarques] = useState(Marques)
     //fonction
@@ -37,8 +38,8 @@ const Information = () => {
                 <section className="row g-3 mb-3"><small>Tous les champs sont obligatoire</small></section>
                 <section className="row g-3">
                     <InputDesabled idInput="inputSku" labelInput="SKU" valeur={infoSku.sku} typeInput="text" />
-                    <InputDesabled idInput="inputRefFournisseur" labelInput="Référence Fournisseur" valeur={infoSku.reference_fournisseur} typeInput="text" />
-                
+                    {/* <InputDesabled idInput="inputRefFournisseur" labelInput="Référence Fournisseur" valeur={infoSku.reference_fournisseur} typeInput="text" /> */}
+                    <Input label={"Référence Fournisseur"} id="inputRefFournisseur" value={referenceFournisseurUpdate} setValue={setReferenceFournisseurUpdate} />
                     <Marque />
                     <Select id="selectPaysOrigine" label="Pays origine" value={paysOrigineUpdate} setValue={setPaysOrigineUpdate} list={Pays} itemValue="pays" />
 

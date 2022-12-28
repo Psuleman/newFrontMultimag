@@ -56,7 +56,6 @@ class ProduitPatchProcessor implements ProcessorInterface
          */
         $data->setDateRef(new \DateTime("now"));
 
-
         /**
          * Translate
          */

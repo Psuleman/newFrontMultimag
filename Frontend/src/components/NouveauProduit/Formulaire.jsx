@@ -42,7 +42,7 @@ const Formulaire = () => {
                                 dateArrivee:  "" + Moment(dateArr).format("YYYY-MM-DD"),
                                 codeFournisseur: ""+ data[i][2],
                                 nomFournisseur: ""+ data[i][3],
-                                referenceFournisseur : ""+data[i][4],
+                                referenceFournisseur : ""+ data[i][4],
                                 codeCouleur: ""+ data[i][5],
                                 referenceCouleur1 : ""+ data[i][6],
                                 referenceCouleur2 : ""+ (data[i][7]?data[i][7]:""),                            
@@ -121,7 +121,7 @@ const Formulaire = () => {
 
 
                     donnees.forEach(element => {
-                        //console.log(JSON.stringify(element))
+                        console.log(JSON.stringify(element))
                         const promise = Promise.resolve(setNewProduit(element));
 
                         promise.then((value) => {
@@ -186,58 +186,58 @@ const Formulaire = () => {
                     /**
                      * debut 
                      */
-                    // let donnees = resultat.data
+                    let donnees = resultat.data
 
-                    // setTotaldata(donnees.length)
+                    setTotaldata(donnees.length)
 
-                    // let dateAnterieur = Moment().subtract(30,'d').format('YYYY-MM-DD')
-                    // // let dateAnterieur = Moment().subtract(300,'d').format('YYYY-MM-DD')
+                    let dateAnterieur = Moment().subtract(100,'d').format('YYYY-MM-DD')
+                    // let dateAnterieur = Moment().subtract(300,'d').format('YYYY-MM-DD')
 
-                    // let tabTemporaire = []
+                    let tabTemporaire = []
 
-                    // for(let i in donnees){
-                    //     let dateProduit = Moment(donnees[i][1], 'DD/MM/YYYY').format("YYYY-MM-DD")
-                    //     if(Moment(dateProduit).isAfter(dateAnterieur)){
-                    //         ////console.log(dateAnterieur)
-                    //         tabTemporaire.push(donnees[i])
-                    //     }
-                    // }
+                    for(let i in donnees){
+                        let dateProduit = Moment(donnees[i][1], 'DD/MM/YYYY').format("YYYY-MM-DD")
+                        if(Moment(dateProduit).isAfter(dateAnterieur)){
+                            ////console.log(dateAnterieur)
+                            tabTemporaire.push(donnees[i])
+                        }
+                    }
 
-                    // if((tabTemporaire.length)>0){
-                    //     setData(tabTemporaire) //A REMETTRE
-                    // }
-                    // else{
-                    //  setFinImport(true)
-                    //  setTotalNewProduct(0)
-                    //  setPatienceImport(false)                      
-                    // }
+                    if((tabTemporaire.length)>0){
+                        setData(tabTemporaire) //A REMETTRE
+                    }
+                    else{
+                     setFinImport(true)
+                     setTotalNewProduct(0)
+                     setPatienceImport(false)                      
+                    }
                     /**
                      * FIN
                      */
 
-                    let donnees = resultat.data
-                    setTotaldata(donnees.length)
-                    let datedeb = Moment("2020-12-01").format('YYYY-MM-DD')
-                    let datefin = Moment("2022-09-01").format('YYYY-MM-DD')
+                //     let donnees = resultat.data
+                //     setTotaldata(donnees.length)
+                //     let datedeb = Moment("2022-09-31").format('YYYY-MM-DD')
+                //     let datefin = Moment("2022-10-01").format('YYYY-MM-DD')
 
-                    let tabTemporaire = []
-                    for(let i in donnees){
-                        let dateProduit = Moment(donnees[i][1], 'DD/MM/YYYY').format("YYYY-MM-DD")
+                //     let tabTemporaire = []
+                //     for(let i in donnees){
+                //         let dateProduit = Moment(donnees[i][1], 'DD/MM/YYYY').format("YYYY-MM-DD")
                         
-                            if(
-                            // (Moment(dateProduit).isAfter(datedeb))
-                            // && 
-                            (Moment(dateProduit).isBefore(datefin))
-                            ){
-                            //console.log("test")
-                            tabTemporaire.push(donnees[i])
-                            }
-                            else{
-                            ////console.log(dateProduit)
-                            }
-                }
-                    setData(tabTemporaire)
-                    //console.log(tabTemporaire)
+                //             if(
+                //             (Moment(dateProduit).isAfter(datedeb))
+                //             // && 
+                //             // (Moment(dateProduit).isBefore(datefin))
+                //             ){
+                //             //console.log("test")
+                //             tabTemporaire.push(donnees[i])
+                //             }
+                //             else{
+                //             ////console.log(dateProduit)
+                //             }
+                // }
+                //     setData(tabTemporaire)
+                //     //console.log(tabTemporaire)
                 }})
 
             }
@@ -258,7 +258,7 @@ const Formulaire = () => {
                 <button className="btn btn-outline-dark">Envoyer</button>
             </div>
             </form>
-            </div>
+        </div>
     )
 }
 

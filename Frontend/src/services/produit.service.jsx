@@ -22,7 +22,7 @@ export const getAllProduit = (listeProduit="", filtre="", page) => {
         urlRequestTotal += `&newListAttente=1`
     }    
     if(listeProduit=="export"){
-        urlRequestTotal += `&referencer=1`
+        urlRequestTotal = url + `?partial=false&referencer=1&export=null`
     }
     /**
      * filtre

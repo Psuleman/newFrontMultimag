@@ -23,6 +23,7 @@
     "react-papaparse": "^4.1.0",
     "react-router-dom": "^6.4.1",
     "react-translate": "^7.0.1",
+    "reactjs-popup": "^2.0.5",
     "sass": "^1.55.0"
   },
   "devDependencies": {

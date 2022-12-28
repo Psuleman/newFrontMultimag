@@ -5,7 +5,7 @@ import { faCircleExclamation, faCircleCheck } from "@fortawesome/free-solid-svg-
 
 const HeaderForm = ({title, section, isDone=null}) => {
     //Variable
-    const {sectionUpdate, setSectionUpdate} = useContext(FormulaireContext)
+    const {sectionUpdate, setSectionUpdate, isSuccessSave, messageSave, sectionSave} = useContext(FormulaireContext)
 
     //fonction
 
@@ -16,6 +16,16 @@ const HeaderForm = ({title, section, isDone=null}) => {
             <div className="text-success">{isDone!=null && isDone && <span><FontAwesomeIcon icon={faCircleCheck} /> <small>Terminé</small></span>}</div>
             <div className="text-danger">{isDone!=null && !isDone && <span><FontAwesomeIcon icon={faCircleExclamation} /> <small>A modifier</small></span>}</div>
             <div className="text-info">{isDone==null && <span><FontAwesomeIcon icon={faCircleExclamation} /> <small>Champs facultatif vide</small></span>} </div>
+
+            {
+                isSuccessSave && messageSave!="" && section==sectionSave &&
+                <div class="alert alert-success ms-3" role="alert">{messageSave}</div>
+            }
+            {
+                !isSuccessSave && messageSave!="" && section==sectionSave &&
+                <div class="alert alert-danger ms-3" role="alert"> {messageSave}</div>
+            }
+
             <div className="ms-auto">
             {
                 (sectionUpdate == section) ?

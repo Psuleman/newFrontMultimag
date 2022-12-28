@@ -8,13 +8,14 @@ import HeaderForm from "./TemplateFormulaire/HeaderForm";
 import InputDesabled from "./TemplateFormulaire/InputDesabled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
+import Input from "./TemplateFormulaire/Input";
 
 const Matiere = () => {
     //variable
     const [nbMatiere, setNbMatiere] = useState()
     const [totalMatiere, setTotalMatiere] = useState()
 
-    const {infoSku, matiereDone, setMatiereDone, matiereUpdate, setMatiereUpdate, 
+    const {infoSku, matiereDone, setMatiereDone, matiereUpdate, setMatiereUpdate, referenceCouleurUpdate, setReferenceCouleurUpdate, 
         sectionUpdate, setSectionUpdate, handleClickSave, cliquable, setCliquable} = useContext(FormulaireContext)
     //fonction
     useEffect(()=>{
@@ -153,7 +154,9 @@ const Matiere = () => {
                  */}
             </section>                
                 <section className="row g-3 mb-3">
-                    <InputDesabled labelInput="Référence dans multimag" valeur={infoSku.reference_couleur} />
+                    {/* <InputDesabled labelInput="Référence dans multimag" valeur={infoSku.reference_couleur} /> */}
+                    <Input label={"Reference dans multimag"} id={"inputCouleurFnr"} value={referenceCouleurUpdate} setValue={setReferenceCouleurUpdate} />
+
                 </section>
                 {
                     matiereUpdate &&

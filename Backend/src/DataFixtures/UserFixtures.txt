@@ -21,12 +21,12 @@ class UserFixtures extends Fixture
             ["nom"=>"Germany", "prenom"=>"Victoire", "email"=>"victoire@leclaireur.com", "password"=>"GGh84KGDsyDl", "service"=>"Logistique"],
             ["nom"=>"Hadida", "prenom"=>"Charles", "email"=>"charles.hadida@leclaireur.com", "password"=>"wqV3iCcctbUA", "service"=>"Comptabilité"],
             ["nom"=>"Hadida", "prenom"=>"David", "email"=>"davidh@leclaireur.com", "password"=>"D8Inm6mChFEn", "service"=>"IT"],
-            ["nom"=>"Leclaireur", "prenom"=>"Champs Elysee", "email"=>"champs@leclaireur.com", "password"=>"JFMaZ1gaKLvv", "service"=>"Logistique"],
+            ["nom"=>"Leclaireur", "prenom"=>"Champs Elysee", "email"=>"champs@leclaireur.com", "password"=>"JFMaZ1gaKLvv", "service"=>"Logistique"],/***/
             ["nom"=>"Leclaireur", "prenom"=>"Lydia", "email"=>"lydia@leclaireur.com", "password"=>"mkm3LA6Z55LQ", "service"=>"Comptabilité"],
             ["nom"=>"Leclaireur", "prenom"=>"Mael", "email"=>"mael@leclaireur.com", "password"=>"rdPhxFGTbmYl", "service"=>"e-shop"],
             ["nom"=>"Leclaireur", "prenom"=>"Patrice", "email"=>"patrice@leclaireur.com", "password"=>"uksTK5p7Y59m", "service"=>"Logistique"],
             ["nom"=>"Mallau", "prenom"=>"Thomas", "email"=>"thomas@leclaireur.com", "password"=>"ByDx8RB8TfhJ", "service"=>"Logistique"],
-            ["nom"=>"Pereira", "prenom"=>"Jérémie", "email"=>"jeremie@leclaireur.com", "password"=>"RBTvArmAnKgc", "service"=>"Logistique"],
+            ["nom"=>"Pereira", "prenom"=>"Jérémie", "email"=>"jeremie@leclaireur.com", "password"=>"RBTvArmAnKgc", "service"=>"Logistique"], /***/
             ["nom"=>"Poulsen", "prenom"=>"Victor", "email"=>"victor@leclaireur.com", "password"=>"xog64qeAmiDp", "service"=>"e-shop"],
             ["nom"=>"Suleman", "prenom"=>"Prisca", "email"=>"prisca@dalena.fr", "password"=>"Ime94Ms5v5OV", "service"=>"IT"],
             ["nom"=>"Yankioua", "prenom"=>"Bénédicte", "email"=>"benedicte@leclaireur.com", "password"=>"cgb3SLKxJ2xx", "service"=>"e-shop"],

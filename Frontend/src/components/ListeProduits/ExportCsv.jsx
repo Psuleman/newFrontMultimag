@@ -1,8 +1,9 @@
 import {CSVLink } from 'react-csv'
 import Moment from 'moment'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { ListeExportContext } from './Context/ListeExportContext'
 import moment from 'moment'
+import { ListeContext } from './Context/ListeContext'
 
 
 
@@ -70,9 +71,11 @@ const header = [
 	
 
 	
-const ExportCsv = () => {
+const ExportCsv = ({total}) => {
     const {listesProduitExport} = useContext(ListeExportContext)
+    const {totalSkus, liste, skus, serviceUser} = useContext(ListeContext)
 
+	useEffect(()=>{}, [total])
     var data = listesProduitExport
 
     const csvReport = ({
@@ -83,8 +86,16 @@ const ExportCsv = () => {
     })    
 
     return (
-        <div className='ms-auto p-2'>
-            {csvReport && <CSVLink {...csvReport} enclosingCharacter={``} separator={","}><button className='btn btn-dark mx-2'>Exporter en csv</button></CSVLink>}
+        <div className='ms-3 p-2'>
+            {csvReport && <CSVLink {...csvReport} enclosingCharacter={``} separator={","}>
+				<button type="button" class="btn btn-dark position-relative">
+				Exporter en csv
+					<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+						{total}
+						<span class="visually-hidden"> </span>
+					</span>
+				</button>
+			</CSVLink>}
         </div>
 
     )

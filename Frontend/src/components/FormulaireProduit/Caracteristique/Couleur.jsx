@@ -7,7 +7,7 @@ import Input from "../TemplateFormulaire/Input"
 import InputDesabled from "../TemplateFormulaire/InputDesabled"
 const Couleur = () => {
     //variable
-    const {infoSku, couleurUpdate, setCouleurUpdate, setCouleurEnUpdate, couleurEnUpdate} = useContext(FormulaireContext)
+    const {infoSku, couleurUpdate, setCouleurUpdate, setCouleurEnUpdate, couleurEnUpdate, referenceCouleurUpdate, setReferenceCouleurUpdate} = useContext(FormulaireContext)
 
     //fonction
     useEffect(()=>{
@@ -33,7 +33,8 @@ const Couleur = () => {
     //render
     return (
         <section className="row g-3 mt-1">
-            <InputDesabled idInput="inputCouleurFnr" typeInput="text" valeur={infoSku.reference_couleur} labelInput="Reference couleur" />
+            {/* <InputDesabled idInput="inputCouleurFnr" typeInput="text" valeur={infoSku.reference_couleur} labelInput="Reference couleur" /> */}
+            <Input label={"Reference couleur"} id={"inputCouleurFnr"} value={referenceCouleurUpdate} setValue={setReferenceCouleurUpdate} />
             <Select id="selectCouleur" label="Couleur" value={couleurUpdate} setValue={setCouleurUpdate} list={Couleurs} itemValue="couleur_ref" />  
             <Input id="inputCouleurFnr" label="Couleur En" value={couleurEnUpdate} setValue={setCouleurEnUpdate}   />      
         </section>

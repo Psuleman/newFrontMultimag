@@ -5,11 +5,12 @@ import DescriptionProduit from "./Description/DescriptionProduit";
 import NomProduit from "./Description/NomProduit";
 import FooterForm from "./TemplateFormulaire/FooterForm";
 import HeaderForm from "./TemplateFormulaire/HeaderForm";
+import Input from "./TemplateFormulaire/Input";
 import InputDesabled from "./TemplateFormulaire/InputDesabled";
 
 const Description = () => {
     //variable
-    const {infoSku, descriptionDone, setDescriptionDone, universEnUpdate, setUniversEnUpdate , descriptionFrUpdate, setDescriptionFrUpdate, descriptionEnUpdate, setDescriptionEnUpdate, nomProduitFrUpdate, setNomProduitFrUpdate, nomProduitEnUpdate, setNomProduitEnUpdate, 
+    const {infoSku, referenceCouleurUpdate, setReferenceCouleurUpdate, descriptionDone, setDescriptionDone, universEnUpdate, setUniversEnUpdate , descriptionFrUpdate, setDescriptionFrUpdate, descriptionEnUpdate, setDescriptionEnUpdate, nomProduitFrUpdate, setNomProduitFrUpdate, nomProduitEnUpdate, setNomProduitEnUpdate, 
     sectionUpdate, setSectionUpdate, handleClickSave} = useContext(FormulaireContext)
 
     //fonction 
@@ -29,7 +30,9 @@ const Description = () => {
             <div className="card-body">
                 <section className="row g-3 mb-3"><small>Tous les champs sont obligatoire</small></section>
                 <section className="row g-3 mb-3">
-                    <InputDesabled labelInput="Référence dans multimag" valeur={infoSku.reference_couleur} />
+                    {/* <InputDesabled labelInput="Référence dans multimag" valeur={infoSku.reference_couleur} /> */}
+                    <Input label={"Reference dans multimag"} id={"inputCouleurFnr"} value={referenceCouleurUpdate} setValue={setReferenceCouleurUpdate} />
+
                 </section>
                 <NomProduit />
                 <DescriptionProduit />

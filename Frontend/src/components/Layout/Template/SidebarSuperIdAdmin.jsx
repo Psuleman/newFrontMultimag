@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 
-const SidebarSuperAdmin = () => {
+const SidebarSuperIdAdmin = () => {
     //Render
     return (
     <nav className="nav flex-column">
@@ -13,6 +13,8 @@ const SidebarSuperAdmin = () => {
         </div>
         <Link className="nav-link" to="/produits/referencement">Référencement</Link>
         <Link className="nav-link" to="/produits/modification">Modification en attente</Link>
+        <Link className="nav-link" to="/gestion/utilisateur">Gestion des utilisateurs</Link>
+        <Link className="nav-link" to="/maj">MAJ</Link>
         <div className="nav-link">
             Mon compte
             <ul className="submenu">
@@ -24,4 +26,4 @@ const SidebarSuperAdmin = () => {
     )
 }
 
-export default SidebarSuperAdmin
+export default SidebarSuperIdAdmin

@@ -29,8 +29,8 @@ const Table = () => {
                 })
             }
         });
-        console.log('listesProduit ', totalAncienList)
-        console.log('skus ', totalSkus)
+        // console.log('listesProduit ', totalAncienList)
+        // console.log('skus ', totalSkus)
         // if(((listesProduit && listesProduit.length==0) || !listesProduit) && liste=="export" && skus && (totalSkus>0 && totalSkus!=totalAncienList) && (totalSkus != listesProduit.length )){
 
         /**
@@ -54,9 +54,10 @@ const Table = () => {
                         let tarifReduit = (element.tarifs[0].prix_vente && element.tarifs[0].prix_vente) ? (parseFloat(element.tarifs[0].prix_vente) - (parseFloat(element.tarifs[0].prix_vente) * (parseFloat(element.tarifs[0].remise)/100))) : null
 
                         let itemtab = {
+                            id: element.id,
                             lien: element.lien,
                             sku_integer: element.sku,
-                            sku : splitText(marque, " ", "_") + "_" + nom_produit_fr + "_" + element.sku,
+                            sku : splitText(marque, " ", "-") + "-" + splitText(element.nom_produit_fr, " ", "-") + "-" + element.sku,
                             command : "MERGE",
                             title : item==0 ?  marque + " " + element.nom_produit_fr : null,
                             descriptionFr : item==0 ?  element.description_fr : null,//Body html
@@ -69,10 +70,10 @@ const Table = () => {
                             image_command : "REPLACE",
                             image_src : item==0 ?  element.pictures  : null,
                             img_alt_text : item==0 ?  imgAltText : null,
-                            variant_command :"REPLACE",
+                            variant_command : "REPLACE",
 
                             taille : "Taille" ,
-                            attribut : variantItem.taille_ref ? variantItem.taille_ref.taille_ref : null, // à revoir
+                            attribut : variantItem.taille_ref ? splitText(variantItem.taille_ref.taille_ref, ",", ".") : null, // à revoir
                             option_2_name : null,
                             option_2_value : null,
                             option_3_name : null,
@@ -163,17 +164,17 @@ const Table = () => {
 
             }
             setListesProduitExport(tabExport)
-            // console.log("tabExport", tabExport)
+            // // console.log("tabExport", tabExport)
         }
 
         else{
-            //console.log("reload")
+            //// console.log("reload")
         }
 
     }, [skus, listesProduit, listesProduitExport])
 
 
-    console.log("skus : ", skus)
+    // // console.log("skus : ", skus)
     const splitText = (texte, str, replace) => {
 
         // let result = ""
@@ -202,7 +203,7 @@ const Table = () => {
     }
 
 	
-    // console.log("tab table", listesProduit)
+    // // console.log("tab table", listesProduit)
     //render
     return (
         <section>
@@ -217,12 +218,7 @@ const Table = () => {
                     { (liste == "referencement" && serviceUser=="admin") && <ThReferencement/> }
                     { liste == "modification" && serviceUser=="admin" && <ThModification/>}
                     { liste == "export" && serviceUser=="admin" && <ThExport/>}
-                    {
-                        totalSkus==0 && 
-                        <tbody>
-                            <tr>AucunProduit</tr>
-                        </tbody>
-                    } 
+
                     {
                         totalSkus>0 && liste == "listes" && 
                         skus.map((item, index)=>( <ValueListe item={item} key={"sku_"+ index} />))

@@ -28,8 +28,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
     // operations: [new GetCollection()]
-    paginationClientPartial: true,
-    paginationItemsPerPage: 100
+    paginationItemsPerPage: 50
 )]
 #[DELETE()]
 #[POST(
@@ -45,9 +44,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
     //denormalizationContext: ['groups' => 'produit'],
     processor: ProduitPatchProcessor::class,
     )]
-#[ApiFilter(OrderFilter::class, properties: ['sku' => 'DESC'])]
+#[ApiFilter(OrderFilter::class, properties: ['date_arrivee' => 'DESC', 'sku' => 'ASC'])]
 
-#[ApiFilter(SearchFilter::class, properties: ['filtre.sous_categorie_ref.categorie_ref.categorie_ref' => 'exact', 'univers' => 'exact', 'sku' => 'exact', 'nom_fournisseur' => 'partial', 'newProduit' => 'exact', 'referencer' => 'exact', 'newListAttente' => 'exact', 'code_tag' => 'exact', 'export' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['filtre.sous_categorie_ref.categorie_ref.categorie_ref' => 'exact', 'univers' => 'exact', 'sku' => 'exact', 'nom_fournisseur' => 'partial', 'newProduit' => 'exact', 'referencer' => 'exact', 'newListAttente' => 'exact', 'code_tag' => 'exact'])]
 #[ORM\Entity(repositoryClass: ProduitsRepository::class)]
 class Produits
 {
@@ -169,24 +168,24 @@ class Produits
     private $entretienEn;
 
     #[Groups('produit')]
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description_fr;
 
 
     #[Groups('produit')]
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $nom_produit_fr;
 
     #[Groups('produit')]
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $nom_produit_en;
 
     #[Groups('produit')]
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $dimension_fr;
 
     #[Groups('produit')]
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $dimension_en;
     
     #[Groups('produit')]
@@ -317,10 +316,9 @@ class Produits
     private ?string $couleur_en = null;
 
     #[Groups(['produit'])]
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $description_en = null;
 
-    #[Groups(['produit'])]
     #[ORM\Column(nullable: true)]
     private ?bool $export = null;
 
@@ -1068,5 +1066,4 @@ class Produits
 
         return $this;
     }
-
 }

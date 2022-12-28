@@ -4,12 +4,14 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { ListeContext } from "./Context/ListeContext";
 import { ListeExportContext } from "./Context/ListeExportContext";
+import DeleteProduit from "./DeleteProduit";
 import ExportCsv from "./ExportCsv";
 import ToutCocher from "./ToutCocher";
 
 const Header = () => {
     //variable
     const [infoExport, setInfoExport] = useState()
+    const [totalSkuExport, setTotalSkuExport] = useState()
 
     const {totalSkus, liste, skus, serviceUser} = useContext(ListeContext)
     const {listesProduitExport} = useContext(ListeExportContext)
@@ -31,6 +33,7 @@ const Header = () => {
             else{
                 setInfoExport("0 produit")
             }
+            setTotalSkuExport(totalskuExport)
         }
     }, [listesProduitExport])
 
@@ -72,7 +75,12 @@ const Header = () => {
 
             </div>
         }
-
+        {
+            totalSkus==0 &&
+            <div className="d-flex justify-content-center pt-2 pb-2 action">
+                    <h5 className="text-danger">Aucun produit</h5>             
+            </div>
+        }
         {
             (totalSkus!=0 && !totalSkus) && 
             <div className="d-flex justify-content-center pt-2 pb-2 action">
@@ -87,8 +95,9 @@ const Header = () => {
             <div className="d-flex align-items-center p-2 pb-2 action">
                 <ToutCocher />
                 <div className="me-3 badge text-bg-light"> {infoExport} </div>
+                <DeleteProduit total={totalSkuExport} />
 
-                <ExportCsv />
+                <ExportCsv  total={totalSkuExport} />
             </div>
 
         }
