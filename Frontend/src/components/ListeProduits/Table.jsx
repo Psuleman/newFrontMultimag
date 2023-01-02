@@ -237,9 +237,13 @@ const Table = () => {
                     }   
                 </table>
             </div>
-            <footer className='footerTable'>
-                <Pagination />
-            </footer>
+            {
+                liste!="export" && 
+                <footer className='footerTable'>
+                    <Pagination />
+                </footer>            
+            }
+
             </ListeExportContext.Provider>
 
         </section>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { getAllProduit } from '../../../services/produit.service'
+import { getAllFiltres, getAllProduit } from '../../../services/produit.service'
 import { Univers } from '../../../data/Univers'
 import { getCategories } from '../../../services/categorie.service'
 import { getMarques } from '../../../services/marques.services'
@@ -20,10 +20,13 @@ const ListeContextProvider = ({children}) => {
     const [universFiltre, setUniversFiltre] = useState()
     const [marqueFiltre, setMarqueFiltre] = useState()
     const [tagFiltre, setTagFiltre] = useState()
+    const [saisonFiltre, setSaisonFiltre] = useState()
     const [categorieFiltreTab, setCategorieFiltreTab] = useState()
     const [universFiltreTab, setUniversFiltreTab] = useState()
     const [marqueFiltreTab, setMarqueFiltreTab] = useState()
     const [tagFiltreTab, setTagFiltreTab] = useState()
+    const [saisonFiltreTab, setSaisonFiltreTab] = useState()
+
     const [validateSearchSkus, setValidateSearchSkus] = useState(false)
     const [serviceUser, setServiceUser] = useState()
 
@@ -33,9 +36,6 @@ const ListeContextProvider = ({children}) => {
 
     //fonction
     useEffect(()=>{
-        /**
-         * FILTRE
-         */
         let tabUnivers = []
         Univers.forEach(element => {
             tabUnivers.push(element.univers_ref)
@@ -72,7 +72,7 @@ const ListeContextProvider = ({children}) => {
         promiseMarque.then((value)=>{
             for(let item in value) {
                 if(item == "hydra:member"){
-                    // // console.log(value[item])
+                    // console.log(value[item])
                 }
             }
         })
@@ -116,6 +116,9 @@ const ListeContextProvider = ({children}) => {
             if(tagFiltre)
                 filtre += "&code_tag=" + tagFiltre
 
+            if(saisonFiltre)
+                filtre += "&saison=" + saisonFiltre
+
                 
         }
 
@@ -146,19 +149,19 @@ const ListeContextProvider = ({children}) => {
 
                             //let tabCategory = []
                             //let tabUnivers = []
-                            let tabMarque = []
+                            // let tabMarque = []
                             //let tabTag = []
-                            for(let key in valeur)
-                            {
-                                //tabCategory.push(valeur[key].categorie)
-                                //tabUnivers.push(valeur[key].univers)
-                                let marqueProduit = valeur[key].marque ? valeur[key].marque.marque : valeur[key].nom_fournisseur
-                                tabMarque.push(marqueProduit)
-                                //tabTag.push(valeur[key].code_tag ? valeur[key].code_tag : 0)
-                            }
+                            // for(let key in valeur)
+                            // {
+                            //     //tabCategory.push(valeur[key].categorie)
+                            //     //tabUnivers.push(valeur[key].univers)
+                            //     let marqueProduit = valeur[key].marque ? valeur[key].marque.marque : valeur[key].nom_fournisseur
+                            //     tabMarque.push(marqueProduit)
+                            //     //tabTag.push(valeur[key].code_tag ? valeur[key].code_tag : 0)
+                            // }
                             //tabCategory = [... new Set(tabCategory)]
                             //tabUnivers = [... new Set(tabUnivers)]
-                            tabMarque = [... new Set(tabMarque)]
+                            // tabMarque = [... new Set(tabMarque)]
                             // tabTag = [... new Set(tabTag)]
     
     
@@ -177,7 +180,7 @@ const ListeContextProvider = ({children}) => {
                             // });
                             //setCategorieFiltreTab(tabCategory)
                             //setUniversFiltreTab(tabUnivers)
-                            setMarqueFiltreTab(tabMarque)
+                            // setMarqueFiltreTab(tabMarque)
                             //setTagFiltreTab(tabTemporaire)
                         }
                     }
@@ -241,7 +244,68 @@ const ListeContextProvider = ({children}) => {
                 
             }
         })
-    }, [categorieFiltre, universFiltre, marqueFiltre, tagFiltre, validateSearchSkus, currentPage, liste])
+
+                /**
+         * FILTRE
+         */
+
+                // let promiseFiltre = Promise.resolve(getAllFiltres())
+
+                // promiseFiltre.then((value)=>{
+                //     if(!categorieFiltreTab && !universFiltreTab && !marqueFiltreTab && !tagFiltreTab && !saisonFiltreTab){
+                //         if(value){ 
+                //             for(let item in value){
+                //                 let valeur = value[item]
+                //                 if(item == "hydra:member"){
+                //                     let tabCategory = []
+                //                     let tabUnivers = []
+                //                     let tabMarque = []
+                //                     let tabTag = []
+                //                     let tabSaison = []
+        
+                //                     // console.log("valeur ", valeur)
+        
+                //                     for(let itemValeur in valeur){
+                //                         tabCategory.push(valeur[itemValeur].categorie)
+                //                         tabUnivers.push(valeur[itemValeur].univers)
+                //                         let marqueProduit = valeur[itemValeur].marque ? valeur[itemValeur].marque.marque : valeur[itemValeur].nom_fournisseur
+                //                         tabMarque.push(marqueProduit)
+                //                         tabTag.push(valeur[itemValeur].code_tag ? valeur[itemValeur].code_tag : 0)
+                //                         tabSaison.push(valeur[itemValeur].saison)
+                //                     }
+        
+                //                     tabCategory = [... new Set(tabCategory)]
+                //                     tabUnivers = [... new Set(tabUnivers)]
+                //                     tabMarque = [... new Set(tabMarque)]
+                //                     tabTag = [... new Set(tabTag)]
+                //                     tabSaison = [... new Set(tabSaison)]
+        
+                //                     let arrayTag = [
+                //                         {code_tag: 0, tag: "Non tagué"},
+                //                         {code_tag: 1, tag: "Détagué"},
+                //                         {code_tag: 2, tag: "Internet"},
+                //                         {code_tag: 3, tag: "Leclaireur"},
+                //                     ]
+                //                     let tabTemporaire = []
+                //                     tabTag.forEach(element => {
+                //                         arrayTag.forEach(item=>{
+                //                             if(element == item.code_tag)
+                //                             tabTemporaire.push(item)
+                //                         })
+                //                     });
+        
+                //                     setCategorieFiltreTab(tabCategory)
+                //                     setUniversFiltreTab(tabUnivers)
+                //                     setMarqueFiltreTab(tabMarque)
+                //                     setTagFiltreTab(tabTemporaire)
+                //                     setSaisonFiltreTab(tabSaison.reverse())
+                //                 }
+                //             }
+                //         }
+                //     }
+                // })
+        
+    }, [categorieFiltre, universFiltre, marqueFiltre, tagFiltre, saisonFiltre, validateSearchSkus, currentPage, liste])
 
 
     // render
@@ -258,6 +322,9 @@ const ListeContextProvider = ({children}) => {
             marqueFiltreTab: marqueFiltreTab, setMarqueFiltreTab: setMarqueFiltreTab,
             tagFiltre: tagFiltre, setTagFiltre: setTagFiltre,
             tagFiltreTab: tagFiltreTab, setTagFiltreTab: setTagFiltreTab,
+            saisonFiltre: saisonFiltre, setSaisonFiltre: setSaisonFiltre,
+            saisonFiltreTab: saisonFiltreTab, setSaisonFiltreTab: setSaisonFiltreTab,
+
             searchSkus: searchSkus, setSearchSkus: setSearchSkus,
             validateSearchSkus: validateSearchSkus, setValidateSearchSkus: setValidateSearchSkus,
 

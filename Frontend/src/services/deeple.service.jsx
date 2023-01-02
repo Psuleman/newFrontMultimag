@@ -1,31 +1,17 @@
-const url = "https://api.deepl.com/v2/translate"
+import translate from "deepl"
+export const getTraduction = (source) => {
+let traduction = translate({
+    text: source,
+    target_lang: 'EN',
+    auth_key: '85feb087-efb6-fec2-bd2b-e4f2309944c5',
+    // All optional parameters available in the official documentation can be defined here as well.
+  })
+  .then(result => {
+        return result.data
+  })
+  .catch(error => {
+    //   console.error(error)
+  });
 
-
-export const getTranslate = (text) => {
-    let data = {
-        text: [text],
-        target_lang: "EN"
-    }
-
-    const requestPOST= {
-        method: 'POST',
-        headers: { 
-        'Content-Type': 'application/x-www-form-urlencoded',
-        accept: 'application/json',
-        Authorization : `DeepL-Auth-Key 85feb087-efb6-fec2-bd2b-e4f2309944c5`
-        },
-        body: JSON.stringify(data)
-    };
-
-    let result = fetch(url, requestPOST)
-    .then(response => {
-        return response
-    })
-    //.then(data => return data)
-    .catch(err=>{
-        ////console.log(err)
-    });	
-
-    return result;
-    
+  return traduction
 }

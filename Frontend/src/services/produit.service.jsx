@@ -9,11 +9,29 @@ const headerGET = {
     cache: "default",
 }
 
+
+export const getAllFiltres = (req, res) => {
+    let urlRequestTotal = url + `?pagination=false`;
+
+    let tab = fetch(urlRequestTotal, headerGET)
+    .then(function(res) {
+        ////console.log(res.json())
+        return res.json();
+    })
+    .then(function(value) {
+        return value;
+    })
+    .catch(function(err) {
+        //(err)
+    })
+    return tab;
+}
+
 export const getAllProduit = (listeProduit="", filtre="", page) => {
 
     let pageListe = page>0 ? page : 1
 
-    let urlRequestTotal = url + "?page=" + pageListe
+    let urlRequestTotal = url + "?pagination=true&page=" + pageListe
 
     if(listeProduit=="referencement"){
         urlRequestTotal += `&newProduit=1&referencer=0`
@@ -22,7 +40,7 @@ export const getAllProduit = (listeProduit="", filtre="", page) => {
         urlRequestTotal += `&newListAttente=1`
     }    
     if(listeProduit=="export"){
-        urlRequestTotal = url + `?partial=false&referencer=1&export=null`
+        urlRequestTotal = url + `?pagination=false&referencer=1&export=null`
     }
     /**
      * filtre

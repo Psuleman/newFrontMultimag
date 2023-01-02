@@ -63,4 +63,20 @@ class ProduitsRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findProduitsDoublon(): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT p.sku, count(p.sku) as total, p.referencer
+            FROM App\Entity\Produits p
+            GROUP BY p.sku
+            HAVING count(p.sku)>1 AND p.referencer=0
+            '
+        );
+
+        // returns an array of Product objects
+        return $query->getResult();
+    }
 }

@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useContext } from "react";
-import { getTranslate } from "../../../services/deeple.service";
 import { FormulaireContext } from "../Context/FormulaireContext";
 import Textarea from "../TemplateFormulaire/Textarea";
 import translate from "deepl"

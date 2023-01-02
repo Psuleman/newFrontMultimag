@@ -28,7 +28,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
     // operations: [new GetCollection()]
-    paginationClientPartial: true,
+    paginationClientEnabled: true,
     paginationItemsPerPage: 100
 )]
 #[DELETE()]
@@ -47,7 +47,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     )]
 #[ApiFilter(OrderFilter::class, properties: ['sku' => 'DESC'])]
 
-#[ApiFilter(SearchFilter::class, properties: ['filtre.sous_categorie_ref.categorie_ref.categorie_ref' => 'exact', 'univers' => 'exact', 'sku' => 'exact', 'nom_fournisseur' => 'partial', 'newProduit' => 'exact', 'referencer' => 'exact', 'newListAttente' => 'exact', 'code_tag' => 'exact', 'export' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['filtre.sous_categorie_ref.categorie_ref.categorie_ref' => 'exact', 'univers' => 'exact', 'sku' => 'exact', 'nom_fournisseur' => 'partial', 'newProduit' => 'exact', 'referencer' => 'exact', 'newListAttente' => 'exact', 'code_tag' => 'exact', 'export' => 'exact', 'saison' => 'exact'])]
 #[ORM\Entity(repositoryClass: ProduitsRepository::class)]
 class Produits
 {

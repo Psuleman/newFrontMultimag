@@ -8,7 +8,7 @@ const Filtre = () => {
         categorieFiltre, setCategorieFiltre, categorieFiltreTab, setCategorieFiltreTab,
         universFiltre, setUniversFiltre, universFiltreTab, setUniversFiltreTab,
         marqueFiltre, setMarqueFiltre, marqueFiltreTab, setMarqueFiltreTab,
-        tagFiltre, setTagFiltre, tagFiltreTab, setTagFiltreTab
+        tagFiltre, setTagFiltre, tagFiltreTab, setTagFiltreTab, saisonFiltre, saisonFiltreTab, setSaisonFiltre
     } = useContext(ListeContext)
 
     return (
@@ -25,6 +25,9 @@ const Filtre = () => {
             </div>
             <div className="mx-xxl-3 mx-xl-3 mx-lg-3 mx-md-3 mx-sm-0 mx-0 mb-xxl-0 mb-xl-0 mb-lg-0 mb-md-0 mb-sm-2 mb-2">
                 <Select id="tagFiltreSelect" label="Tag" value={tagFiltre} setValue={setTagFiltre} list={tagFiltreTab} />
+            </div>
+            <div className="mx-xxl-3 mx-xl-3 mx-lg-3 mx-md-3 mx-sm-0 mx-0 mb-xxl-0 mb-xl-0 mb-lg-0 mb-md-0 mb-sm-2 mb-2">
+                <Select id="tagFiltreSelect" label="Saison" value={saisonFiltre} setValue={setSaisonFiltre} list={saisonFiltreTab} />
             </div>
             <div><Recherche /></div>
         </section>

@@ -296,6 +296,7 @@ class ProduitPostProcessor implements ProcessorInterface
         
         $findProduit = $this->_entityManager->getRepository(Produits::class)->findOneBy([
         "sku" => $sku,
+        "annee_sortie" => $data->getAnneeSortie()
 /*        "date_arrivee" => $data->getDateArrivee(),
         "reference_fournisseur" => $data->getReferenceFournisseur(),
         "code_fournisseur" => $data->getCodeFournisseur(),
