@@ -11,6 +11,7 @@ import ResetPassword from './pages/ResetPassword'
 import "../src/assets/scss/liste.scss"
 import "../src/assets/scss/table.scss"
 import MiseAjour from './pages/MiseAjour'
+import HistoriqueReferencement from './pages/HistoriqueReferencement'
 
 function App() {
   const [service, setService] = useState()
@@ -27,6 +28,7 @@ function App() {
           <Route path="/produit/detail/:skuProduit" element={<DetailProduit />} />
           <Route path="/mon-compte" element={<MonCompte />} />
           <Route path="/gestion/utilisateur" element={<GestionUtilisateur />} />
+          <Route path="/historique/taches" element={<HistoriqueReferencement />} />
 
 
           <Route path="/maj" element={<MiseAjour />} />

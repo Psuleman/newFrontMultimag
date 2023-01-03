@@ -22,28 +22,41 @@ const ValueExport = ({item, index}) => {
 
     const {liste} = useContext(ListeContext)
 
-    // let image = ""
-    // let images = item.pictures
-    // images = images.split(";")
+    let image = ""
+    let images = item.image_src
+    images = images.split(";")
 
-    // image = images[0];
+    image = images[0];
     //fonction
     useEffect(()=>{
 		//image
-		// fetch(item.pictures)
-		// fetch(image)
-		// .then(function(response) {
-		// 	if(response.status != 404){
-		// 		setImgExist(true)
-		// 	}
-		// 	else{
-		// 		setImgExist(false)
-		// 	}
-		  
-		// })
-		// .then(function(myBlob) {
+		fetch(item.pictures)
+		fetch(image)
+		.then(function(response) {
+			if(response.status != 404){
+				setImgExist(true)
 
-		// }).catch((err)=>{});
+                setListesProduitExport(oldState=>{
+                    let newState = [...oldState]
+                    newState[index].image_exist = "TRUE"
+
+                    return newState
+                })
+			}
+			else{
+				setImgExist(false)
+                setListesProduitExport(oldState =>{
+                    let newState = [...oldState]
+                    newState[index].image_exist = "FALSE"
+
+                    return newState
+                })
+			}
+		  
+		})
+		.then(function(myBlob) {
+
+		}).catch((err)=>{});
 
         /**
          * Title, description, img_alt_text
@@ -59,7 +72,8 @@ const ValueExport = ({item, index}) => {
             categorieItem += " > " + (item.filtre_produit ? item.filtre_produit : item.sous_categorie_fnr)
             setCategorie(categorieItem)
         }
-    }, [item, listesProduit])
+    }, [item, listesProduit, listesProduitExport[0].image_exist==0])
+
 
     const subStr = (text) => {
         text=text.replace(`\"\"`, '@')

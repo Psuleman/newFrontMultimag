@@ -47,11 +47,14 @@ const Table = () => {
                     for(let item in element.variants){
                         let variantItem = element.variants[item]
                         let prixRemise = element.tarifs[0].prix_vente * (element.tarifs[0].remise / 100)
-                        let marque = element.marque ? element.marque.marque : element.nom_produit_fr
+                        let marque = element.marque ? element.marque.marque : element.nom_fournisseur
                         let imgAltText = (marque + " " + element.nom_produit_fr + " " + marque)
                         //let nom_produit_fr = element.nom_produit_fr.replace(" ", "_")
                         let nom_produit_fr = splitText(element.nom_produit_fr, " ", "_")
                         let tarifReduit = (element.tarifs[0].prix_vente && element.tarifs[0].prix_vente) ? (parseFloat(element.tarifs[0].prix_vente) - (parseFloat(element.tarifs[0].prix_vente) * (parseFloat(element.tarifs[0].remise)/100))) : null
+                        
+                        
+                        let image_exist = 0
 
                         let itemtab = {
                             id: element.id,
@@ -68,7 +71,8 @@ const Table = () => {
                             published : "FALSE",
                             published_scope : "web",
                             image_command : "REPLACE",
-                            image_src : item==0 ?  element.pictures  : null,
+                            // image_src : item==0 ?  element.pictures  : null,
+                            image_src : element.pictures, // à supprimer et remettre ligne 74
                             img_alt_text : item==0 ?  imgAltText : null,
                             variant_command : "REPLACE",
 
@@ -120,7 +124,13 @@ const Table = () => {
                             matiere10: item == 0 && element.matiereProduits[9]? element.matiereProduits[9].matiere.matiere : null,
                             pourcentageMatiere10: item == 0 && element.matiereProduits[9]? (element.matiereProduits[9].pourcentageMatiere + "%") : null,      
                             custom_product : "TRUE" ,
-                            isChecked: true
+                            isChecked: true,
+
+                            /**
+                             * à supprimer
+                             */
+                            referencer: element.referencer ? "TRUE" : "FALSE",
+                            image_exist: image_exist,
                         }
 
                         tab.push(itemtab)

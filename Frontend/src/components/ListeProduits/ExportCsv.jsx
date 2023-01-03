@@ -66,18 +66,29 @@ const header = [
 	{"label" : "Metafield: custom_fields.material9_value [single_line_text_field]", "key" : "pourcentMatiere9"},
 	{"label" : "Metafield: custom_fields.material10 [single_line_text_field]", "key" : "matiere10"},
 	{"label" : "Metafield: custom_fields.material10_value [single_line_text_field]", "key" : "pourcentMatiere10"},
-	{"label" : "Metafield: mm-google-shopping.custom_product [single_line_text_field]", "key" : "custom_product"}
-	]
+	{"label" : "Metafield: mm-google-shopping.custom_product [single_line_text_field]", "key" : "custom_product"},
+
+	/**
+	 * à supprimer
+	 */
+	{"label" : "referencer [Produit_referencer]", "key" : "referencer"},
+	{"label" : "image_exist [image_est_disponible]", "key" : "image_exist"},
+	
+]
 	
 
 	
 const ExportCsv = ({total}) => {
-    const {listesProduitExport} = useContext(ListeExportContext)
+    const {listesProduitExport, listesProduit} = useContext(ListeExportContext)
     const {totalSkus, liste, skus, serviceUser} = useContext(ListeContext)
 
 	useEffect(()=>{}, [total])
     var data = listesProduitExport
 
+
+	console.log("liste : ", listesProduit, "liste export : ", listesProduitExport)
+
+	
     const csvReport = ({
         data: data,
         headers: header,

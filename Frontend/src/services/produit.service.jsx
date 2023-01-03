@@ -41,6 +41,7 @@ export const getAllProduit = (listeProduit="", filtre="", page) => {
     }    
     if(listeProduit=="export"){
         urlRequestTotal = url + `?pagination=false&referencer=1&export=null`
+        // urlRequestTotal = url + `?pagination=false`
     }
     /**
      * filtre

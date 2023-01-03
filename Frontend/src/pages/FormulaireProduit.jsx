@@ -16,6 +16,8 @@ import Dimension from "../components/FormulaireProduit/Dimension";
 import EntretienCoupe from "../components/FormulaireProduit/EntretienCoupe";
 import { setMatiereProduit } from "../services/matiereproduit.service";
 import { GrilleTailleFnr } from "../data/GrilleTailleFnr";
+import { useContext } from "react";
+import { TemplateContext } from "../components/Layout/Template/Context/TemplateContext";
 
 const FormulaireProduit = () => {
     //variable
@@ -85,6 +87,7 @@ const FormulaireProduit = () => {
     const [isSuccessSave, setIsSuccessSave] = useState()
     const [sectionSave, setSectionSave] = useState()
 
+    const {user} = useContext(TemplateContext)
     //Fonction
     useEffect(() => {
         setMessageSave()
@@ -342,7 +345,7 @@ const FormulaireProduit = () => {
             }            
         }  
     }, [])
-    // console.log("info ", infoSku)
+    console.log("info ", infoSku)
 
     const handleClickSave = (e, section) => {
         // // //// console.log("section", section)
@@ -455,6 +458,112 @@ const FormulaireProduit = () => {
                 setDimensionDone(true)
             else
                 setDimensionDone(null)
+
+
+            
+            /**
+             * Vérification des données modifier
+             * reference fournisseur, marque, pays Origine, Univers, Univers_en (4)
+             * Categorie > sous categorie > Filtre / Categorie_en > sous_categorie_en > filtre_en (6)
+             * couleur > couleur_en (2)
+             * tags 
+             * Description_fr, description_en (2)
+             * nom_produit_fr, nom_produit_en (2)
+             * entretien et coupe (1)
+             *              
+             * matiere (1)
+             * tarifs (1)
+             * Tailles, grille taille (2)
+             * Dimension, poids
+             */
+
+            let point = 0;
+
+            if((infoSku.marque && (marqueUpdate != infoSku.marque.marque)) || (!infoSku.marque && marqueUpdate!= infoSku.nom_fournisseur)){
+                point += 1
+            }
+
+            if((infoSku.pays_origine && paysOrigineUpdate != infoSku.pays_origine) || (!infoSku.pays_origine && paysOrigineUpdate!="") ){
+                point += 1
+            }
+            if((infoSku.univers_en && universEnUpdate != infoSku.univers_en) || (!infoSku.univers_en && universEnUpdate!="")){
+                point += 1
+            }
+            if((infoSku.univers && universUpdate != infoSku.univers) || (!infoSku.univers && universUpdate!="")){
+                point += 1
+            }
+
+            if((infoSku.categorie && categorieUpdate != infoSku.categorie) || (!infoSku.categorie && categorieUpdate !="")){
+                point += 1
+            }            
+            if((infoSku.sous_categorie && sousCategorieUpdate != infoSku.sous_categorie) || (!infoSku.sous_categorie && sousCategorieUpdate != "")){
+                point += 1
+            }
+            if((infoSku.filtre_produit && filtreUpdate != infoSku.filtre_produit) || (!infoSku.filtre_produit && filtreUpdate != "")){
+                point += 1
+            }
+            if((infoSku.categorie_en && categorieEnUpdate != infoSku.categorie_en) || (!infoSku.categorie_en && categorieEnUpdate != "")){
+                point += 1
+            }            
+            if((infoSku.sous_categorie_en && sousCategorieEnUpdate != infoSku.sous_categorie_en) || (!infoSku.sous_categorie_en && sousCategorieEnUpdate != "")){
+                point += 1
+            }
+            if((infoSku.filtre_produit_en && filtreEnUpdate != infoSku.filtre_produit_en) || (!infoSku.filtre_produit_en && filtreEnUpdate != "")){
+                point += 1
+            }
+
+            if((infoSku.couleur && couleurUpdate != infoSku.couleur) || (infoSku.couleur && couleurUpdate != "")){
+                point += 1
+            }
+            if((infoSku.couleur_en && couleurEnUpdate != infoSku.couleur_en) || (!infoSku.couleur_en && couleurEnUpdate != "")){
+                point += 1
+            }
+
+            if((infoSku.description_fr && descriptionFrUpdate != infoSku.description_fr) || (!infoSku.description_fr && descriptionFrUpdate != "")){
+                point += 1
+            }
+            if((infoSku.description_en && descriptionEnUpdate != infoSku.description_en) || (!infoSku.description_en && descriptionEnUpdate != "")){
+                point += 1
+            }
+
+            if((infoSku.nom_produit_fr && nomProduitFrUpdate != infoSku.nom_produit_fr) || (!infoSku.nom_produit_fr && nomProduitFrUpdate != "")){
+                point += 1
+            }
+            if((infoSku.nom_produit_en && nomProduitEnUpdate != infoSku.nom_produit_en) || (!infoSku.nom_produit_en && nomProduitEnUpdate != "")){
+                point += 1
+            }
+            if((infoSku.entretien && entretienUpdate != infoSku.entretien) || (!infoSku.entretien && entretienUpdate != "")){
+                point += 1
+            }
+            if(matiere.length != infoSku.matiereProduits.length){
+                point += 1
+            }
+            if(infoSku.tarifs[0].prix_vente != tarifUpdate[0].prix_vente || infoSku.tarifs[0].remise != tarifUpdate[0].remise){
+                point += 1
+            }
+
+            if( (infoSku.variants[0].taille_ref && infoSku.variants[0].taille_ref.tailleRef != attributUpdate[0].taille_ref) || (!infoSku.variants[0].taille_ref && grilleTailleUpdate!="") ){
+                point += 1
+            }
+
+            console.log("point", point)
+
+
+            if(infoSku.referencer = false && referencer == true){
+                let nomUser = user
+            }
+
+
+
+
+
+
+
+
+
+
+
+
             /**
              * Data à sauvegarder
              */
@@ -501,7 +610,8 @@ const FormulaireProduit = () => {
                 tagsRef: tagsReferencementUpdate? tagsReferencementUpdate:"",
                 dateRef: Moment().format("YYYY-MM-DD"),
                 referencer: referencer,
-                export: false
+                export: false,
+                username: referencer ? nomUser : null
               }
               
             // console.log("data", JSON.stringify(data))

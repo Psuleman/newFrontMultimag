@@ -13,6 +13,7 @@ const SidebarSuperIdAdmin = () => {
         </div>
         <Link className="nav-link" to="/produits/referencement">Référencement</Link>
         <Link className="nav-link" to="/produits/modification">Modification en attente</Link>
+        <Link className="nav-link" to="/historique/taches">Historique des tâches</Link>
         <Link className="nav-link" to="/gestion/utilisateur">Gestion des utilisateurs</Link>
         <Link className="nav-link" to="/maj">MAJ</Link>
         <div className="nav-link">

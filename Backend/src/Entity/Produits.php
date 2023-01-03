@@ -313,6 +313,7 @@ class Produits
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_arrivee = null;
 
+    #[Groups('produit')]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $couleur_en = null;
 
@@ -323,6 +324,9 @@ class Produits
     #[Groups(['produit'])]
     #[ORM\Column(nullable: true)]
     private ?bool $export = null;
+
+    #[Groups('produit')]
+    private ?string $username = null;
 
     //end
     public function __construct()
@@ -1065,6 +1069,18 @@ class Produits
     public function setExport(?bool $export): self
     {
         $this->export = $export;
+
+        return $this;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(?string $username): self
+    {
+        $this->username = $username;
 
         return $this;
     }
