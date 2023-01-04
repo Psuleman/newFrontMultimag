@@ -26,10 +26,11 @@ const SelectMatiere = ({label, value, id, indexMatiere}) => {
 
 
                     console.log("recherche", recherche)
-                    let regex = new RegExp(recherche, "g")
+                    let regex = new RegExp(recherche.toUpperCase(), "g")
                     if(search && search != ""){
                         Matieres.forEach(element => {
                             let item = eval('element.matiere')
+                            item = item.toUpperCase()
                             if(item.match(regex))
                                 newList.push(element)
                         });

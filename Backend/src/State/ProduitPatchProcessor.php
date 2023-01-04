@@ -16,6 +16,8 @@ use App\Entity\CategorieRef;
 use App\Entity\FiltreRef;
 use App\Entity\MarqueRef;
 use App\Entity\SousCategorieRef;
+use App\Entity\Taches;
+use App\Entity\User;
 
 class ProduitPatchProcessor implements ProcessorInterface
 {
@@ -31,6 +33,7 @@ class ProduitPatchProcessor implements ProcessorInterface
     private $_filtreRepository;
     private $_sousCategorieRepository;
     private $_categorieRepository;
+    private $_userRepositoty;
         
     public function __construct(EntityManagerInterface $entityManager) 
     {
@@ -46,6 +49,7 @@ class ProduitPatchProcessor implements ProcessorInterface
         $this->_filtreRepository = $this->_entityManager->getRepository(FiltreRef::class);
         $this->_sousCategorieRepository = $this->_entityManager->getRepository(SousCategorieRef::class);
         $this->_categorieRepository = $this->_entityManager->getRepository(CategorieRef::class);
+        $this->_userRepositoty = $this->_entityManager->getRepository(User::class);
 
     }	
 
@@ -406,6 +410,23 @@ class ProduitPatchProcessor implements ProcessorInterface
 
 
 
+        //utilisateur qui a modifier
+        if($data->getReferencer()==true && $data->getUsername()){
+            $user = $this->_userRepositoty->findOneBy([
+                "email" => $data->getUsername()
+            ]);
+
+            if($user && $data->getMotifTache()){
+                $tache = (new Taches)
+                ->setUser($user)
+                ->setProduit($data)
+                ->setDateModif($data->getDateRef())
+                ->setMotif($data->getMotifTache())
+                ;
+
+                $this->_entityManager->persist($tache);
+            }
+        }
 
 
 

@@ -87,7 +87,9 @@ const FormulaireProduit = () => {
     const [isSuccessSave, setIsSuccessSave] = useState()
     const [sectionSave, setSectionSave] = useState()
 
-    const {user} = useContext(TemplateContext)
+    const [userEmail, setUserEmail] = useState()
+
+
     //Fonction
     useEffect(() => {
         setMessageSave()
@@ -120,6 +122,11 @@ const FormulaireProduit = () => {
         }
         else{
             navigate('/')
+        }
+
+        if(localStorage.getItem("user_multimag")){
+            let user = JSON.parse(localStorage.getItem("user_multimag"))
+            setUserEmail(user.email)
         }
 
         //SKU dans le lien
@@ -345,7 +352,9 @@ const FormulaireProduit = () => {
             }            
         }  
     }, [])
-    console.log("info ", infoSku)
+    // console.log("info ", infoSku)
+
+    // console.log("userEmail", userEmail)
 
     const handleClickSave = (e, section) => {
         // // //// console.log("section", section)
@@ -478,89 +487,105 @@ const FormulaireProduit = () => {
              */
 
             let point = 0;
+            let message = ""
 
             if((infoSku.marque && (marqueUpdate != infoSku.marque.marque)) || (!infoSku.marque && marqueUpdate!= infoSku.nom_fournisseur)){
                 point += 1
+                message += "marque, "
             }
 
             if((infoSku.pays_origine && paysOrigineUpdate != infoSku.pays_origine) || (!infoSku.pays_origine && paysOrigineUpdate!="") ){
                 point += 1
+                message += "pays origine, "
             }
             if((infoSku.univers_en && universEnUpdate != infoSku.univers_en) || (!infoSku.univers_en && universEnUpdate!="")){
                 point += 1
+                message += "univers en, "
             }
             if((infoSku.univers && universUpdate != infoSku.univers) || (!infoSku.univers && universUpdate!="")){
                 point += 1
+                message += "univers, "
             }
 
             if((infoSku.categorie && categorieUpdate != infoSku.categorie) || (!infoSku.categorie && categorieUpdate !="")){
                 point += 1
+                message += "categorie, "
             }            
             if((infoSku.sous_categorie && sousCategorieUpdate != infoSku.sous_categorie) || (!infoSku.sous_categorie && sousCategorieUpdate != "")){
                 point += 1
+                message += "sous categorie, "
+
             }
             if((infoSku.filtre_produit && filtreUpdate != infoSku.filtre_produit) || (!infoSku.filtre_produit && filtreUpdate != "")){
                 point += 1
+                message += "filtre produit, "
             }
             if((infoSku.categorie_en && categorieEnUpdate != infoSku.categorie_en) || (!infoSku.categorie_en && categorieEnUpdate != "")){
                 point += 1
+                message += "categorie en, "
             }            
             if((infoSku.sous_categorie_en && sousCategorieEnUpdate != infoSku.sous_categorie_en) || (!infoSku.sous_categorie_en && sousCategorieEnUpdate != "")){
                 point += 1
+                message += "sous categorie en, "
             }
             if((infoSku.filtre_produit_en && filtreEnUpdate != infoSku.filtre_produit_en) || (!infoSku.filtre_produit_en && filtreEnUpdate != "")){
                 point += 1
+                message += "filtre produit en, "
             }
 
             if((infoSku.couleur && couleurUpdate != infoSku.couleur) || (infoSku.couleur && couleurUpdate != "")){
                 point += 1
+                message += "couleur, "
             }
             if((infoSku.couleur_en && couleurEnUpdate != infoSku.couleur_en) || (!infoSku.couleur_en && couleurEnUpdate != "")){
                 point += 1
+                message += "couleur en, "
             }
 
             if((infoSku.description_fr && descriptionFrUpdate != infoSku.description_fr) || (!infoSku.description_fr && descriptionFrUpdate != "")){
                 point += 1
+                message += "description fr, "
             }
             if((infoSku.description_en && descriptionEnUpdate != infoSku.description_en) || (!infoSku.description_en && descriptionEnUpdate != "")){
                 point += 1
+                message += "description en, "
             }
 
             if((infoSku.nom_produit_fr && nomProduitFrUpdate != infoSku.nom_produit_fr) || (!infoSku.nom_produit_fr && nomProduitFrUpdate != "")){
                 point += 1
+                message += "nom produit fr, "
             }
             if((infoSku.nom_produit_en && nomProduitEnUpdate != infoSku.nom_produit_en) || (!infoSku.nom_produit_en && nomProduitEnUpdate != "")){
                 point += 1
+                message += "nom produit en, "
             }
             if((infoSku.entretien && entretienUpdate != infoSku.entretien) || (!infoSku.entretien && entretienUpdate != "")){
                 point += 1
+                message += "entretien, "
             }
             if(matiere.length != infoSku.matiereProduits.length){
                 point += 1
+                message += "matiere, "
             }
-            if(infoSku.tarifs[0].prix_vente != tarifUpdate[0].prix_vente || infoSku.tarifs[0].remise != tarifUpdate[0].remise){
+            if(infoSku.tarifs[0].prix_vente != tarifUpdate[0].prix_vente || (infoSku.tarifs[0].remise && infoSku.tarifs[0].remise != tarifUpdate[0].remise) || (!infoSku.tarifs[0].remise && tarifUpdate[0].remise!=0)){
                 point += 1
+                message += "tarifs, "
             }
 
             if( (infoSku.variants[0].taille_ref && infoSku.variants[0].taille_ref.tailleRef != attributUpdate[0].taille_ref) || (!infoSku.variants[0].taille_ref && grilleTailleUpdate!="") ){
                 point += 1
+                message += "variants, "
             }
 
-            console.log("point", point)
+            console.log("point", point, "message: ", message)
 
-
+            let motif = ""
             if(infoSku.referencer = false && referencer == true){
-                let nomUser = user
+                motif = "référencement"
             }
-
-
-
-
-
-
-
-
-
+            else if(infoSku.referencer = true && referencer == true){
+                motif = "modification / vérification"
+            }
 
 
 
@@ -611,10 +636,11 @@ const FormulaireProduit = () => {
                 dateRef: Moment().format("YYYY-MM-DD"),
                 referencer: referencer,
                 export: false,
-                username: referencer ? nomUser : null
+                username: userEmail ? userEmail : null,
+                motifTache: motif
               }
               
-            // console.log("data", JSON.stringify(data))
+            console.log("data", JSON.stringify(data))
             // //// console.log("id : ", infoSku.id)
             //// console.log(infoSku)
             let promise = Promise.resolve(setProduit(infoSku.id, data));

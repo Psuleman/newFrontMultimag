@@ -79,4 +79,19 @@ class ProduitsRepository extends ServiceEntityRepository
         // returns an array of Product objects
         return $query->getResult();
     }
+
+    public function addTaches(): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT p.id
+            FROM App\Entity\Produits p
+            WHERE p.dateRef>"2023-01-01" AND p.referencer=1'
+        );
+
+        // returns an array of Product objects
+        return $query->getResult();
+
+    }
 }

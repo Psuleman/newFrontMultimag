@@ -45,7 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[Groups("user")]
+    #[Groups(["user", "tache"])]
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private $email;
 
@@ -55,11 +55,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string')]
     private $password;
 
-    #[Groups("user")]
+    #[Groups(["user", "tache"])]
     #[ORM\Column(type: 'string', length: 255)]
     private $nom;
 
-    #[Groups("user")]
+    #[Groups(["user", "tache"])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $prenom;
 

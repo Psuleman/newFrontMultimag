@@ -57,7 +57,7 @@ class Produits
     #[Groups('produit')]
     private ?int $id = null;
 
-    #[Groups('produit')]
+    #[Groups(['produit', 'tache'])]
     #[ORM\Column(type: 'integer')]
     private ?string $sku = null;
 
@@ -327,6 +327,9 @@ class Produits
 
     #[Groups('produit')]
     private ?string $username = null;
+
+    #[Groups('produit')]
+    private ?string $motifTache = null;
 
     //end
     public function __construct()
@@ -1081,6 +1084,18 @@ class Produits
     public function setUsername(?string $username): self
     {
         $this->username = $username;
+
+        return $this;
+    }
+
+    public function getMotifTache(): ?string
+    {
+        return $this->motifTache;
+    }
+
+    public function setMotifTache(?string $motifTache): self
+    {
+        $this->motifTache = $motifTache;
 
         return $this;
     }

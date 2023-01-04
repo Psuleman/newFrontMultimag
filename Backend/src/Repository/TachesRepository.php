@@ -63,4 +63,20 @@ class TachesRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    // public function addTaches(): array
+    // {
+    //     $entityManager = $this->getEntityManager();
+
+    //     $query = $entityManager->createQuery(
+    //         'SELECT p.id, p.date_ref
+    //         FROM App\Entity\Produits p
+    //         WHERE p.date_ref>"2023-01-01"
+    //         AND p.referencer=1'
+    //     );
+
+    //     // returns an array of Product objects
+    //     return $query->getResult();
+
+    // }
 }

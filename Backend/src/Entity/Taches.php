@@ -2,10 +2,25 @@
 
 namespace App\Entity;
 
-use App\Repository\TachesRepository;
+use ApiPlatform\Metadata\Get;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\TachesRepository;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
+#[ApiResource(
+    paginationEnabled: false
+)]
+#[ApiFilter(OrderFilter::class, properties: ['date_modif' => 'DESC'])]
+#[ApiFilter(SearchFilter::class, properties: ['date_modif' => 'partial', 'motif' => 'exact'])]
+#[GetCollection(
+    normalizationContext: ['groups' => ['tache']],
+)]
 #[ORM\Entity(repositoryClass: TachesRepository::class)]
 class Taches
 {
@@ -14,16 +29,23 @@ class Taches
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups('tache')]
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[Groups('tache')]
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Produits $produit = null;
 
+    #[Groups('tache')]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date_modif = null;
+
+    #[Groups('tache')]
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $motif = null;
 
     public function getId(): ?int
     {
@@ -62,6 +84,18 @@ class Taches
     public function setDateModif(\DateTimeInterface $date_modif): self
     {
         $this->date_modif = $date_modif;
+
+        return $this;
+    }
+
+    public function getMotif(): ?string
+    {
+        return $this->motif;
+    }
+
+    public function setMotif(?string $motif): self
+    {
+        $this->motif = $motif;
 
         return $this;
     }

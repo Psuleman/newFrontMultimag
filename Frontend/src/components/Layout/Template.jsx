@@ -10,6 +10,7 @@ const Template = ({children}) => {
     const [showsidebar, setShowsidebar] = useState(false)
     const [service, setService] = useState()
     const [user, setUser] = useState()
+    const [emailUser, setEmailUser] = useState()
     const navigate = useNavigate();
     //fonction
     useEffect(()=>{
@@ -25,10 +26,13 @@ const Template = ({children}) => {
                         let utilisateur = JSON.parse(localStorage.getItem("user_multimag"))
                         utilisateur.service = value[0].service
                         utilisateur.nom = value[0].prenom + " " + value[0].nom.toUpperCase()
+                        utilisateur.email = value[0].email
                         localStorage.setItem("user_multimag", JSON.stringify(utilisateur))
                         
                         setUser(utilisateur.nom)
+                        setEmailUser(utilisateur.email)
                         setService(utilisateur.service)
+
 
                     }					
                 }
@@ -39,6 +43,7 @@ const Template = ({children}) => {
         }
 
     }, [])
+
 
 
     const handleClickLogout = () => {
@@ -53,6 +58,7 @@ const Template = ({children}) => {
             handleClickLogout: handleClickLogout,
             service: service,
             user: user,
+            emailUser: emailUser,
         }}>
             <Navbar />
 
