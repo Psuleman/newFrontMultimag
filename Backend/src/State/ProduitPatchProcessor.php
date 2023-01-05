@@ -420,7 +420,7 @@ class ProduitPatchProcessor implements ProcessorInterface
                 $tache = (new Taches)
                 ->setUser($user)
                 ->setProduit($data)
-                ->setDateModif($data->getDateRef())
+                ->setDateMotif($data->getDateRef())
                 ->setMotif($data->getMotifTache())
                 ;
 

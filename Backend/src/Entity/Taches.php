@@ -14,10 +14,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 #[ApiResource(
-    paginationEnabled: false
+    paginationClientEnabled: true,
+    paginationItemsPerPage: 1000,
 )]
-#[ApiFilter(OrderFilter::class, properties: ['date_modif' => 'DESC'])]
-#[ApiFilter(SearchFilter::class, properties: ['date_modif' => 'partial', 'motif' => 'exact'])]
+#[ApiFilter(OrderFilter::class, properties: ['date_motif' => 'DESC'])]
+#[ApiFilter(SearchFilter::class, properties: ['date_motif' => 'partial', 'motif' => 'exact'])]
 #[GetCollection(
     normalizationContext: ['groups' => ['tache']],
 )]
@@ -41,7 +42,7 @@ class Taches
 
     #[Groups('tache')]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date_modif = null;
+    private ?\DateTimeInterface $date_motif = null;
 
     #[Groups('tache')]
     #[ORM\Column(length: 255, nullable: true)]
@@ -76,14 +77,14 @@ class Taches
         return $this;
     }
 
-    public function getDateModif(): ?\DateTimeInterface
+    public function getDateMotif(): ?\DateTimeInterface
     {
-        return $this->date_modif;
+        return $this->date_motif;
     }
 
-    public function setDateModif(\DateTimeInterface $date_modif): self
+    public function setDateMotif(\DateTimeInterface $date_motif): self
     {
-        $this->date_modif = $date_modif;
+        $this->date_motif = $date_motif;
 
         return $this;
     }

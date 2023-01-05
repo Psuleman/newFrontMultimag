@@ -34,6 +34,10 @@ const HeaderPageList = () => {
             role == "admin" &&
             <div  className="btn btn-dark"><Link className="linkBtn" to="/nouveau-produit">Importer produit.csv</Link></div>
         }
+        {
+            service == "Designer" && 
+            <div className="btn btn-dark"><Link className="linkBtn" to="/nouveau-produit-shooter">Nouveau produit reçu / livré</Link></div>
+        }
     </header>
     )
 }

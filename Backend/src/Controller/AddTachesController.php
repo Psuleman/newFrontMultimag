@@ -41,11 +41,11 @@ class AddTachesController extends AbstractController
                     $tache = (new Taches)
                     ->setProduit($value)
                     ->setUser($findUser)
-                    ->setDateModif($value->getDateRef())
+                    ->setDateMotif($value->getDateRef())
                     ->setMotif("référencement");
 
                     $findTaches = $em->getRepository(Taches::class)->findBy([
-                        "date_modif" => $tache->getDateModif()
+                        "date_motif" => $tache->getDateMotif()
                     ]);
                     if(!$findTaches){
                         $em->persist($tache);

@@ -11,7 +11,7 @@ const headerGET = {
 
 
 export const getTacheJournalier = (jour) => {
-    let urlRequestTotal = url + "?date_modif" + jour
+    let urlRequestTotal = url + "?date_modif=" + jour
     let tab = fetch(urlRequestTotal, headerGET)
     .then(function(res) {
         ////console.log(res.json())

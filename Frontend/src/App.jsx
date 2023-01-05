@@ -12,6 +12,7 @@ import "../src/assets/scss/liste.scss"
 import "../src/assets/scss/table.scss"
 import MiseAjour from './pages/MiseAjour'
 import HistoriqueReferencement from './pages/HistoriqueReferencement'
+import FormulaireProduitShooting from './pages/FormulaireProduitShooting'
 
 function App() {
   const [service, setService] = useState()
@@ -24,6 +25,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/produits/:liste" element={<ListeProduit />} />
           <Route path="/nouveau-produit" element={<NouveauProduit />} />
+          <Route path="/nouveau-produit-shooter" element={<FormulaireProduitShooting />} />
           <Route path="/produit/:skuProduit" element={<FormulaireProduit />} />
           <Route path="/produit/detail/:skuProduit" element={<DetailProduit />} />
           <Route path="/mon-compte" element={<MonCompte />} />

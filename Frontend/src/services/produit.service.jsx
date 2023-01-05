@@ -27,7 +27,7 @@ export const getAllFiltres = (req, res) => {
     return tab;
 }
 
-export const getAllProduit = (listeProduit="", filtre="", page) => {
+export const getAllProduit = (listeProduit="", filtre="", page, saison) => {
 
     let pageListe = page>0 ? page : 1
 
@@ -43,6 +43,7 @@ export const getAllProduit = (listeProduit="", filtre="", page) => {
         urlRequestTotal = url + `?pagination=false&referencer=1&export=null`
         // urlRequestTotal = url + `?pagination=false`
     }
+
     /**
      * filtre
      */

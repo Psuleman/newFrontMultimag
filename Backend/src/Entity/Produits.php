@@ -29,7 +29,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     // operations: [new GetCollection()]
     paginationClientEnabled: true,
-    paginationItemsPerPage: 100
+    paginationItemsPerPage: 100,
+    order: ["date_arrivee"=>"DESC", "sku" => "ASC"]
 )]
 #[DELETE()]
 #[POST(
@@ -45,8 +46,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
     //denormalizationContext: ['groups' => 'produit'],
     processor: ProduitPatchProcessor::class,
     )]
-#[ApiFilter(OrderFilter::class, properties: ['sku' => 'DESC'])]
-
 #[ApiFilter(SearchFilter::class, properties: ['filtre.sous_categorie_ref.categorie_ref.categorie_ref' => 'exact', 'univers' => 'exact', 'sku' => 'exact', 'nom_fournisseur' => 'partial', 'newProduit' => 'exact', 'referencer' => 'exact', 'newListAttente' => 'exact', 'code_tag' => 'exact', 'export' => 'exact', 'saison' => 'exact'])]
 #[ORM\Entity(repositoryClass: ProduitsRepository::class)]
 class Produits
@@ -85,7 +84,7 @@ class Produits
     #[ORM\Column(type: 'integer')]
     private $code_saison;
 
-    #[Groups('produit')]
+    #[Groups(['produit', 'tache'])]
     #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private $saison;
 
@@ -330,6 +329,16 @@ class Produits
 
     #[Groups('produit')]
     private ?string $motifTache = null;
+
+    #[Groups('produit')]
+    #[ORM\Column(nullable: true)]
+    private ?bool $produit_shooter = null;
+
+    #[Groups('produit')]
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $date_shooting = null;
+
+
 
     //end
     public function __construct()
@@ -1096,6 +1105,30 @@ class Produits
     public function setMotifTache(?string $motifTache): self
     {
         $this->motifTache = $motifTache;
+
+        return $this;
+    }
+
+    public function isProduitShooter(): ?bool
+    {
+        return $this->produit_shooter;
+    }
+
+    public function setProduitShooter(?bool $produit_shooter): self
+    {
+        $this->produit_shooter = $produit_shooter;
+
+        return $this;
+    }
+
+    public function getDateShooting(): ?\DateTimeInterface
+    {
+        return $this->date_shooting;
+    }
+
+    public function setDateShooting(?\DateTimeInterface $date_shooting): self
+    {
+        $this->date_shooting = $date_shooting;
 
         return $this;
     }

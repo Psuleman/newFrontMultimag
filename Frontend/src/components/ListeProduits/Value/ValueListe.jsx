@@ -87,6 +87,9 @@ const ValueListe = ({item}) => {
         let tabVariants = []
         item.variants.forEach(element => {
             if(element.stock_18!=null && element.stock_7!=null && element.stock_14!=null && element.stock_0!=null && element.stock_9!=null && element.stock_3!=null){
+                
+                let total = parseInt(element.stock_18) + parseInt(element.stock_7) + parseInt(element.stock_14) + parseInt(element.stock_9) + parseInt(element.stock_0)
+                element.total = total
                 tabVariants.push(element)
             }
             
@@ -108,6 +111,8 @@ const ValueListe = ({item}) => {
     //Render
     return (
         <tbody>
+        {
+        stock.total != 0 &&
         <tr>
             <td className="px-2 detailSku">
             <center>
@@ -170,6 +175,8 @@ const ValueListe = ({item}) => {
             </td>
               
         </tr>
+        }
+
         {
 
             showVariant && variants && 
@@ -183,7 +190,7 @@ const ValueListe = ({item}) => {
                 <td className="px-2">{i.stock_14}</td>
                 <td className="px-2">{i.stock_0}</td>
                 <td className="px-2">{i.stock_9}</td>
-                <td className="px-2">{i.stock_3}</td>
+                <td className="px-2">{i.total}</td>
                 <td className="px-2 status" />                
                 <td className="px-2 action" />            
             </tr>

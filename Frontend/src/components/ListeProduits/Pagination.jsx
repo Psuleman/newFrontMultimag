@@ -74,7 +74,6 @@ const Pagination = () => {
 
 
 
-
     // console.log("lastPage", lastPage)
 
     const handleClick = (index, item) => {

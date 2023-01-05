@@ -8,7 +8,7 @@ import DeleteProduit from "./DeleteProduit";
 import ExportCsv from "./ExportCsv";
 import ToutCocher from "./ToutCocher";
 
-const Header = () => {
+const HeaderDesigner = () => {
     //variable
     const [infoExport, setInfoExport] = useState()
     const [totalSkuExport, setTotalSkuExport] = useState()
@@ -53,42 +53,6 @@ const Header = () => {
     //render
     return (
     <header>
-        {
-            serviceUser == "admin" && 
-            <div className="d-flex justify-content-start mt-3 navTable">
-                {
-                    liste=="listes" ?
-                    <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold bg-white border-bottom-0"><Link className="linkNav" to="/produits/listes">Tous les produits</Link></div>
-                    :
-                    <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold"><Link className="linkNav" to="/produits/listes">Tous les produits</Link></div>
-                }
-                {
-                    liste=="referencement" ?
-                    <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold bg-white border-bottom-0"><Link className="linkNav" to="/produits/referencement">Produit à référencer</Link></div>
-                    :
-                    <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold"><Link className="linkNav" to="/produits/referencement">Produit à référencer</Link></div>
-                }
-                {
-                    liste=="modification" ? 
-                    <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold bg-white border-bottom-0"><Link className="linkNav" to="/produits/modification">Produit à modifier</Link></div>
-                    :
-                    <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold"><Link className="linkNav" to="/produits/modification">Produit à modifier</Link></div>
-                }
-                {
-                    liste=="export" ? 
-                    <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold bg-white border-bottom-0"><Link className="linkNav" to="/produits/export">Produit à exporter</Link></div>
-                    :
-                    <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold"><Link className="linkNav" to="/produits/export">Produit à exporter</Link></div>
-                }
-                {
-                    liste=="tableau-de-bord" ? 
-                    <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold bg-white border-bottom-0"><Link className="linkNav" to="/produits/export">Tableau de bord</Link></div>
-                    :
-                    <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 p-4 fw-bold"><Link className="linkNav" to="/produits/tableau-de-bord">Tableau de bord</Link></div>                
-                }
-
-            </div>
-        }
         {
             role && role == "Designer" && 
             <div className="d-flex justify-content-start mt-3 navTable">
@@ -158,4 +122,4 @@ const Header = () => {
     )
 }
 
-export default Header;
+export default HeaderDesigner;

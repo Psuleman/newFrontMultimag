@@ -5,7 +5,7 @@ import { getAllFiltres, getAllProduit } from '../../../services/produit.service'
 import { Univers } from '../../../data/Univers'
 import { getCategories } from '../../../services/categorie.service'
 import { getMarques } from '../../../services/marques.services'
-
+import Moment from 'moment'
 
 export const ListeContext = React.createContext({})
 
@@ -66,16 +66,31 @@ const ListeContextProvider = ({children}) => {
         })
 
 
-        let tabMarque = []
-        const promiseMarque = Promise.resolve(getMarques())
+        let anneeYY = Moment().format("YY")
+        let anneeYYYY = Moment().format("YYYY")
+        let tabSaison = []
+        for(let y=anneeYYYY; y>1985; y--){
+            tabSaison.push("SS"+anneeYY)
+            tabSaison.push("FW"+anneeYY);
+            anneeYYYY = Moment(anneeYYYY, "YYYY").subtract(1, "years").format("YYYY");
+            anneeYY = Moment(anneeYY, "YY").subtract(1, "year").format("YY");
+        }            
+        setSaisonFiltreTab(tabSaison)
 
-        promiseMarque.then((value)=>{
-            for(let item in value) {
-                if(item == "hydra:member"){
-                    // console.log(value[item])
-                }
-            }
-        })
+        
+
+
+
+        // let tabMarque = []
+        // const promiseMarque = Promise.resolve(getMarques())
+
+        // promiseMarque.then((value)=>{
+        //     for(let item in value) {
+        //         if(item == "hydra:member"){
+        //             // console.log(value[item])
+        //         }
+        //     }
+        // })
 
         /***
          * 
@@ -133,7 +148,6 @@ const ListeContextProvider = ({children}) => {
 
         
         
-        
         const promise = Promise.resolve(getAllProduit(liste, filtre, pageActuelle))
 
         promise.then((value) => {
@@ -149,19 +163,19 @@ const ListeContextProvider = ({children}) => {
 
                             //let tabCategory = []
                             //let tabUnivers = []
-                            // let tabMarque = []
+                            let tabMarque = []
                             //let tabTag = []
-                            // for(let key in valeur)
-                            // {
+                            for(let key in valeur)
+                            {
                             //     //tabCategory.push(valeur[key].categorie)
                             //     //tabUnivers.push(valeur[key].univers)
-                            //     let marqueProduit = valeur[key].marque ? valeur[key].marque.marque : valeur[key].nom_fournisseur
-                            //     tabMarque.push(marqueProduit)
+                                let marqueProduit = valeur[key].marque ? valeur[key].marque.marque : valeur[key].nom_fournisseur
+                                tabMarque.push(marqueProduit)
                             //     //tabTag.push(valeur[key].code_tag ? valeur[key].code_tag : 0)
-                            // }
+                            }
                             //tabCategory = [... new Set(tabCategory)]
                             //tabUnivers = [... new Set(tabUnivers)]
-                            // tabMarque = [... new Set(tabMarque)]
+                            tabMarque = [... new Set(tabMarque)]
                             // tabTag = [... new Set(tabTag)]
     
     
@@ -180,7 +194,7 @@ const ListeContextProvider = ({children}) => {
                             // });
                             //setCategorieFiltreTab(tabCategory)
                             //setUniversFiltreTab(tabUnivers)
-                            // setMarqueFiltreTab(tabMarque)
+                            setMarqueFiltreTab(tabMarque.sort())
                             //setTagFiltreTab(tabTemporaire)
                         }
                     }
