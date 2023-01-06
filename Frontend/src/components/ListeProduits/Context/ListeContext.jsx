@@ -151,7 +151,7 @@ const ListeContextProvider = ({children}) => {
         const promise = Promise.resolve(getAllProduit(liste, filtre, pageActuelle))
 
         promise.then((value) => {
-            // console.log("value ", value)
+            console.log("value ", value)
             if(value){ 
                 let totalListe = 0    
                 for(let item in value){

@@ -86,7 +86,7 @@ const ExportCsv = ({total}) => {
     var data = listesProduitExport
 
 
-	console.log("liste : ", listesProduit, "liste export : ", listesProduitExport)
+	//console.log("liste : ", listesProduit, "liste export : ", listesProduitExport)
 
 	
     const csvReport = ({

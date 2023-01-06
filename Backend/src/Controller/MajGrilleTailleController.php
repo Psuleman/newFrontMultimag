@@ -13,37 +13,6 @@ class MajGrilleTailleController extends AbstractController
     public function index(ProduitsRepository $produitsRepository): Response
     {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         return $this->render('maj_grille_taille/index.html.twig', [
             'controller_name' => 'MajGrilleTailleController',
         ]);

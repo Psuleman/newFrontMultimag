@@ -29,34 +29,37 @@ const ValueExport = ({item, index}) => {
     image = images[0];
     //fonction
     useEffect(()=>{
-		//image
-		fetch(item.pictures)
-		fetch(image)
-		.then(function(response) {
-			if(response.status != 404){
-				setImgExist(true)
+        // if(listesProduitExport){
+        //     //image
+        //     fetch(item.pictures)
+        //     fetch(image)
+        //     .then(function(response) {
+        //         if(response.status != 404){
+        //             setImgExist(true)
 
-                setListesProduitExport(oldState=>{
-                    let newState = [...oldState]
-                    newState[index].image_exist = "TRUE"
+        //             setListesProduitExport(oldState=>{
+        //                 let newState = [...oldState]
+        //                 //newState[index].image_exist = "TRUE"
 
-                    return newState
-                })
-			}
-			else{
-				setImgExist(false)
-                setListesProduitExport(oldState =>{
-                    let newState = [...oldState]
-                    newState[index].image_exist = "FALSE"
+        //                 return newState
+        //             })
+        //         }
+        //         else{
+        //             setImgExist(false)
+        //             setListesProduitExport(oldState =>{
+        //                 let newState = [...oldState]
+        //                 //newState[index].image_exist = "FALSE"
 
-                    return newState
-                })
-			}
-		  
-		})
-		.then(function(myBlob) {
+        //                 return newState
+        //             })
+        //         }
+            
+        //     })
+        //     .then(function(myBlob) {
 
-		}).catch((err)=>{});
+        //     }).catch((err)=>{});
+        // }
+
 
         /**
          * Title, description, img_alt_text
@@ -72,7 +75,7 @@ const ValueExport = ({item, index}) => {
             categorieItem += " > " + (item.filtre_produit ? item.filtre_produit : item.sous_categorie_fnr)
             setCategorie(categorieItem)
         }
-    }, [item, listesProduit, listesProduitExport[0].image_exist==0])
+    }, [item, listesProduit, listesProduitExport])
 
 
     const subStr = (text) => {
