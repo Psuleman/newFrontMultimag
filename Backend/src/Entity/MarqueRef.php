@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Link;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
@@ -13,14 +16,18 @@ use App\Repository\MarqueRefRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 #[ApiResource(
     operations: [
         new Get(controller: 'App\\Entity\\NotFoundAction', output: false), 
-        new GetCollection()
+        new GetCollection(),
+        new Post(),
+        new Patch()
     ],
      paginationEnabled: false,
      )]
+#[ApiFilter(SearchFilter::class, properties: ['marque' => 'partial'])]
 #[ORM\Entity(repositoryClass: MarqueRefRepository::class)]
 class MarqueRef
 {
@@ -35,6 +42,9 @@ class MarqueRef
 
     #[ORM\OneToMany(mappedBy: 'marque', targetEntity: Produits::class)]
     private Collection $produits;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $editorial = null;
       
     public function __construct($marqueString="")
     {
@@ -83,6 +93,18 @@ class MarqueRef
                 $produit->setMarque(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEditorial(): ?string
+    {
+        return $this->editorial;
+    }
+
+    public function setEditorial(?string $editorial): self
+    {
+        $this->editorial = $editorial;
 
         return $this;
     }

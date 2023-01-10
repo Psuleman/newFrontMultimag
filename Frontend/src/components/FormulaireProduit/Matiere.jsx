@@ -9,14 +9,17 @@ import InputDesabled from "./TemplateFormulaire/InputDesabled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 import Input from "./TemplateFormulaire/Input";
+import Select from "./TemplateFormulaire/Select";
 
 const Matiere = () => {
     //variable
     const [nbMatiere, setNbMatiere] = useState()
     const [totalMatiere, setTotalMatiere] = useState()
 
+    const [tabMatiere, setTabMatiere] = useState([])
+
     const {infoSku, matiereDone, setMatiereDone, matiereUpdate, setMatiereUpdate, referenceCouleurUpdate, setReferenceCouleurUpdate, 
-        sectionUpdate, setSectionUpdate, handleClickSave, cliquable, setCliquable} = useContext(FormulaireContext)
+        sectionUpdate, setSectionUpdate, handleClickSave, cliquable, setCliquable, matiereGoogleUpdate, setMatiereGoogleUpdate} = useContext(FormulaireContext)
     //fonction
     useEffect(()=>{
         // console.log("matiereUpdate", matiereUpdate)
@@ -161,7 +164,7 @@ const Matiere = () => {
                 {
                     matiereUpdate &&
                     matiereUpdate.map((i, index)=>(
-                        <section className="row g-3" key={"matiere_" + i + "_" + index}>
+                        <section className="row g-3 mt-1" key={"matiere_" + i + "_" + index}>
                             {
                                 parseInt(index) == 0 ?
                                 <SelectMatiere label={"* Matière " + (index + 1)} value={matiereUpdate[index].matiere.matiere} id={"selectMatiere" + (index + 1)} indexMatiere={index} />
@@ -207,6 +210,14 @@ const Matiere = () => {
                         </section>
                     ))
                 }
+                {
+                    /**
+                     * Matériel google 
+                     */
+                }
+                <section className="row g-3 mt-1">
+                    <Select id={"classification_google_matiere"} label={"* Matière Google"} value={matiereGoogleUpdate} setValue={setMatiereGoogleUpdate} list={tabMatiere} itemValue="" />
+                </section>
                 {
                     // matiereUpdate.length <10 && totalMatiere<100 &&
                     matiereUpdate.length <10 &&

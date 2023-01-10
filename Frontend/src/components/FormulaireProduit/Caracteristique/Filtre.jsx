@@ -16,6 +16,10 @@ const Filtre = () => {
                 if(element.filtre == filtreUpdate)
                 {
                     setFiltreEnUpdate(element.filtre_en)
+
+                    /**
+                     * Catégorie Google
+                     */
                 }
             });
         }

@@ -1,32 +1,31 @@
 import { useState } from "react"
 import { useEffect } from "react"
 
-    const Select = ({id, label, value, setValue, list, itemValue, index }) => {
+    const Select = ({id, label, value, setValue, list, index }) => {
     //variable
     const [search, setSearch] = useState("")
     const [arrayList, setArrayList] = useState([])
+    const [listInitial, setListInitial] = useState([])
     //fonction
     useEffect(()=>{ 
-        if(list){
+        if((!listInitial || listInitial.length==0) && list){
+            setListInitial(list)
+            setArrayList(list.sort())
+        }
+        if(listInitial){
             //list = sortList(list)
             if(!search || search=="")
-                setArrayList(list.sort())
+                setArrayList(listInitial.sort())
             
             else{
                 setArrayList(oldList=>{
                     let newList = []
                     let regex = new RegExp(majuscule(search), "i")
-                    if(search && search != ""){
-                        list.forEach(element => {
-                            if(itemValue==""){
-                                if(element && majuscule(element).match(regex))
-                                    newList.push(element)                                
-                            }
-                            else{
-                                let item = eval('element.' + itemValue)
-                                if(majuscule(item).match(regex))
-                                    newList.push(element)                                
-                            }
+                    if(search && search != "" && listInitial && listInitial.length > 0){
+                        console.log(listInitial)
+                        listInitial.forEach(element => {
+                            if(element && majuscule(element).match(regex))
+                                    newList.push(element) 
 
                         });
                     }
@@ -36,9 +35,11 @@ import { useEffect } from "react"
         }
 
 
-    }, [search, list])
+    }, [search, listInitial])
 
-    console.log("search ", search)
+    // console.log("arrayList", arrayList)
+
+    // console.log("search ", search)
 
     const majuscule = (text) => {
         if(text){        
@@ -59,7 +60,6 @@ import { useEffect } from "react"
 
         //array unique
         tab.forEach(element => {
-            element = (itemValue != "") ? eval('element.' + itemValue) : element
             arraySort.add(element)
         });
 
@@ -74,21 +74,26 @@ import { useEffect } from "react"
         let tabObjet = []
         tableau.forEach(element => {
             tab.forEach(elementObject => {
-                let i = (itemValue != "") ? eval('elementObject.' + itemValue) : element
-                if(i == element)
-                    tabObjet.push(elementObject)
+                tabObjet.push(elementObject)
             });
         });
-        console.log("tabObjet", tabObjet)
+        // console.log("tabObjet", tabObjet)
         return tabObjet;
     }
 
     const handleClick = () => {
-        let tab = [...arrayList]
-        tab.push(search)
-        setValue(search)
+        //let tab = [...list]
+        //tab.push(search)
+        //setArrayList(tab)
+
+        setValue((oldState)=>{
+            let newState = [...oldState]
+            newState[index].etat = search
+            return newState
+        })
         setSearch("")
     }
+
     //Render
     return (
         <div className="mb-3 col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
@@ -109,25 +114,24 @@ import { useEffect } from "react"
                 </div>
                 <div className="height-select border border-1">
                 {
-                    list && arrayList.map((item, index)=>{
-                        item = (itemValue != "") ? eval('item.' + itemValue) : item
+                    listInitial && arrayList.map((item, indexliste)=>{
+                        
                         return (
-                            <div className="dropdown-item" key={label+"_index_" + index}>
-                                <div className="p-1 cursor-pointer" id={label+"_"+index} key={label+"_"+index} onClick={(e) => {
-                                    // setValue((oldState) => {
-                                    //     let newState = [...oldState]
-                                    //     newState[index].etat = e.target.value
-
-                                    //     return newState
-                                    // })
-                                    //setSearch("")
+                            <div className="dropdown-item" key={label+"_index_" + indexliste}>
+                                <div className="p-1 cursor-pointer" id={label+"_"+indexliste} key={label+"_"+indexliste} onClick={(e) => {
+                                    setValue((oldState)=>{
+                                        let newState = [...oldState]
+                                        newState[index].etat = item
+                                        return newState
+                                    })
+                                    setSearch("")
                                 }}>{ item }</div>
                             </div>
                         )                   
                     })   
                 }
                 {
-                    !list &&
+                    !listInitial &&
                     <div className="d-flex justify-content-center">
                     <div className="spinner-border" role="status">
                         <span className="visually-hidden">Loading...</span>

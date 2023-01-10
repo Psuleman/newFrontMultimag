@@ -38,6 +38,9 @@ const FormulaireProduit = () => {
 
     const [universUpdate, setUniversUpdate] = useState()
     const [universEnUpdate, setUniversEnUpdate] = useState()
+    const [genderUpdate, setGenderUpdate] = useState()
+    const [ageUpdate, setAgeUpdate] = useState()
+
     const [marqueUpdate, setMarqueUpdate] = useState()
     const [paysOrigineUpdate, setPaysOrigineUpdate] = useState()
     const [referenceFournisseurUpdate, setReferenceFournisseurUpdate] = useState()
@@ -48,6 +51,8 @@ const FormulaireProduit = () => {
 	const [sousCategorieEnUpdate, setSousCategorieEnUpdate] = useState()
 	const [filtreUpdate, setFiltreUpdate] = useState()
 	const [filtreEnUpdate, setFiltreEnUpdate] = useState()
+    const [categorieGoogleUpdate, setCategorieGoogleUpdate] = useState() //
+
     const [referenceCouleurUpdate, setReferenceCouleurUpdate] = useState()
     const [couleurUpdate, setCouleurUpdate] = useState()
 	const [couleurEnUpdate, setCouleurEnUpdate] = useState()
@@ -73,6 +78,7 @@ const FormulaireProduit = () => {
 
 
     const [matiereUpdate, setMatiereUpdate] = useState([])
+    const [matiereGoogleUpdate, setMatiereGoogleUpdate] = useState()
 	const [tagsReferencementUpdate, setTagsReferencementUpdate] = useState() 
 
     const [sectionUpdate, setSectionUpdate] = useState("")
@@ -150,6 +156,10 @@ const FormulaireProduit = () => {
                                 //Information
                                 let univers = valeur[0].univers!= null ? valeur[0].univers : ""
                                 let universEn = valeur[0].univers_en!= null ? valeur[0].univers_en : ""
+                                let gender = valeur[0].gender!= null ? valeur[0].gender : ""
+                                let age = valeur[0].age!= null ? valeur[0].age : ""
+
+
                                 let marque = valeur[0].nom_fournisseur ? valeur[0].nom_fournisseur : ""
                                 // valeur[0].marque != null ? setMarqueUpdate(valeur[0].marqueProduit) : setMarqueUpdate("")
 
@@ -258,6 +268,7 @@ const FormulaireProduit = () => {
                                     }
                                 }
                                 setMatiereUpdate(matiere)
+                                setMatiereGoogleUpdate((value[0] && value[0].material_classification_google) ? value[0].material_classification_google : "")
                                 setReferenceFournisseurUpdate(valeur[0].reference_fournisseur ? valeur[0].reference_fournisseur : "")
                                 setReferenceCouleurUpdate(valeur[0].reference_couleur ? valeur[0].reference_couleur : "")
                                 setGrilleTailleUpdate(grilleTaille)
@@ -267,7 +278,8 @@ const FormulaireProduit = () => {
                                 setSousCategorieUpdate(sousCategorie)
                                 setSousCategorieEnUpdate(sousCategorieEn)
                                 setFiltreUpdate(filtre)
-                                setFiltreEnUpdate(filtreEn)                                
+                                setFiltreEnUpdate(filtreEn) 
+                                setCategorieGoogleUpdate(value[0] && value[0].categorie_google ? value[0].categorie_google : "")                               
                                 setCouleurUpdate(couleur)
                                 setCouleurEnUpdate(couleurEn)
                                 setCoupeUpdate(coupe)
@@ -278,6 +290,8 @@ const FormulaireProduit = () => {
                                 setNomProduitEnUpdate(nomProduitEn)
                                 setUniversUpdate(univers)
                                 setUniversEnUpdate(universEn)
+                                setGenderUpdate(gender)
+                                setAgeUpdate(age)
                                 setMarqueUpdate(valeur[0].marque ? valeur[0].marque.marque : marque)
                                 setHauteurUpdate(hauteur)
                                 setLargeurUpdate(largeur)
@@ -302,7 +316,7 @@ const FormulaireProduit = () => {
                                 else
                                     setCaracteristiqueDone(false)
                                 
-                                if(matiere.length>0)
+                                if(matiere.length>0 && matiereGoogleUpdate!="")
                                     setMatiereDone(true)
                                 else
                                     setMatiereDone(false)
@@ -430,7 +444,7 @@ const FormulaireProduit = () => {
             else
                 setCaracteristiqueDone(true)
 
-            if(matiereUpdate.length>0)
+            if(matiereUpdate.length>0 && matiereGoogleUpdate!="")
                 setMatiereDone(true)
             else
                 setMatiereDone(false)
@@ -598,6 +612,8 @@ const FormulaireProduit = () => {
                 paysOrigine: paysOrigineUpdate?paysOrigineUpdate : "",
                 univers: universUpdate? universUpdate : infoSku.univers,
                 universEn: universEnUpdate? universEnUpdate : infoSku.universEn,
+                gender: genderUpdate? genderUpdate: infoSku.gender,
+                age: ageUpdate? ageUpdate: infoSku.age,
                 referenceFournisseur: referenceFournisseurUpdate ? referenceFournisseurUpdate : infoSku.reference_fournisseur,
                 referenceCouleur: referenceCouleurUpdate ? referenceCouleurUpdate : infoSku.reference_couleur,
                 // filtre: filtre,
@@ -609,6 +625,8 @@ const FormulaireProduit = () => {
 
                 filtreProduit: filtre.filtre,
                 filtreProduitEn: filtre.filtreRefEn,
+
+                categorieGoogleUpdate: categorieGoogleUpdate ? categorieGoogleUpdate : "", 
 
                 couleur: couleurUpdate?couleurUpdate:"",
                 couleurEn: couleurEnUpdate?couleurEnUpdate:"",
@@ -628,6 +646,7 @@ const FormulaireProduit = () => {
                 nomProduitFr: nomProduitFrUpdate? nomProduitFrUpdate : "",
                 nomProduitEn: nomProduitEnUpdate? nomProduitEnUpdate : "", 
                 matieres: matiere,
+                materialClassificationGoogle: matiereGoogleUpdate,
                 grilleTailleRef: grilleTailleUpdate,
                 variantProduits: attributUpdate ? attributUpdate : [],
               
@@ -678,6 +697,8 @@ const FormulaireProduit = () => {
             infoSku: infoSku, setInfoSku: setInfoSku,
             universUpdate: universUpdate, setUniversUpdate: setUniversUpdate,
             universEnUpdate: universEnUpdate, setUniversEnUpdate: setUniversEnUpdate,
+            genderUpdate: genderUpdate, setGenderUpdate: setGenderUpdate,
+            ageUpdate: ageUpdate, setAgeUpdate: setAgeUpdate,
             marqueUpdate: marqueUpdate, setMarqueUpdate: setMarqueUpdate,
             paysOrigineUpdate: paysOrigineUpdate, setPaysOrigineUpdate: setPaysOrigineUpdate,
             sectionUpdate: sectionUpdate,
@@ -691,6 +712,7 @@ const FormulaireProduit = () => {
             sousCategorieEnUpdate: sousCategorieEnUpdate, setSousCategorieEnUpdate: setSousCategorieEnUpdate,
             filtreUpdate: filtreUpdate,	setFiltreUpdate: setFiltreUpdate,
             filtreEnUpdate: filtreEnUpdate,	setFiltreEnUpdate: setFiltreEnUpdate,  
+            categorieGoogleUpdate: categorieGoogleUpdate, setCategorieGoogleUpdate: setCategorieGoogleUpdate,
             referenceCouleurUpdate: referenceCouleurUpdate, setReferenceCouleurUpdate: setReferenceCouleurUpdate, 
             couleurUpdate: couleurUpdate, setCouleurUpdate: setCouleurUpdate,
             couleurEnUpdate: couleurEnUpdate, setCouleurEnUpdate: setCouleurEnUpdate,
@@ -719,6 +741,8 @@ const FormulaireProduit = () => {
 
             matiereUpdate: matiereUpdate, setMatiereUpdate: setMatiereUpdate,
             handleClickSave: handleClickSave,
+            matiereGoogleUpdate: matiereGoogleUpdate, setMatiereGoogleUpdate: setMatiereGoogleUpdate,
+            
 
             messageSave: messageSave, setMessageSave: setMessageSave,
             isSuccessSave: isSuccessSave, setIsSuccessSave: setIsSuccessSave,

@@ -1,0 +1,1 @@
+export const Age = ["Newborn", "Infant", "Toddler", "Adult"]

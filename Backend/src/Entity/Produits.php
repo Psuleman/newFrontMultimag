@@ -338,6 +338,26 @@ class Produits
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_shooting = null;
 
+    #[Groups('produit')]
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $gender = null;
+
+    #[Groups('produit')]
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $age = null;
+
+    #[Groups('produit')]
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $material_classification_google = null;
+
+    #[Groups('produit')]
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $condition_classification_google = null;
+
+    #[Groups('produit')]
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $categorie_google = null;
+
 
 
     //end
@@ -1129,6 +1149,66 @@ class Produits
     public function setDateShooting(?\DateTimeInterface $date_shooting): self
     {
         $this->date_shooting = $date_shooting;
+
+        return $this;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(?string $gender): self
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    public function getAge(): ?string
+    {
+        return $this->age;
+    }
+
+    public function setAge(?string $age): self
+    {
+        $this->age = $age;
+
+        return $this;
+    }
+
+    public function getMaterialClassificationGoogle(): ?string
+    {
+        return $this->material_classification_google;
+    }
+
+    public function setMaterialClassificationGoogle(?string $material_classification_google): self
+    {
+        $this->material_classification_google = $material_classification_google;
+
+        return $this;
+    }
+
+    public function getConditionClassificationGoogle(): ?string
+    {
+        return $this->condition_classification_google;
+    }
+
+    public function setConditionClassificationGoogle(?string $condition_classification_google): self
+    {
+        $this->condition_classification_google = $condition_classification_google;
+
+        return $this;
+    }
+
+    public function getCategorieGoogle(): ?string
+    {
+        return $this->categorie_google;
+    }
+
+    public function setCategorieGoogle(?string $categorie_google): self
+    {
+        $this->categorie_google = $categorie_google;
 
         return $this;
     }

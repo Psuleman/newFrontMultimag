@@ -35,15 +35,20 @@ const Information = () => {
             infoSku && (sectionUpdate == "information") &&
             <form onSubmit={(e)=>{handleClickSave(e, "caractéristique")}}>        
                 <div className="card-body">
-                <section className="row g-3 mb-3"><small>Tous les champs sont obligatoire</small></section>
+                <section className="row g-3 mb-3"><small>Champs sont obligatoire *</small></section>
                 <section className="row g-3">
                     <InputDesabled idInput="inputSku" labelInput="SKU" valeur={infoSku.sku} typeInput="text" />
+                    <InputDesabled idInput="inputCatUnivers" typeInput="text" labelInput="Catégorie dans le fichier multimag" valeur={infoSku.categorie_univers} />
+                </section>
+                <section className="row g-3  mt-1">
                     {/* <InputDesabled idInput="inputRefFournisseur" labelInput="Référence Fournisseur" valeur={infoSku.reference_fournisseur} typeInput="text" /> */}
-                    <Input label={"Référence Fournisseur"} id="inputRefFournisseur" value={referenceFournisseurUpdate} setValue={setReferenceFournisseurUpdate} />
+                    <Input label={"* Référence Fournisseur"} id="inputRefFournisseur" value={referenceFournisseurUpdate} setValue={setReferenceFournisseurUpdate} />
                     <Marque />
-                    <Select id="selectPaysOrigine" label="Pays origine" value={paysOrigineUpdate} setValue={setPaysOrigineUpdate} list={Pays} itemValue="pays" />
+                    <Select id="selectPaysOrigine" label="* Pays origine" value={paysOrigineUpdate} setValue={setPaysOrigineUpdate} list={Pays} itemValue="pays" />
 
                 </section>
+
+
                 <UniversForm />
                 </div>
 

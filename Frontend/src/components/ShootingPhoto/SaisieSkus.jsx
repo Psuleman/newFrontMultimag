@@ -9,7 +9,11 @@ const SaisieSkus = () => {
 
     useEffect(()=>{
     }, [nombreSkus])
-    console.log(listSkus)
+
+
+    const handleClick = () => {
+        console.log(listSkus)
+    }
 
     //render
     return (
@@ -23,7 +27,7 @@ const SaisieSkus = () => {
             }
 
             <div>
-                <button className="btn btn-dark">Valider</button>
+                <button className="btn btn-dark" onClick={handleClick}>Valider</button>
             </div>  
         </div>
     )

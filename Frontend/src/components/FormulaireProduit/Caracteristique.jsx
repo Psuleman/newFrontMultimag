@@ -11,6 +11,8 @@ import Filtre from "./Caracteristique/Filtre";
 import InputDesabled from "./TemplateFormulaire/InputDesabled";
 import CategorieEn from "./Caracteristique/CategorieEn";
 import Tags from "./Caracteristique/Tags";
+import Input from "./TemplateFormulaire/Input";
+import CategorieGoogleClassification from "./Caracteristique/CategorieGoogleClassification";
 
 
 const Caracteristique = () => {
@@ -18,7 +20,7 @@ const Caracteristique = () => {
      * Couleur, Categorie, dimension, tarifs, coupe, entretien
      */
     //variable
-    const {infoSku, caracteristiqueDone, setCaracteristiqueDone, categorieUpdate, categorieEnUpdate, sousCategorieUpdate, sousCategorieEnUpdate, filtreUpdate, filtreEnUpdate, couleurUpdate, couleurEnUpdate, sectionUpdate, setSectionUpdate, handleClickSave} = useContext(FormulaireContext)
+    const {infoSku, caracteristiqueDone, setCaracteristiqueDone, categorieUpdate, categorieEnUpdate, sousCategorieUpdate, sousCategorieEnUpdate, filtreUpdate, filtreEnUpdate, couleurUpdate, couleurEnUpdate, sectionUpdate, setSectionUpdate, handleClickSave, categorieGoogleUpdate, setCategorieGoogleUpdate} = useContext(FormulaireContext)
     //fonction
     useEffect(()=>{
         
@@ -52,6 +54,8 @@ const Caracteristique = () => {
                 <CategorieEn />
 
                 <Couleur />
+
+                <CategorieGoogleClassification />
                 <Tags />
             </div>
 

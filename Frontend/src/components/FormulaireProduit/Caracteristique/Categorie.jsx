@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import {Categories} from "../../../data/Categories"
+import { GoogleCode } from "../../../data/ClassificationGoogle"
 import { getAllFiltre } from "../../../services/filtre.service"
 import { FormulaireContext } from "../Context/FormulaireContext"
 import Select from "../TemplateFormulaire/Select"
@@ -8,13 +9,15 @@ import { CategorieContext } from "./Context/CategorieContext"
 const Categorie = () => {
     //variables
     const [categories, setCategories] = useState([])
-    const {infoSku, categorieUpdate, setCategorieUpdate, categorieEnUpdate, sousCategorieUpdate, setCategorieEnUpdate
+    const {infoSku, categorieUpdate, setCategorieUpdate, categorieEnUpdate, sousCategorieUpdate, setCategorieEnUpdate, categorieGoogleUpdate, setCategorieGoogleUpdate
     } = useContext(FormulaireContext)
 
     const {sousCategories, setSousCategories} = useContext(CategorieContext)
 
     //fonction
     useEffect(()=>{
+
+
         if(categorieUpdate){
             if(categorieUpdate == "A définir" && sousCategorieUpdate!="A définir"){
                 Categories.forEach(element => {
@@ -26,6 +29,8 @@ const Categorie = () => {
                     });
                 });
             }
+
+
             //liste des sous catégorie
             let newCategorie = 0 
             Categories.forEach(element => {
@@ -44,7 +49,7 @@ const Categorie = () => {
                     })
                 })
                 console.log(liste)
-                setSousCategories(liste)
+                setSousCategories(liste.sort())
                 setCategorieEnUpdate("")
 
             }
